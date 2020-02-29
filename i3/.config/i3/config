@@ -1,0 +1,258 @@
+# i3 config file (v4)
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Your preferred terminal emulator
+set $term sakura
+# Your preferred application launcher
+#set $menu "dmenu_run -fn hack"
+
+### Output configuration
+#
+# Default wallpaper - CC-BY-NC from Netzlemming http://netzlemming.deviantart.com/art/Field-of-Barley-05240017-307176737
+#output * bg /home/alex/Pictures/wallpaper/current.* fill
+#
+# Example output configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+
+### Key bindings
+#
+# Basics:
+#
+    # start a terminal
+    bindsym $mod+Return exec $term
+
+    bindsym $mod+semicolon exec emacsclient -a '' -c
+
+    # kill focused window
+    bindsym $mod+Shift+q kill
+
+    # start your launcher
+    #bindsym $mod+d exec $menu
+    bindsym $mod+d exec dmenu_run -fn consolas-13
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    #floating_modifier $mod normal
+
+    # reload the configuration file
+#    bindsym $mod+Shift+c reload
+
+    # restart sway inplace (preserves your layout/session, can be used to upgrade sway)
+    bindsym $mod+Shift+r restart
+
+    # exit sway (logs you out of your wayland session)
+    bindsym $mod+Shift+e exit
+#
+# Moving around:
+#
+    # Move your focus around with $mod+[h|j|k|l], like vim
+    bindsym $mod+h focus left
+    bindsym $mod+j focus down
+    bindsym $mod+k focus up
+    bindsym $mod+l focus right
+    # or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # _move_ the focused window with the same, but add Shift
+    bindsym $mod+Shift+h move left
+    bindsym $mod+Shift+j move down
+    bindsym $mod+Shift+k move up
+    bindsym $mod+Shift+l move right
+    # ditto, with arrow keys
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+
+mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+
+    bindcode 36 mode "default"
+    bindcode 9 mode "default"
+}
+
+bindsym $mod+r mode "resize"
+#
+# Workspaces:
+#
+
+#   set $ws1 "1: "
+#   set $ws2 "2: "
+#   set $ws3 "3: "
+#   set $ws4 "4: "
+#   set $ws5 "5: "
+#   set $ws6 "6: "
+#   set $ws7 "7: "
+#   set $ws8 "8: "
+#   set $ws9 "9: "
+#   set $ws0 "10: "
+
+    set $ws1 1
+    set $ws2 2
+    set $ws3 3
+    set $ws4 4
+    set $ws5 5
+    set $ws6 6
+    set $ws7 7
+    set $ws8 8
+    set $ws9 9
+    set $ws0 10
+
+    # switch to workspace
+    bindsym $mod+1 workspace $ws1
+    bindsym $mod+2 workspace $ws2
+    bindsym $mod+3 workspace $ws3
+    bindsym $mod+4 workspace $ws4
+    bindsym $mod+5 workspace $ws5
+    bindsym $mod+6 workspace $ws6
+    bindsym $mod+7 workspace $ws7
+    bindsym $mod+8 workspace $ws8
+    bindsym $mod+9 workspace $ws9
+    bindsym $mod+0 workspace $ws0
+    # move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace $ws1
+    bindsym $mod+Shift+2 move container to workspace $ws2
+    bindsym $mod+Shift+3 move container to workspace $ws3
+    bindsym $mod+Shift+4 move container to workspace $ws4
+    bindsym $mod+Shift+5 move container to workspace $ws5
+    bindsym $mod+Shift+6 move container to workspace $ws6
+    bindsym $mod+Shift+7 move container to workspace $ws7
+    bindsym $mod+Shift+8 move container to workspace $ws8
+    bindsym $mod+Shift+9 move container to workspace $ws9
+    bindsym $mod+Shift+0 move container to workspace $ws0
+
+    bindsym $mod+Shift+m move workspace to output right
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+s or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+s splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    #bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+#    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+
+set_from_resource $background i3wm.background             #002b36
+set_from_resource $foreground i3wm.foreground             #839496
+set_from_resource $textbg     i3wm.pointerColorBackground #586e75
+set_from_resource $textfg     i3wm.color0                 #073642
+set_from_resource $focus      i3wm.color6                 #2aa198
+set_from_resource $urgent     i3wm.color1                 #dc322f
+set_from_resource $bright     i3wm.color15                #fdf6e3
+set_from_resource $blue       i3wm.color4                 #268bd2
+
+#
+# Status Bar:
+#
+bar {
+#    status_command i3status
+	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+	font pango:Iosevka Term Light 14 
+        position top
+        colors {
+#            statusline $text
+#            background #323232
+#            inactive_workspace #32323200 #32323200 #5c5c5c
+            statusline          $foreground
+            background          $background
+            separator           $textbg
+            focused_workspace   $focus  $focus      $background
+            active_workspace    $textbg $textbg     $textfg
+            inactive_workspace  $textfg $background $foreground
+            urgent_workspace    $urgent $urgent     $bright
+        }
+}
+font pango:Iosevka Term Light 12
+
+client.focused          $background $focus $bright     $blue
+client.focused_inactive $background $textfg $foreground $textfg
+client.unfocused        $background $textfg $foreground $textfg
+client.urgent           $background $urgent $bright     $background
+
+#bar {
+#    font pango:Consolas 7
+#    position top
+#    status_command i3status-rs ~/.config/i3/status.toml
+#}
+
+
+# Gaps
+gaps inner 20
+gaps outer 7
+smart_gaps on
+
+# lock
+bindsym $mod+Shift+x exec i3lock -c 000000
+bindsym $mod+Shift+c exec "i3lock -c 000000; sudo pm-suspend"
+bindsym $mod+Shift+z exec "systemctl hibernate && i3lock -c 000000"
+
+#bindsym XF86AudioRaiseVolume   exec pactl set-sink-volume 1 +1%
+#bindsym XF86AudioLowerVolume   exec pactl set-sink-volume 1 -1%
+#bindsym XF86AudioMute          exec pactl set-sink-mute 1 toggle
+
+bindsym XF86AudioRaiseVolume    exec amixer sset Master 1%+
+bindsym XF86AudioLowerVolume    exec amixer sset Master 1%-
+bindsym XF86AudioMute           exec amixer sset Master toggle
+
+bindsym XF86MonBrightnessUp          exec brightnessctl s 5%+
+bindsym XF86MonBrightnessDown        exec brightnessctl s 5%-
+bindsym Shift+XF86MonBrightnessUp    exec brightnessctl s 1%+
+bindsym Shift+XF86MonBrightnessDown  exec brightnessctl s 1%-
+
+bindsym XF86AudioPlay		exec cmus-remote -u
+bindsym XF86AudioPrev		exec cmus-remote -r
+bindsym XF86AudioNext		exec cmus-remote -n
+
+
+# Application launches
+#
+
+#exec --no-startup-id swaymsg "workspace $ws2; exec firefox"
+#exec --no-startup-id swaymsg "workspace $ws4; exec weston-terminal"
+#exec --no-startup-id swaymsg "workspace $ws0; exec urxvt -e pianobar"
+
+#exec_always xrdb /home/alex/.Xresources
+new_window pixel 0
+exec_always feh --bg-fill /home/alex/pictures/wallpaper/current.*
+#exec_always xrandr --output DVI-D-0 --dpi 92
+#exec_always xrandr --output DVI-D-0 --left-of DP-2
