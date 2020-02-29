@@ -1,37 +1,6 @@
 ;; heavily based on https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
 
 (require 'package)
-(load-file "~/.emacs.d/sensible-defaults.el")
-
-(sensible-defaults/use-all-settings)
-;;(sensible-defaults/use-all-keybindings)
-(sensible-defaults/bind-home-and-end-keys)
-(sensible-defaults/backup-to-temp-directory)
-
-(tool-bar-mode nil)
-(set-window-scroll-bars (minibuffer-window) nil nil)
-
-(global-prettify-symbols-mode t)
-
-(setq scroll-step 1)
-(setq scroll-margin 1)
-(setq scroll-conservatively 100)
-
-(global-hl-line-mode)
-
-(setq compilation-scroll-output t)
-
-(setq initial-major-mode 'org-mode)
-
-(add-hook 'text-mode-hook 'auto-fill-mode)
-(add-hook 'org-mode-hook 'auto-fill-mode)
-
-(setq dired-recursive-deletes 'top)
-
-(evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
-(evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
-
-(setq-default indent-tabs-mode nil)
 
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 ;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -252,6 +221,41 @@
   :config
   (which-key-mode))
 
+
+(load-file "~/.emacs.d/sensible-defaults.el")
+
+(sensible-defaults/use-all-settings)
+;;(sensible-defaults/use-all-keybindings)
+(sensible-defaults/bind-home-and-end-keys)
+(sensible-defaults/backup-to-temp-directory)
+
+(tool-bar-mode nil)
+(set-window-scroll-bars (minibuffer-window) nil nil)
+
+(global-prettify-symbols-mode t)
+
+(setq scroll-step 1)
+(setq scroll-margin 1)
+(setq scroll-conservatively 100)
+
+(global-hl-line-mode)
+
+(setq compilation-scroll-output t)
+
+(setq initial-major-mode 'org-mode)
+
+(add-hook 'text-mode-hook 'auto-fill-mode)
+(add-hook 'org-mode-hook 'auto-fill-mode)
+
+(setq dired-recursive-deletes 'top)
+
+(evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
+(evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+
+(setq-default indent-tabs-mode nil)
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -264,7 +268,7 @@
  '(custom-buffer-indent 4)
  '(package-selected-packages
    (quote
-    (which-key dired-hide-dotfiles htmlize paredit magit deadgrep diff-hl moody evil-collection org-bullets evil-org auctex pdf-tools eglot rust-mode helm-projectile projectile company solarized-theme helm use-package)))
+    (evil-magit which-key dired-hide-dotfiles htmlize paredit magit deadgrep diff-hl moody evil-collection org-bullets evil-org auctex pdf-tools eglot rust-mode helm-projectile projectile company solarized-theme helm use-package)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
