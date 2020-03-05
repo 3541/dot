@@ -6,6 +6,19 @@
 ;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
 (setq package-enable-at-startup nil)
 (package-initialize)
 
@@ -14,6 +27,13 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
+
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 (use-package evil
   :ensure t
@@ -31,7 +51,12 @@
   :after evil)
 
 (use-package helm
-  :ensure t)
+  :ensure t
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-c f" . helm-find-files))
+  :config
+  (helm-mode 1))
 
 (use-package solarized-theme
   :ensure t
@@ -51,7 +76,7 @@
   :ensure t
   :config
   (setq x-underline-at-descent-line t)
-;;  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-mode-line-buffer-identification)
 ;;  (moody-replace-vc-mode)
   )
 
@@ -135,10 +160,53 @@
 	    (lambda ()
 	      (org-bullets-mode 1))))
 
+(use-package org-roam
+  :hook
+  (after-init . org-roam-mode)
+  :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
+  :custom
+  (org-roam-directory "~/org/roam")
+  :bind
+  (:map org-roam-mode-map
+        (("C-c r r" . org-roam)
+         ("C-c r f" . org-roam-find-file)
+         ("C-c r g" . org-roam-show-graph))
+        :map org-mode-map
+        (("C-c r i" . org-roam-insert)))
+  :config
+;;  (global-set-key (kbd "C-c r r") 'org-roam)
+  )
+
+(use-package org-pdftools
+  :straight (:host github :repo "fuxialexander/org-pdftools" :branch "master")
+  :after org
+  :config
+  (setq org-pdftools-root-dir "~/org/roam/doc")
+  (with-eval-after-load 'org
+    (org-link-set-parameters "pdftools"
+                             :follow #'org-pdftools-open
+                             :complete #'org-pdftools-complete-link
+                             :store #'org-pdftools-store-link
+                             :export #'org-pdftools-export)
+    (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
+
+(use-package deft
+  :ensure t
+  :after org
+  :bind
+  ("C-c r d" . deft)
+  :custom
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t)
+  (deft-default-extension "org")
+  (deft-directory "~/org/roam"))
+
 (use-package pdf-tools
   :ensure t
   :mode ("\\.pdf\\'" . pdf-tools-install)
-  :defer t)
+  :defer t
+  :config
+  (evil-set-initial-state 'pdf-view-mode 'normal))
 
 (use-package tex-site
   :ensure auctex
@@ -201,6 +269,7 @@
 (use-package flyspell
   :ensure t
   :config
+  (setq ispell-list-command "--list")
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'git-commit-mode-hook 'flyspell-mode))
@@ -221,16 +290,25 @@
   :config
   (which-key-mode))
 
+(use-package buffer-move
+  :ensure t
+  :config
+  (global-set-key (kbd "<C-S-h>") 'buf-move-left)
+  (global-set-key (kbd "<C-S-j>") 'buf-move-down)
+  (global-set-key (kbd "<C-S-k>") 'buf-move-up)
+  (global-set-key (kbd "<C-S-l>") 'buf-move-right))
+
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
 ;;(sensible-defaults/use-all-keybindings)
-(sensible-defaults/bind-home-and-end-keys)
+;;(sensible-defaults/bind-home-and-end-keys)
 (sensible-defaults/backup-to-temp-directory)
 
 (tool-bar-mode nil)
 (set-window-scroll-bars (minibuffer-window) nil nil)
+(toggle-scroll-bar -1)
 
 (global-prettify-symbols-mode t)
 
@@ -253,6 +331,8 @@
 (evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
 
 (setq-default indent-tabs-mode nil)
+
+(global-display-line-numbers-mode)
 
 
 
