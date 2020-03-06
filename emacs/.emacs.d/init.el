@@ -293,10 +293,10 @@
 (use-package buffer-move
   :ensure t
   :config
-  (global-set-key (kbd "<C-S-h>") 'buf-move-left)
-  (global-set-key (kbd "<C-S-j>") 'buf-move-down)
-  (global-set-key (kbd "<C-S-k>") 'buf-move-up)
-  (global-set-key (kbd "<C-S-l>") 'buf-move-right))
+  (global-set-key (kbd "C-S-h") 'buf-move-left)
+  (global-set-key (kbd "C-S-j") 'buf-move-down)
+  (global-set-key (kbd "C-S-k") 'buf-move-up)
+  (global-set-key (kbd "C-S-l") 'buf-move-right))
 
 
 (load-file "~/.emacs.d/sensible-defaults.el")
@@ -334,6 +334,10 @@
 
 (global-display-line-numbers-mode)
 
+(global-set-key (kbd "C-c d") (lambda () (interactive) (set-window-dedicated-p (selected-window)
+                                                                          (if (window-dedicated-p (selected-window))
+                                                                              nil t))))
+
 
 
 (custom-set-variables
@@ -346,6 +350,12 @@
  '(LaTeX-left-right-indent-level 4)
  '(TeX-brace-indent-level 4)
  '(custom-buffer-indent 4)
+ '(deft-default-extension "org" t)
+ '(deft-directory "~/org/roam" t)
+ '(deft-recursive t t)
+ '(deft-use-filter-string-for-filename t t)
+ '(helm-completion-style (quote emacs))
+ '(org-roam-directory "~/org/roam")
  '(package-selected-packages
    (quote
     (evil-magit which-key dired-hide-dotfiles htmlize paredit magit deadgrep diff-hl moody evil-collection org-bullets evil-org auctex pdf-tools eglot rust-mode helm-projectile projectile company solarized-theme helm use-package)))
