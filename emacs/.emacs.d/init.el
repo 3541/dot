@@ -52,6 +52,7 @@
 
 (use-package helm
   :ensure t
+  :preface (require 'helm-config)
   :bind
   (("M-x" . helm-M-x)
    ("C-c f" . helm-find-files))
