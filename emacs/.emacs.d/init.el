@@ -130,16 +130,19 @@
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
-  (setq org-directory "~/org")
-  (setq org-index-file "~/org/index.org")
-  (setq org-agenda-files (list org-index-file))
+  (setq org-directory "~/org/roam")
+  (setq org-index-file "~/org/roam/index.org")
+  (setq org-agenda-files (list org-directory))
   (setq org-agenda-span 14)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (C . t)
-     (python . t)
-     (ruby . t))))
+  (setq org-startup-indented t)
+  (setq org-latex-packages-alist '(("margin=2.5cm" "geometry" nil)))
+  (with-eval-after-load 'org (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (C . t)
+        (python . t)
+        (ruby . t))))
+  (org-reload))
 
 (use-package evil-org
   :ensure t
@@ -189,6 +192,16 @@
                              :store #'org-pdftools-store-link
                              :export #'org-pdftools-export)
     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
+
+(use-package org-download
+  :ensure t
+  :after org
+  :bind
+  (:map org-mode-map
+        (("C-c y" . org-download-screenshot)))
+  :config
+  (setq-default org-download-image-dir "~/org/roam/img")
+  (setq org-download-screenshot-method "scrot -s %s"))
 
 (use-package deft
   :ensure t
