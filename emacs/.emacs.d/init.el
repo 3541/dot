@@ -1,10 +1,10 @@
 ;; heavily based on https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
 
-(require 'package)
+;;(require 'package)
 
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+;;(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 ;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -22,21 +22,10 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
-
-(use-package auto-package-update
-  :ensure t
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+(straight-use-package 'use-package)
 
 (use-package evil
-  :ensure t
+  :straight t
   :init
   (setq evil-want-keybinding nil)
   :config
@@ -47,11 +36,12 @@
   (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right))
 
 (use-package evil-collection
-  :ensure t
+  :straight t
   :after evil)
 
 (use-package helm
-  :ensure t
+  :straight t
+  :preface (require 'helm-config)
   :bind
   (("M-x" . helm-M-x)
    ("C-c f" . helm-find-files))
@@ -59,7 +49,7 @@
   (helm-mode 1))
 
 (use-package solarized-theme
-  :ensure t
+  :straight t
   :config
   (setq solarized-use-variable-pitch nil
 	solarized-scale-org-headlines nil)
@@ -73,7 +63,7 @@
   (load-theme 'solarized-dark t))
 
 (use-package moody
-  :ensure t
+  :straight t
   :config
   (setq x-underline-at-descent-line t)
   (moody-replace-mode-line-buffer-identification)
@@ -81,13 +71,13 @@
   )
 
 (use-package company
-  :ensure t
+  :straight t
   :config
   (setq company-idle-delay 0.2)
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package projectile
-  :ensure t
+  :straight t
   :after helm
   :bind
   ("C-c v" . deadgrep)
@@ -100,26 +90,28 @@
   (setq projectile-completion-system 'helm)
   (setq projectile-switch-project-action 'projectile-dired)
   (setq projectile-require-project-root nil)
-  (projectile-mode +1))
+  (projectile-mode))
 
 (use-package helm-projectile
-  :ensure t
+  :straight t
   :after projectile
   :config
   (helm-projectile-on))
 
 (use-package rust-mode
-  :ensure t
+  :straight t
   :config
   (setq rust-format-on-save t))
 
 (use-package eglot
-  :ensure t
+  :straight t
   :config
-  (add-hook 'rust-mode-hook 'eglot-ensure))
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure))
 
 (use-package org
-  :ensure t
+  :straight t
   :config
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -145,7 +137,7 @@
   (org-reload))
 
 (use-package evil-org
-  :ensure t
+  :straight t
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
@@ -156,7 +148,7 @@
   (evil-org-agenda-set-keys))
 
 (use-package org-bullets
-  :ensure t
+  :straight t
   :after org
   :config
   (add-hook 'org-mode-hook
@@ -166,7 +158,7 @@
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)
-  :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
+  :straight (:host github :repo "jethrokuan/org-roam")
   :custom
   (org-roam-directory "~/org/roam")
   :bind
@@ -179,6 +171,12 @@
   :config
 ;;  (global-set-key (kbd "C-c r r") 'org-roam)
   )
+
+(use-package company-org-roam
+  :straight nil
+  :after org-roam company org
+  :config
+  (company-org-roam-init))
 
 (use-package org-pdftools
   :straight (:host github :repo "fuxialexander/org-pdftools" :branch "master")
@@ -194,7 +192,7 @@
     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
 (use-package org-download
-  :ensure t
+  :straight t
   :after org
   :bind
   (:map org-mode-map
@@ -204,7 +202,7 @@
   (setq org-download-screenshot-method "scrot -s %s"))
 
 (use-package deft
-  :ensure t
+  :straight t
   :after org
   :bind
   ("C-c r d" . deft)
@@ -215,7 +213,7 @@
   (deft-directory "~/org/roam"))
 
 (use-package pdf-tools
-  :ensure t
+  :straight t
   :mode ("\\.pdf\\'" . pdf-tools-install)
   :defer t
   :config
@@ -225,7 +223,7 @@
   :straight (:host github :repo "ejmr/tup-mode" :branch "master"))
 
 (use-package tex-site
-  :ensure auctex
+  :straight auctex
   :after pdf-tools
   :config
   (add-hook 'LaTeX-mode-hook
@@ -242,37 +240,37 @@
   (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
 
 (use-package dtrt-indent
-  :ensure t)
+  :straight t)
 
 (use-package diff-hl
-  :ensure t
+  :straight t
   :config
   (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
   (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
 (use-package deadgrep
-  :ensure t
+  :straight t
   :config (evil-collection-deadgrep-setup))
 
 (use-package magit
-  :ensure t
+  :straight t
   :bind
   ("C-x g" . magit-status)
 
   :config
   (use-package evil-magit
-    :ensure t)
+    :straight t)
   (use-package with-editor
-    :ensure t)
+    :straight t)
   (add-hook 'with-editor-mode-hook 'evil-insert-state))
 
 (use-package subword
-  :ensure t
+  :straight t
   :config
   (global-subword-mode 1))
 
 (use-package paredit
-  :ensure t
+  :straight t
   :config
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'lisp-mode-hook 'paredit-mode)
@@ -280,10 +278,10 @@
   (add-hook 'clojure-mode-hook 'paredit-mode))
 
 (use-package htmlize
-  :ensure t)
+  :straight t)
 
 (use-package flyspell
-  :ensure t
+  :straight t
   :config
   (setq ispell-list-command "--list")
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -291,23 +289,23 @@
   (add-hook 'git-commit-mode-hook 'flyspell-mode))
 
 (use-package dired-hide-dotfiles
-  :ensure t
+  :straight t
   :config
   (dired-hide-dotfiles-mode)
   (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 
 (use-package async
-  :ensure t
+  :straight t
   :config
   (dired-async-mode 1))
 
 (use-package which-key
-  :ensure t
+  :straight t
   :config
   (which-key-mode))
 
 (use-package buffer-move
-  :ensure t
+  :straight t
   :config
   (global-set-key (kbd "C-S-h") 'buf-move-left)
   (global-set-key (kbd "C-S-j") 'buf-move-down)
@@ -320,7 +318,11 @@
 (sensible-defaults/use-all-settings)
 ;;(sensible-defaults/use-all-keybindings)
 ;;(sensible-defaults/bind-home-and-end-keys)
-(sensible-defaults/backup-to-temp-directory)
+;;(sensible-defaults/backup-to-temp-directory)
+(setq backup-by-copying t
+      create-lockfiles nil
+      backup-directory-alist '(("." . "~/.cache/emacs-backups"))
+      auto-save-file-name-transforms '((".*" "~/.cache/emacs-backups/" t)))
 
 (tool-bar-mode nil)
 (set-window-scroll-bars (minibuffer-window) nil nil)
