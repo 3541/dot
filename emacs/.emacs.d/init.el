@@ -106,6 +106,7 @@
 (use-package eglot
   :straight t
   :config
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
   (add-hook 'rust-mode-hook 'eglot-ensure)
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure))
@@ -349,9 +350,15 @@
 
 (global-display-line-numbers-mode)
 
-(global-set-key (kbd "C-c d") (lambda () (interactive) (set-window-dedicated-p (selected-window)
-                                                                          (if (window-dedicated-p (selected-window))
-                                                                              nil t))))
+(global-set-key
+ (kbd "C-c d")
+ (lambda () (interactive)
+   (set-window-dedicated-p
+    (selected-window)
+    (if (window-dedicated-p (selected-window))
+        nil t))))
+
+(remove-hook 'before-save-hook 'delete-trailing-whitespace)
 
 
 
