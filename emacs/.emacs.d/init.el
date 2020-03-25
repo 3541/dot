@@ -220,6 +220,9 @@
   :config
   (evil-set-initial-state 'pdf-view-mode 'normal))
 
+(use-package tup-mode
+  :straight (:host github :repo "ejmr/tup-mode" :branch "master"))
+
 (use-package tex-site
   :straight auctex
   :after pdf-tools
