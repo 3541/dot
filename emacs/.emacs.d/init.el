@@ -39,15 +39,6 @@
   :straight t
   :after evil)
 
-(use-package helm
-  :straight t
-  :preface (require 'helm-config)
-  :bind
-  (("M-x" . helm-M-x)
-   ("C-c f" . helm-find-files))
-  :config
-  (helm-mode 1))
-
 (use-package solarized-theme
   :straight t
   :config
@@ -109,7 +100,8 @@
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
   (add-hook 'rust-mode-hook 'eglot-ensure)
   (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure))
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
 
 (use-package org
   :straight t
@@ -313,6 +305,14 @@
   (global-set-key (kbd "C-S-k") 'buf-move-up)
   (global-set-key (kbd "C-S-l") 'buf-move-right))
 
+(use-package helm
+  :straight t
+  :preface (require 'helm-config)
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-c f" . helm-find-files))
+  :config
+  (helm-mode 1))
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -362,6 +362,8 @@
         nil t))))
 
 (remove-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(setq gdb-many-windows t)
 
 
 
