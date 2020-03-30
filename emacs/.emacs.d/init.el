@@ -69,7 +69,7 @@
 
 (use-package projectile
   :straight t
-  :after helm
+  :after helm evil
   :bind
   ("C-c v" . deadgrep)
   :config
@@ -364,6 +364,11 @@
 (remove-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq gdb-many-windows t)
+
+(setq tab-width 4)
+(setq c-basic-offset 4)
+
+;;(add-to-list 'before-make-frame-hook #'(lambda () (load-file "~/.emacs.d/init.el")))
 
 
 

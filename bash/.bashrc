@@ -26,8 +26,4 @@ if [[ -n "$SSH_CLIENT" ]]; then
 	export PS1='[\u@\h] \w $ '
 fi
 
-em() {
-	emacsclient -a '' -c "$@" &
-}
-
-alias emacs=em
+alias emacs=ec

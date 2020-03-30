@@ -24,7 +24,7 @@ set $term sakura
     # start a terminal
     bindsym $mod+Return exec $term
 
-    bindsym $mod+semicolon exec emacsclient -a '' -c
+    bindsym $mod+semicolon exec ec
 
     # kill focused window
     bindsym $mod+Shift+q kill
