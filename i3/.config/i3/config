@@ -256,3 +256,4 @@ new_window pixel 0
 exec_always feh --bg-fill /home/alex/pictures/wallpaper/current.*
 #exec_always xrandr --output DVI-D-0 --dpi 92
 #exec_always xrandr --output DVI-D-0 --left-of DP-2
+exec redshift-gtk

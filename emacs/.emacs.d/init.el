@@ -166,7 +166,7 @@
   )
 
 (use-package company-org-roam
-  :straight nil
+  :straight t
   :after org-roam company org
   :config
   (company-org-roam-init))
