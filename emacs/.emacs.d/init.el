@@ -120,6 +120,7 @@
   (setq org-agenda-files (list org-directory))
   (setq org-agenda-span 14)
   (setq org-startup-indented t)
+  (setq org-pretty-entities t)
   (setq org-latex-packages-alist '(("margin=2.5cm" "geometry" nil)))
   (with-eval-after-load 'org (org-babel-do-load-languages
       'org-babel-load-languages
