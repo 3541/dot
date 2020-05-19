@@ -223,7 +223,7 @@ smart_gaps on
 
 # lock
 bindsym $mod+Shift+x exec i3lock -c 000000
-bindsym $mod+Shift+c exec "i3lock -c 000000; sudo pm-suspend"
+bindsym $mod+Shift+c exec "i3lock -c 000000; loginctl suspend"
 bindsym $mod+Shift+z exec "systemctl hibernate && i3lock -c 000000"
 
 #bindsym XF86AudioRaiseVolume   exec pactl set-sink-volume 1 +1%

@@ -33,11 +33,14 @@
   (define-key evil-motion-state-map (kbd "C-h") 'evil-window-left)
   (define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
   (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
-  (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right))
+  (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
+  (setq x-select-enable-clipboard nil))
 
 (use-package evil-collection
   :straight t
-  :after evil)
+  :after evil
+  :config
+  (evil-collection-init))
 
 (use-package solarized-theme
   :straight t
@@ -308,6 +311,7 @@
 
 (use-package helm
   :straight t
+  :after org projectile
   :preface (require 'helm-config)
   :bind
   (("M-x" . helm-M-x)
@@ -368,6 +372,7 @@
 
 (setq tab-width 4)
 (setq c-basic-offset 4)
+(setq sgml-basic-offset 4)
 
 ;;(add-to-list 'before-make-frame-hook #'(lambda () (load-file "~/.emacs.d/init.el")))
 
