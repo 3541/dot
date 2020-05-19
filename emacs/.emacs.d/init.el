@@ -315,6 +315,9 @@
   :config
   (helm-mode 1))
 
+(use-package cmake-mode
+  :straight t)
+
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
