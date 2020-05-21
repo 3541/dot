@@ -322,6 +322,9 @@
 (use-package cmake-mode
   :straight t)
 
+(use-package meson-mode
+  :straight t)
+
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
