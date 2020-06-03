@@ -3,7 +3,7 @@
 (require 'package)
 
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
@@ -71,12 +71,13 @@
 (use-package company
   :ensure t
   :config
-  (setq company-idle-delay 0.2)
+  (setq company-idle-delay 0.0)
+  (setq company-minimum-prefix-length 1)
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package projectile
   :ensure t
-  :after helm evil
+  :after evil
   :bind
   ("C-c v" . deadgrep)
   :config
@@ -92,7 +93,7 @@
 
 (use-package helm-projectile
   :ensure t
-  :after projectile
+  :after projectile helm
   :config
   (helm-projectile-on))
 
@@ -174,6 +175,10 @@
   :config
 ;;  (global-set-key (kbd "C-c r r") 'org-roam)
   )
+
+(use-package org-roam-protocol
+  :ensure org-roam
+  :after org-roam)
 
 (use-package company-org-roam
   :ensure t
@@ -258,8 +263,8 @@
   ("C-x g" . magit-status)
 
   :config
-  (use-package evil-magit
-    :ensure t)
+  ;; (use-package evil-magit
+  ;;   :ensure t)
   (use-package with-editor
     :ensure t)
   (add-hook 'with-editor-mode-hook 'evil-insert-state))
@@ -314,7 +319,6 @@
 
 (use-package helm
   :ensure t
-  :after org projectile
   :preface (require 'helm-config)
   :bind
   (("M-x" . helm-M-x)
