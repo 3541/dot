@@ -1,31 +1,35 @@
 ;; heavily based on https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
 
-;;(require 'package)
+(require 'package)
 
-;;(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
-(straight-use-package 'use-package)
+;; (defvar bootstrap-version)
+;; (let ((bootstrap-file
+;;        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+;;       (bootstrap-version 5))
+;;   (unless (file-exists-p bootstrap-file)
+;;     (with-current-buffer
+;;         (url-retrieve-synchronously
+;;          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+;;          'silent 'inhibit-cookies)
+;;       (goto-char (point-max))
+;;       (eval-print-last-sexp)))
+;;   (load bootstrap-file nil 'nomessage))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+
+;; (straight-use-package 'use-package)
 
 (use-package evil
-  :straight t
+  :ensure t
   :init
   (setq evil-want-keybinding nil)
   :config
@@ -37,13 +41,13 @@
   (setq x-select-enable-clipboard nil))
 
 (use-package evil-collection
-  :straight t
+  :ensure t
   :after evil
   :config
   (evil-collection-init))
 
 (use-package solarized-theme
-  :straight t
+  :ensure t
   :config
   (setq solarized-use-variable-pitch nil
 	solarized-scale-org-headlines nil)
@@ -57,7 +61,7 @@
   (load-theme 'solarized-dark t))
 
 (use-package moody
-  :straight t
+  :ensure t
   :config
   (setq x-underline-at-descent-line t)
   (moody-replace-mode-line-buffer-identification)
@@ -65,13 +69,13 @@
   )
 
 (use-package company
-  :straight t
+  :ensure t
   :config
   (setq company-idle-delay 0.2)
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package projectile
-  :straight t
+  :ensure t
   :after helm evil
   :bind
   ("C-c v" . deadgrep)
@@ -87,27 +91,27 @@
   (projectile-mode))
 
 (use-package helm-projectile
-  :straight t
+  :ensure t
   :after projectile
   :config
   (helm-projectile-on))
 
 (use-package rust-mode
-  :straight t
+  :ensure t
   :config
   (setq rust-format-on-save t))
 
-(use-package eglot
-  :straight t
-  :config
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-  (add-hook 'rust-mode-hook 'eglot-ensure)
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
-  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
+;; (use-package eglot
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+;;   (add-hook 'rust-mode-hook 'eglot-ensure)
+;;   (add-hook 'c-mode-hook 'eglot-ensure)
+;;   (add-hook 'c++-mode-hook 'eglot-ensure)
+;;   (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
 
 (use-package org
-  :straight t
+  :ensure t
   :config
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -134,7 +138,7 @@
   (org-reload))
 
 (use-package evil-org
-  :straight t
+  :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
@@ -145,7 +149,7 @@
   (evil-org-agenda-set-keys))
 
 (use-package org-bullets
-  :straight t
+  :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook
@@ -155,14 +159,16 @@
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)
-  :straight (:host github :repo "jethrokuan/org-roam")
+  :ensure t
   :custom
   (org-roam-directory "~/org/roam")
   :bind
   (:map org-roam-mode-map
         (("C-c r r" . org-roam)
          ("C-c r f" . org-roam-find-file)
-         ("C-c r g" . org-roam-show-graph))
+	 ("C-c r b" . org-roam-switch-to-buffer)
+	 ("C-c r j" . org-roam-jump-to-index)
+         ("C-c r g" . org-roam-graph))
         :map org-mode-map
         (("C-c r i" . org-roam-insert)))
   :config
@@ -170,13 +176,13 @@
   )
 
 (use-package company-org-roam
-  :straight t
+  :ensure t
   :after org-roam company org
   :config
   (company-org-roam-init))
 
 (use-package org-pdftools
-  :straight (:host github :repo "fuxialexander/org-pdftools" :branch "master")
+  :ensure t
   :after org
   :config
   (setq org-pdftools-root-dir "~/org/roam/doc")
@@ -189,7 +195,7 @@
     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
 (use-package org-download
-  :straight t
+  :ensure t
   :after org
   :bind
   (:map org-mode-map
@@ -199,7 +205,7 @@
   (setq org-download-screenshot-method "scrot -s %s"))
 
 (use-package deft
-  :straight t
+  :ensure t
   :after org
   :bind
   ("C-c r d" . deft)
@@ -210,17 +216,14 @@
   (deft-directory "~/org/roam"))
 
 (use-package pdf-tools
-  :straight t
+  :ensure t
   :mode ("\\.pdf\\'" . pdf-tools-install)
   :defer t
   :config
   (evil-set-initial-state 'pdf-view-mode 'normal))
 
-(use-package tup-mode
-  :straight (:host github :repo "ejmr/tup-mode" :branch "master"))
-
 (use-package tex-site
-  :straight auctex
+  :ensure auctex
   :after pdf-tools
   :config
   (add-hook 'LaTeX-mode-hook
@@ -237,37 +240,37 @@
   (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
 
 (use-package dtrt-indent
-  :straight t)
+  :ensure t)
 
 (use-package diff-hl
-  :straight t
+  :ensure t
   :config
   (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
   (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
 (use-package deadgrep
-  :straight t
+  :ensure t
   :config (evil-collection-deadgrep-setup))
 
 (use-package magit
-  :straight t
+  :ensure t
   :bind
   ("C-x g" . magit-status)
 
   :config
   (use-package evil-magit
-    :straight t)
+    :ensure t)
   (use-package with-editor
-    :straight t)
+    :ensure t)
   (add-hook 'with-editor-mode-hook 'evil-insert-state))
 
 (use-package subword
-  :straight t
+  :ensure t
   :config
   (global-subword-mode 1))
 
 (use-package paredit
-  :straight t
+  :ensure t
   :config
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'lisp-mode-hook 'paredit-mode)
@@ -275,10 +278,10 @@
   (add-hook 'clojure-mode-hook 'paredit-mode))
 
 (use-package htmlize
-  :straight t)
+  :ensure t)
 
 (use-package flyspell
-  :straight t
+  :ensure t
   :config
   (setq ispell-list-command "--list")
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -286,23 +289,23 @@
   (add-hook 'git-commit-mode-hook 'flyspell-mode))
 
 (use-package dired-hide-dotfiles
-  :straight t
+  :ensure t
   :config
   (dired-hide-dotfiles-mode)
   (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 
 (use-package async
-  :straight t
+  :ensure t
   :config
   (dired-async-mode 1))
 
 (use-package which-key
-  :straight t
+  :ensure t
   :config
   (which-key-mode))
 
 (use-package buffer-move
-  :straight t
+  :ensure t
   :config
   (global-set-key (kbd "C-S-h") 'buf-move-left)
   (global-set-key (kbd "C-S-j") 'buf-move-down)
@@ -310,7 +313,7 @@
   (global-set-key (kbd "C-S-l") 'buf-move-right))
 
 (use-package helm
-  :straight t
+  :ensure t
   :after org projectile
   :preface (require 'helm-config)
   :bind
@@ -320,10 +323,10 @@
   (helm-mode 1))
 
 (use-package cmake-mode
-  :straight t)
+  :ensure t)
 
 (use-package meson-mode
-  :straight t)
+  :ensure t)
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
