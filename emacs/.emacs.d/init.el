@@ -102,14 +102,16 @@
   :config
   (setq rust-format-on-save t))
 
-;; (use-package eglot
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-;;   (add-hook 'rust-mode-hook 'eglot-ensure)
-;;   (add-hook 'c-mode-hook 'eglot-ensure)
-;;   (add-hook 'c++-mode-hook 'eglot-ensure)
-;;   (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
+(use-package eglot
+  :ensure t
+  :bind
+  (("C-c e r" . eglot-rename))
+  :config
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
 
 (use-package org
   :ensure t
