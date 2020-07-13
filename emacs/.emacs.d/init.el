@@ -119,6 +119,7 @@
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c s") 'org-search-view)
   (setq org-hide-leading-stars t)
   (setq org-log-done 'time)
   (setq org-enforce-todo-dependencies t)
@@ -244,7 +245,10 @@
 	    #'TeX-revert-document-buffer)
   (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
 	TeX-source-correlate-start-server t)
-  (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
+  (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-cite-format "\\parencite[]{%l}"))
 
 (use-package dtrt-indent
   :ensure t)
