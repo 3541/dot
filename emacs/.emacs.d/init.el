@@ -1,5 +1,3 @@
-;; heavily based on https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
-
 (require 'package)
 
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
@@ -8,25 +6,16 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
-;; (defvar bootstrap-version)
-;; (let ((bootstrap-file
-;;        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-;;       (bootstrap-version 5))
-;;   (unless (file-exists-p bootstrap-file)
-;;     (with-current-buffer
-;;         (url-retrieve-synchronously
-;;          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-;;          'silent 'inhibit-cookies)
-;;       (goto-char (point-max))
-;;       (eval-print-last-sexp)))
-;;   (load bootstrap-file nil 'nomessage))
-
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (auto-package-update-at-time "12:00"))
 
-;; (straight-use-package 'use-package)
 
 (use-package evil
   :ensure t
@@ -40,11 +29,74 @@
   (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
   (setq x-select-enable-clipboard nil))
 
-(use-package evil-collection
+;(use-package evil-collection
+;  :ensure t
+;  :after evil
+;  :config
+;  (evil-collection-init))
+
+(use-package helm
+  :ensure t
+  :demand t
+  :preface (require 'helm-config)
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-c f" . helm-find-files))
+  :config
+  (helm-mode 1))
+(require 'tramp)
+
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0.0)
+  (setq company-minimum-prefix-length 1)
+  (global-company-mode))
+
+(use-package projectile
   :ensure t
   :after evil
   :config
-  (evil-collection-init))
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
+  (evil-define-key 'motion ag-mode-map (kbd "C-p") 'projectile-find-file)
+  (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'projectile-find-file)
+
+  (setq projectile-completion-system 'helm)
+  (setq projectile-switch-project-action 'projectile-dired)
+  (setq projectile-require-project-root nil)
+  (projectile-mode))
+
+(use-package helm-projectile
+  :ensure t
+  :after projectile helm
+  :config
+  (helm-projectile-on))
+
+(use-package eglot
+  :ensure t
+  :demand t
+  :bind
+  (("C-c e r" . eglot-rename))
+  :config
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+  (add-to-list
+   'eglot-server-programs
+   '(rust-mode . ("/home/alex/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer")))
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
+
+(use-package yasnippet
+  :ensure t
+  :hook
+  (rust-mode . yas-minor-mode))
+
+(use-package rust-mode
+  :ensure t
+  :config
+  (setq rust-format-on-save t))
 
 (use-package solarized-theme
   :ensure t
@@ -64,54 +116,7 @@
   :ensure t
   :config
   (setq x-underline-at-descent-line t)
-  (moody-replace-mode-line-buffer-identification)
-;;  (moody-replace-vc-mode)
-  )
-
-(use-package company
-  :ensure t
-  :config
-  (setq company-idle-delay 0.0)
-  (setq company-minimum-prefix-length 1)
-  (add-hook 'after-init-hook 'global-company-mode))
-
-(use-package projectile
-  :ensure t
-  :after evil
-  :bind
-  ("C-c v" . deadgrep)
-  :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
-  (evil-define-key 'motion ag-mode-map (kbd "C-p") 'projectile-find-file)
-  (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'projectile-find-file)
-
-  (setq projectile-completion-system 'helm)
-  (setq projectile-switch-project-action 'projectile-dired)
-  (setq projectile-require-project-root nil)
-  (projectile-mode))
-
-(use-package helm-projectile
-  :ensure t
-  :after projectile helm
-  :config
-  (helm-projectile-on))
-
-(use-package rust-mode
-  :ensure t
-  :config
-  (setq rust-format-on-save t))
-
-(use-package eglot
-  :ensure t
-  :bind
-  (("C-c e r" . eglot-rename))
-  :config
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-  (add-hook 'rust-mode-hook 'eglot-ensure)
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
-  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
+  (moody-replace-mode-line-buffer-identification))
 
 (use-package org
   :ensure t
@@ -164,6 +169,7 @@
   :hook
   (after-init . org-roam-mode)
   :ensure t
+  :demand t
   :custom
   (org-roam-directory "~/org/roam")
   :bind
@@ -185,9 +191,9 @@
 
 (use-package company-org-roam
   :ensure t
-  :after org-roam company org
+;  :after org-roam company org
   :config
-  (company-org-roam-init))
+  (push 'company-org-roam company-backends))
 
 (use-package org-pdftools
   :ensure t
@@ -259,10 +265,6 @@
   (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
   (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
-(use-package deadgrep
-  :ensure t
-  :config (evil-collection-deadgrep-setup))
-
 (use-package magit
   :ensure t
   :bind
@@ -323,20 +325,12 @@
   (global-set-key (kbd "C-S-k") 'buf-move-up)
   (global-set-key (kbd "C-S-l") 'buf-move-right))
 
-(use-package helm
-  :ensure t
-  :preface (require 'helm-config)
-  :bind
-  (("M-x" . helm-M-x)
-   ("C-c f" . helm-find-files))
-  :config
-  (helm-mode 1))
-
 (use-package cmake-mode
   :ensure t)
 
 (use-package meson-mode
   :ensure t)
+
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -349,7 +343,7 @@
       backup-directory-alist '(("." . "~/.cache/emacs-backups"))
       auto-save-file-name-transforms '((".*" "~/.cache/emacs-backups/" t)))
 
-(tool-bar-mode nil)
+(tool-bar-mode -1)
 (set-window-scroll-bars (minibuffer-window) nil nil)
 (toggle-scroll-bar -1)
 
@@ -393,33 +387,5 @@
 (setq c-basic-offset 4)
 (setq sgml-basic-offset 4)
 
-;;(add-to-list 'before-make-frame-hook #'(lambda () (load-file "~/.emacs.d/init.el")))
-
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(LaTeX-indent-level 4)
- '(LaTeX-item-indent -4)
- '(LaTeX-left-right-indent-level 4)
- '(TeX-brace-indent-level 4)
- '(custom-buffer-indent 4)
- '(deft-default-extension "org" t)
- '(deft-directory "~/org/roam" t)
- '(deft-recursive t t)
- '(deft-use-filter-string-for-filename t t)
- '(helm-completion-style (quote emacs))
- '(org-roam-directory "~/org/roam")
- '(package-selected-packages
-   (quote
-    (evil-magit which-key dired-hide-dotfiles htmlize paredit magit deadgrep diff-hl moody evil-collection org-bullets evil-org auctex pdf-tools eglot rust-mode helm-projectile projectile company solarized-theme helm use-package)))
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Iosevka Term" :foundry "CYEL" :slant normal :weight normal :height 157 :width normal)))))
+(set-frame-font "Iosevka Term-14" nil t)
+(electric-pair-mode t)
