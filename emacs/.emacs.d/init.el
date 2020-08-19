@@ -387,5 +387,14 @@
 (setq c-basic-offset 4)
 (setq sgml-basic-offset 4)
 
+(defconst cc-style
+  '("cc-mode"
+    (c-offsets-alist . ((innamespace . [0])))))
+
+(c-add-style "my-cc" cc-style)
+(add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
+
+;;(add-to-list 'before-make-frame-hook #'(lambda () (load-file "~/.emacs.d/init.el")))
+
+
 (set-frame-font "Iosevka Term-14" nil t)
-(electric-pair-mode t)
