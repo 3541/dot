@@ -385,6 +385,7 @@
 
 (setq tab-width 4)
 (setq c-basic-offset 4)
+(setq c-default-style "linux")
 (setq sgml-basic-offset 4)
 
 (defconst cc-style
