@@ -138,6 +138,7 @@
   (setq org-startup-indented t)
   (setq org-pretty-entities t)
   (setq org-latex-packages-alist '(("margin=2.5cm" "geometry" nil)))
+  (setq org-duration-format '(hh:mm))
   (with-eval-after-load 'org (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
@@ -145,6 +146,13 @@
         (python . t)
         (ruby . t))))
   (org-reload))
+
+(use-package org-drill
+  :ensure t
+  :after org
+  :config
+  (setq org-drill-scope 'directory)
+  (setq org-drill-add-random-noise-to-intervals-p t))
 
 (use-package evil-org
   :ensure t
@@ -329,6 +337,9 @@
   :ensure t)
 
 (use-package meson-mode
+  :ensure t)
+
+(use-package haskell-mode
   :ensure t)
 
 
