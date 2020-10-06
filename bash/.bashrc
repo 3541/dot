@@ -27,3 +27,5 @@ if [[ -n "$SSH_CLIENT" ]]; then
 fi
 
 alias emacs=ec
+
+export CDPATH="$CDPATH:.:/home/alex:/home/alex/projects"
