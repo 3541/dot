@@ -27,7 +27,9 @@
   (define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
   (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
   (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
-  (setq x-select-enable-clipboard nil))
+  (setq x-select-enable-clipboard nil)
+  (setq evil-undo-system 'undo-tree)
+  (global-undo-tree-mode))
 
 ;(use-package evil-collection
 ;  :ensure t
@@ -410,3 +412,19 @@
 
 
 (set-frame-font "Iosevka Term-14" nil t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-undo-system 'undo-tree)
+ '(global-display-line-numbers-mode t)
+ '(helm-completion-style 'emacs)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Iosevka Term" :foundry "CYEL" :slant normal :weight normal :height 141 :width normal)))))
