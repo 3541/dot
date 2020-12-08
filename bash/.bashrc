@@ -28,4 +28,4 @@ fi
 
 alias emacs=ec
 
-export CDPATH="$CDPATH:.:/home/alex:/home/alex/projects"
+export CDPATH="$CDPATH:.:/home/alex:/home/alex/projects:/home/alex/projects/u/comp20003"
