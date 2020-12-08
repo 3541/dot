@@ -91,32 +91,21 @@
 (use-package yasnippet
   :ensure t
   :hook
-  (rust-mode . yas-minor-mode))
+  (rust-mode . yas-minor-mode)
+  :config
+  (yas-global-mode 1))
 
 (use-package rust-mode
   :ensure t
   :config
   (setq rust-format-on-save t))
 
-(use-package solarized-theme
-  :ensure t
-  :config
-  (setq solarized-use-variable-pitch nil
-	solarized-scale-org-headlines nil)
-  (let ((line (face-attribute 'mode-line :underline)))
-    (set-face-attribute 'mode-line          nil :overline   line)
-    (set-face-attribute 'mode-line-inactive nil :overline   line)
-    (set-face-attribute 'mode-line-inactive nil :underline  line)
-    (set-face-attribute 'mode-line          nil :box        nil)
-    (set-face-attribute 'mode-line-inactive nil :box        nil)
-    (set-face-attribute 'mode-line-inactive nil :background "#f9f2d9"))
-  (load-theme 'solarized-dark t))
-
-(use-package moody
-  :ensure t
-  :config
-  (setq x-underline-at-descent-line t)
-  (moody-replace-mode-line-buffer-identification))
+;; (use-package moody
+;;    :ensure t
+;;    :config
+;; ;;   (setq x-underline-at-descent-line t)
+;;    (moody-replace-mode-line-buffer-identification)
+;;    (moody-replace-vc-mode))
 
 (use-package org
   :ensure t
@@ -390,8 +379,6 @@
     (if (window-dedicated-p (selected-window))
         nil t))))
 
-(remove-hook 'before-save-hook 'delete-trailing-whitespace)
-
 (setq gdb-many-windows t)
 
 (setq tab-width 4)
@@ -406,7 +393,26 @@
 (c-add-style "my-cc" cc-style)
 (add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
 
-;;(add-to-list 'before-make-frame-hook #'(lambda () (load-file "~/.emacs.d/init.el")))
-
+(add-to-list 'custom-theme-load-path "/home/alex/.emacs.d/emacs-color-theme-solarized")
+(load-theme 'solarized t)
+(setq frame-background-mode 'light)
+(mapc 'frame-set-background-mode (frame-list))
+(enable-theme 'solarized)
+;; (let ((line (face-attribute 'mode-line :underline)))
+;;   (set-face-attribute 'mode-line          nil :overline   line)
+;;   (set-face-attribute 'mode-line-inactive nil :overline   line)
+;;   (set-face-attribute 'mode-line-inactive nil :underline  line)
+;;   (set-face-attribute 'mode-line          nil :box        nil)
+;;   (set-face-attribute 'mode-line-inactive nil :box        nil)
+;;   (set-face-attribute 'mode-line-inactive nil :background "#f9f2d9"))
 
 (set-frame-font "Iosevka Term-14" nil t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(global-display-line-numbers-mode t)
+ '(helm-completion-style 'emacs)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
