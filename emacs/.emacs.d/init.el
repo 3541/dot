@@ -397,7 +397,7 @@
 
 (add-to-list 'custom-theme-load-path "/home/alex/.emacs.d/emacs-color-theme-solarized")
 (load-theme 'solarized t)
-(setq frame-background-mode 'light)
+(setq frame-background-mode 'dark)
 (mapc 'frame-set-background-mode (frame-list))
 (enable-theme 'solarized)
 ;; (let ((line (face-attribute 'mode-line :underline)))

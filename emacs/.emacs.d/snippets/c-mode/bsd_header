@@ -6,7 +6,7 @@
 /*
  * ${1:NAME} -- ${2:Description}
  *
- * Copyright (c) `(format-time-string "%Y")`, ${3:Alex O'Brien}
+ * Copyright (c) `(format-time-string "%Y")`, ${3:Alex O'Brien} ${4:<3541ax@gmail.com>}
  *
  * This file is licensed under the BSD 3-clause license. See the LICENSE file in
  * the project root for details.
