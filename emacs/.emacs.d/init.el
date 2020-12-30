@@ -130,6 +130,7 @@
   (setq org-pretty-entities t)
   (setq org-latex-packages-alist '(("margin=2.5cm" "geometry" nil)))
   (setq org-duration-format '(hh:mm))
+  (setq org-use-sub-superscripts "{}")
   (with-eval-after-load 'org (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
