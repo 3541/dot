@@ -16,6 +16,8 @@
   (setq auto-package-update-delete-old-versions t)
   (auto-package-update-at-time "12:00"))
 
+(use-package undo-tree
+  :ensure t)
 
 (use-package evil
   :ensure t
@@ -334,7 +336,6 @@
 (use-package haskell-mode
   :ensure t)
 
-
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
@@ -372,6 +373,8 @@
 
 (setq-default indent-tabs-mode nil)
 
+(setq-default display-line-numbers 'relative)
+(setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode)
 
 (global-set-key
@@ -409,14 +412,14 @@
 ;;   (set-face-attribute 'mode-line-inactive nil :box        nil)
 ;;   (set-face-attribute 'mode-line-inactive nil :background "#f9f2d9"))
 
-(set-frame-font "Iosevka Term-14" nil t)
+(set-frame-font "Iosevka Term-17" nil t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(display-line-numbers 'relative)
  '(evil-undo-system 'undo-tree)
- '(global-display-line-numbers-mode t)
  '(helm-completion-style 'emacs)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
