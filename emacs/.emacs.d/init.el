@@ -102,6 +102,7 @@
 (use-package rust-mode
   :ensure t
   :config
+  (setq rust-rustfmt-bin "/home/alex/.cargo/bin/rustfmt")
   (setq rust-format-on-save t))
 
 ;; (use-package moody
@@ -133,6 +134,7 @@
   (setq org-latex-packages-alist '(("margin=2.5cm" "geometry" nil)))
   (setq org-duration-format '(hh:mm))
   (setq org-use-sub-superscripts "{}")
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.5))
   (with-eval-after-load 'org (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
@@ -428,4 +430,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Iosevka Term" :foundry "CYEL" :slant normal :weight normal :height 141 :width normal)))))
+ )
