@@ -104,6 +104,7 @@
 (use-package rust-mode
   :ensure t
   :config
+  (setq rust-rustfmt-bin "/home/alex/.cargo/bin/rustfmt")
   (setq rust-format-on-save t))
 
 (use-package org
@@ -128,6 +129,7 @@
   (setq org-latex-packages-alist '(("margin=2.5cm" "geometry" nil)))
   (setq org-duration-format '(hh:mm))
   (setq org-use-sub-superscripts "{}")
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.5))
   (with-eval-after-load 'org (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
