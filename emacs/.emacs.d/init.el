@@ -33,11 +33,12 @@
   (setq evil-undo-system 'undo-tree)
   (global-undo-tree-mode))
 
-;(use-package evil-collection
-;  :ensure t
-;  :after evil
-;  :config
-;  (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init
+   '(cmake-mode company dired eglot flymake helm magit)))
 
 (use-package helm
   :ensure t
@@ -69,6 +70,7 @@
   (setq projectile-completion-system 'helm)
   (setq projectile-switch-project-action 'projectile-dired)
   (setq projectile-require-project-root nil)
+  (setq projectile-enable-caching t)
   (projectile-mode))
 
 (use-package helm-projectile
@@ -103,13 +105,6 @@
   :ensure t
   :config
   (setq rust-format-on-save t))
-
-;; (use-package moody
-;;    :ensure t
-;;    :config
-;; ;;   (setq x-underline-at-descent-line t)
-;;    (moody-replace-mode-line-buffer-identification)
-;;    (moody-replace-vc-mode))
 
 (use-package org
   :ensure t
@@ -193,7 +188,6 @@
 
 (use-package company-org-roam
   :ensure t
-;  :after org-roam company org
   :config
   (push 'company-org-roam company-backends))
 
@@ -219,17 +213,6 @@
   :config
   (setq-default org-download-image-dir "~/org/roam/img")
   (setq org-download-screenshot-method "scrot -s %s"))
-
-(use-package deft
-  :ensure t
-  :after org
-  :bind
-  ("C-c r d" . deft)
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-default-extension "org")
-  (deft-directory "~/org/roam"))
 
 (use-package pdf-tools
   :ensure t
@@ -273,8 +256,6 @@
   ("C-x g" . magit-status)
 
   :config
-  ;; (use-package evil-magit
-  ;;   :ensure t)
   (use-package with-editor
     :ensure t)
   (add-hook 'with-editor-mode-hook 'evil-insert-state))
@@ -339,9 +320,6 @@
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
-;;(sensible-defaults/use-all-keybindings)
-;;(sensible-defaults/bind-home-and-end-keys)
-;;(sensible-defaults/backup-to-temp-directory)
 (setq backup-by-copying t
       create-lockfiles nil
       backup-directory-alist '(("." . "~/.cache/emacs-backups"))
@@ -373,8 +351,8 @@
 
 (setq-default indent-tabs-mode nil)
 
-(setq-default display-line-numbers 'relative)
-(setq display-line-numbers-type 'relative)
+(setq-default display-line-numbers 'visual)
+(setq display-line-numbers-type 'visual)
 (global-display-line-numbers-mode)
 
 (global-set-key
@@ -404,15 +382,10 @@
 (setq frame-background-mode 'dark)
 (mapc 'frame-set-background-mode (frame-list))
 (enable-theme 'solarized)
-;; (let ((line (face-attribute 'mode-line :underline)))
-;;   (set-face-attribute 'mode-line          nil :overline   line)
-;;   (set-face-attribute 'mode-line-inactive nil :overline   line)
-;;   (set-face-attribute 'mode-line-inactive nil :underline  line)
-;;   (set-face-attribute 'mode-line          nil :box        nil)
-;;   (set-face-attribute 'mode-line-inactive nil :box        nil)
-;;   (set-face-attribute 'mode-line-inactive nil :background "#f9f2d9"))
 
-(set-frame-font "Iosevka Term-17" nil t)
+(set-frame-font "Iosevka Term-14" nil t)
+(add-to-list 'default-frame-alist '(font . "Iosevka Term-14"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -423,9 +396,3 @@
  '(helm-completion-style 'emacs)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Iosevka Term" :foundry "CYEL" :slant normal :weight normal :height 141 :width normal)))))
