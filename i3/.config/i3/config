@@ -14,7 +14,7 @@ set $term sakura
     # start a terminal
     bindsym $mod+Return exec $term
 
-    bindsym $mod+semicolon exec ec
+    bindsym $mod+semicolon exec "emacsclient -c --socket-name=/tmp/emacs1000/server"
 
     # kill focused window
     bindsym $mod+Shift+q kill
@@ -222,3 +222,4 @@ exec_always feh --bg-fill /home/alex/pictures/wallpaper/current.*
 #exec_always xrandr --output DVI-D-0 --dpi 92
 #exec_always xrandr --output DVI-D-0 --left-of DP-2
 exec redshift-gtk
+exec syncthing
