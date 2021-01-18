@@ -99,7 +99,7 @@
   :hook
   (rust-mode . yas-minor-mode)
   :config
-  (yas-global-mode 1))
+  (yas-global-mode t))
 
 (use-package rust-mode
   :ensure t
@@ -317,6 +317,14 @@
   :ensure t)
 
 (use-package haskell-mode
+  :ensure t)
+
+(use-package ess
+  :ensure t
+  :init (require 'ess-site))
+
+(use-package poly-R
+  :after ess
   :ensure t)
 
 (load-file "~/.emacs.d/sensible-defaults.el")
