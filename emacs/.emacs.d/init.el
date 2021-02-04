@@ -188,11 +188,6 @@
   :ensure org-roam
   :after org-roam)
 
-(use-package company-org-roam
-  :ensure t
-  :config
-  (push 'company-org-roam company-backends))
-
 (use-package org-pdftools
   :ensure t
   :after org
