@@ -375,6 +375,7 @@
 (setq c-basic-offset 4)
 (setq c-default-style "linux")
 (setq sgml-basic-offset 4)
+(setq-default fill-column 100)
 
 (defconst cc-style
   '("cc-mode"
