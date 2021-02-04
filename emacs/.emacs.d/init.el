@@ -332,6 +332,7 @@
 
 (tool-bar-mode -1)
 (set-window-scroll-bars (minibuffer-window) nil nil)
+(set-scroll-bar-mode nil)
 (toggle-scroll-bar -1)
 
 (global-prettify-symbols-mode t)
