@@ -218,6 +218,9 @@
   :config
   (evil-set-initial-state 'pdf-view-mode 'normal))
 
+(use-package org-noter
+  :ensure t)
+
 (use-package tex-site
   :ensure auctex
   :after pdf-tools
