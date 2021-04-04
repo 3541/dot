@@ -79,20 +79,31 @@
   :config
   (helm-projectile-on))
 
+(defconst jdtls-home "/opt/jdtls/plugins/org.eclipse.equinox.launcher_1.6.100.v20201223-0822.jar")
+(defun jdtls-contact (interactive)
+  (let ((cp (getenv "CLASSPATH")))
+    (setenv "CLASSPATH" (concat cp ":" jdtls-home))
+    (unwind-protect
+        (eglot--eclipse-jdt-contact nil)
+      (setenv "CLASSPATH" cp))))
+
 (use-package eglot
   :ensure t
   :demand t
   :bind
   (("C-c e r" . eglot-rename))
+  (("C-c e a" . eglot-code-actions))
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
   (add-to-list
    'eglot-server-programs
    '(rust-mode . ("/home/alex/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer")))
-  (add-hook 'rust-mode-hook 'eglot-ensure)
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
-  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions))
+  (add-hook 'java-mode-hook 'eglot-ensure)
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+  (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+  (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact))
 
 (use-package yasnippet
   :ensure t
