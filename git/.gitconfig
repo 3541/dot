@@ -1,7 +1,9 @@
 [user]
 	email = 3541ax@gmail.com
-	name = 3541
+	name = Alex O'Brien
 	signingkey = 0x1EECFF9EE39ED7AA
+[submodule]
+	fetchJobs = 8
 [pull]
 	rebase = false
 	ff = only
