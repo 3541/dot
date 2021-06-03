@@ -390,6 +390,7 @@
 (setq c-default-style "linux")
 (setq sgml-basic-offset 4)
 (setq-default fill-column 100)
+(add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
 
 (defconst cc-style
   '("cc-mode"
