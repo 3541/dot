@@ -87,6 +87,15 @@
         (eglot--eclipse-jdt-contact nil)
       (setenv "CLASSPATH" cp))))
 
+(defun find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+
+(add-hook 'project-find-functions #'find-go-module)
+
 (use-package eglot
   :ensure t
   :demand t
@@ -102,8 +111,24 @@
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'java-mode-hook 'eglot-ensure)
   (add-hook 'rust-mode-hook 'eglot-ensure)
+  (add-hook 'go-mode-hook 'eglot-ensure)
   (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
   (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact))
+
+(use-package tree-sitter-langs
+  :ensure t)
+(use-package tree-sitter
+  :ensure t
+  :after tree-sitter-langs
+  :config
+  (add-hook 'c-mode-hook 'tree-sitter-hl-mode)
+  (add-hook 'c++-mode-hook 'tree-sitter-hl-mode)
+  (add-hook 'java-mode-hook 'tree-sitter-hl-mode)
+  (add-hook 'rust-mode-hook 'tree-sitter-hl-mode)
+  (add-hook 'go-mode-hook 'tree-sitter-hl-mode))
+
+(use-package go-mode
+  :ensure t)
 
 (use-package yasnippet
   :ensure t
@@ -334,6 +359,9 @@
 
 (use-package poly-R
   :after ess
+  :ensure t)
+
+(use-package yaml-mode
   :ensure t)
 
 (load-file "~/.emacs.d/sensible-defaults.el")
