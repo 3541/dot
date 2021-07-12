@@ -107,11 +107,13 @@
   (add-to-list
    'eglot-server-programs
    '(rust-mode . ("/home/alex/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer")))
+  (add-to-list 'eglot-server-programs '(swift-mode . ("sourcekit-lsp")))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'java-mode-hook 'eglot-ensure)
   (add-hook 'rust-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
+  (add-hook 'swift-mode-hook 'eglot-ensure)
   (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
   (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact))
 
@@ -125,10 +127,8 @@
   (add-hook 'c++-mode-hook 'tree-sitter-hl-mode)
   (add-hook 'java-mode-hook 'tree-sitter-hl-mode)
   (add-hook 'rust-mode-hook 'tree-sitter-hl-mode)
-  (add-hook 'go-mode-hook 'tree-sitter-hl-mode))
-
-(use-package go-mode
-  :ensure t)
+  (add-hook 'go-mode-hook 'tree-sitter-hl-mode)
+  (add-hook 'swift-mode 'tree-sitter-hl-mode))
 
 (use-package yasnippet
   :ensure t
@@ -137,11 +137,17 @@
   :config
   (yas-global-mode t))
 
+(use-package go-mode
+  :ensure t)
+
 (use-package rust-mode
   :ensure t
   :config
   (setq rust-rustfmt-bin "/home/alex/.cargo/bin/rustfmt")
   (setq rust-format-on-save t))
+
+(use-package swift-mode
+  :ensure t)
 
 (use-package org
   :ensure t
