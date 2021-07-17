@@ -66,6 +66,8 @@ mode "resize" {
     bindsym k resize shrink height 10 px or 10 ppt
     bindsym l resize grow width 10 px or 10 ppt
 
+    bindsym Shift+s resize set width 2880 px height 2160 px
+
     bindcode 36 mode "default"
     bindcode 9 mode "default"
 }
@@ -160,8 +162,9 @@ set_from_resource $blue       i3wm.color4                 #268bd2
 # Status Bar:
 #
 bar {
-	status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	font pango:Iosevka Term Light 14 
+#	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+	status_command i3status
+	font pango:Iosevka Term Light 18 
         position top
         colors {
             statusline          $foreground
@@ -182,9 +185,9 @@ client.urgent           $background $urgent $bright     $background
 
 
 # Gaps
-gaps inner 20
-gaps outer 7
-smart_gaps on
+#gaps inner 20
+#gaps outer 7
+#smart_gaps on
 
 # lock
 bindsym $mod+Shift+x exec i3lock -c 000000
@@ -217,7 +220,7 @@ bindsym XF86AudioNext		exec cmus-remote -n
 #exec --no-startup-id swaymsg "workspace $ws0; exec urxvt -e pianobar"
 
 #exec_always xrdb /home/alex/.Xresources
-new_window pixel 0
+#new_window pixel 0
 exec_always feh --bg-fill /home/alex/pictures/wallpaper/current.*
 #exec_always xrandr --output DVI-D-0 --dpi 92
 #exec_always xrandr --output DVI-D-0 --left-of DP-2

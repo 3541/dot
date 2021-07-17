@@ -107,6 +107,9 @@
   (add-to-list
    'eglot-server-programs
    '(rust-mode . ("/home/alex/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer")))
+  (add-to-list
+   'eglot-server-programs
+   '(python-mode . ("/home/alex/.local/bin/pyls")))
   (add-to-list 'eglot-server-programs '(swift-mode . ("sourcekit-lsp")))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
@@ -114,6 +117,7 @@
   (add-hook 'rust-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'swift-mode-hook 'eglot-ensure)
+  (add-hook 'python-mode-hook 'eglot-ensure)
   (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
   (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact))
 
@@ -128,7 +132,8 @@
   (add-hook 'java-mode-hook 'tree-sitter-hl-mode)
   (add-hook 'rust-mode-hook 'tree-sitter-hl-mode)
   (add-hook 'go-mode-hook 'tree-sitter-hl-mode)
-  (add-hook 'swift-mode-hook 'tree-sitter-hl-mode))
+  (add-hook 'swift-mode-hook 'tree-sitter-hl-mode)
+  (add-hook 'python-mode-hook 'tree-sitter-hl-mode))
 
 (use-package yasnippet
   :ensure t
