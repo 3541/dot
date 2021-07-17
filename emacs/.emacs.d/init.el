@@ -148,8 +148,7 @@
 (use-package rust-mode
   :ensure t
   :config
-  (setq rust-rustfmt-bin "/home/alex/.cargo/bin/rustfmt")
-  (setq rust-format-on-save t))
+  (setq rust-rustfmt-bin "/home/alex/.cargo/bin/rustfmt"))
 
 (use-package swift-mode
   :ensure t)
@@ -455,5 +454,14 @@
  '(display-line-numbers 'relative)
  '(evil-undo-system 'undo-tree)
  '(helm-completion-style 'emacs)
+ '(helm-minibuffer-history-key "M-p")
+ '(package-selected-packages
+   '(swift-mode tree-sitter-langs go-mode yaml-mode company-org-roam yasnippet which-key use-package undo-tree solarized-theme rust-mode poly-R paredit org-roam org-pdftools org-drill org-download org-bullets moody meson-mode magit lsp-ui htmlize helm-projectile helm-lsp haskell-mode evil-org evil-collection ess eglot dtrt-indent dired-hide-dotfiles diff-hl deft deadgrep company cmake-mode buffer-move auto-package-update auctex))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

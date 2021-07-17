@@ -1,4 +1,5 @@
 source ~/.bashrc.dist
+source ~/.profile
 
 export PS1='\w $ '
 

@@ -13,6 +13,8 @@ set $term sakura
 #
     # start a terminal
     bindsym $mod+Return exec $term
+#    bindsym $mod+Shift+Return exec $term
+#    bindsym $mod+Return exec emacsclient -c --socket-name=/tmp/emacs1000/server -e "(eshell 'N)"
 
     bindsym $mod+semicolon exec "emacsclient -c --socket-name=/tmp/emacs1000/server"
 
@@ -29,7 +31,7 @@ set $term sakura
     # Change normal to inverse to use left mouse button for resizing and right
     # mouse button for dragging.
     floating_modifier $mod
-    
+
     # restart sway inplace (preserves your layout/session, can be used to upgrade sway)
     bindsym $mod+Shift+r restart
 
@@ -162,9 +164,8 @@ set_from_resource $blue       i3wm.color4                 #268bd2
 # Status Bar:
 #
 bar {
-#	status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	status_command i3status
-	font pango:Iosevka Term Light 18 
+	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+	font pango:Iosevka Term Light 14
         position top
         colors {
             statusline          $foreground
@@ -193,6 +194,7 @@ client.urgent           $background $urgent $bright     $background
 bindsym $mod+Shift+x exec i3lock -c 000000
 bindsym $mod+Shift+c exec "i3lock -c 000000; loginctl suspend"
 bindsym $mod+Shift+z exec "i3lock -c 000000; loginctl hibernate"
+bindsym $mod+Shift+o exec xrandr --output DVI-D-0 --off
 
 #bindsym XF86AudioRaiseVolume   exec pactl set-sink-volume 1 +1%
 #bindsym XF86AudioLowerVolume   exec pactl set-sink-volume 1 -1%
@@ -223,6 +225,7 @@ bindsym XF86AudioNext		exec cmus-remote -n
 #new_window pixel 0
 exec_always feh --bg-fill /home/alex/pictures/wallpaper/current.*
 #exec_always xrandr --output DVI-D-0 --dpi 92
-#exec_always xrandr --output DVI-D-0 --left-of DP-2
-exec redshift-gtk
+#exec_always xrandr --output DVI-D-0 --mode 1680x1050
+exec_always xrandr --output DP-0 --mode 3840x2160 --right-of DVI-D-0
+#exec redshift-gtk
 exec syncthing
