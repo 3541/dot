@@ -158,6 +158,20 @@
 (use-package swift-mode
   :ensure t)
 
+(use-package tide
+  :ensure t)
+
+(use-package web-mode
+  :ensure t
+  :hook (web-mode . (lambda ()
+                      (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                        (tide-setup))))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode)))
+
+(use-package typescript-mode
+  :ensure t)
+
 (use-package org
   :ensure t
   :config
