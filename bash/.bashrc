@@ -10,7 +10,7 @@ if [[ -n "$SSH_CLIENT" ]]; then
 	export PS1='[\u@\h] \w $ '
 fi
 
-export CDPATH="$CDPATH:.:/home/alex:/home/alex/projects:/home/alex/src"
+export CDPATH="$CDPATH:.:/home/alex:/home/alex/projects:/home/alex/src:/home/alex/projects/u/comp30022"
 source "$HOME/.cargo/env"
 
 if [ ! -S $HOME/.ssh/ssh_auth_sock ]; then
