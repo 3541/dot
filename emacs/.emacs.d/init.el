@@ -58,6 +58,10 @@
   (setq company-minimum-prefix-length 1)
   (global-company-mode))
 
+(defun my-projectile-project-find-function (dir)
+  (let ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+
 (use-package projectile
   :ensure t
   :after evil
@@ -71,6 +75,7 @@
   (setq projectile-switch-project-action 'projectile-dired)
   (setq projectile-require-project-root nil)
   (setq projectile-enable-caching t)
+  (add-to-list 'project-find-functions 'my-projectile-project-find-function)
   (projectile-mode))
 
 (use-package helm-projectile
