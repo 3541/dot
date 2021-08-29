@@ -170,7 +170,11 @@
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode)))
 
 (use-package typescript-mode
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'typescript-mode-hook 'tide-setup)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode)))
 
 (use-package org
   :ensure t
