@@ -394,6 +394,9 @@
 (use-package yaml-mode
   :ensure t)
 
+(use-package terraform-mode
+  :ensure t)
+
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
