@@ -436,6 +436,8 @@
 (setq display-line-numbers-type 'visual)
 (global-display-line-numbers-mode)
 
+(add-to-list 'auto-mode-alist '("\\.pro\\'" . prolog-mode))
+
 (global-set-key
  (kbd "C-c d")
  (lambda () (interactive)
