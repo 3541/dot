@@ -123,6 +123,7 @@
   (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'swift-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
+  (add-hook 'haskell-mode-hook 'eglot-ensure)
   (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
   (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact))
 
@@ -172,7 +173,9 @@
 (use-package typescript-mode
   :ensure t
   :config
-  (add-hook 'typescript-mode-hook 'tide-setup)
+  (add-hook 'typescript-mode-hook (lambda ()
+                                    (tide-setup)
+                                    (flycheck-mode)))
   (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
   (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode)))
 
@@ -233,6 +236,7 @@
 	    (lambda ()
 	      (org-bullets-mode 1))))
 
+(setq org-roam-v2-ack t)
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)
@@ -245,10 +249,9 @@
 	     ("C-c r b" . org-roam-switch-to-buffer)
 	     ("C-c r j" . org-roam-jump-to-index)
          ("C-c r g" . org-roam-graph)
-         ("C-c r i" . org-roam-insert))
+         ("C-c r i" . org-roam-node-insert))
   :config
-  (org-roam-setup)
-  (setq org-roam-v2-ack t))
+  (org-roam-setup))
 
 (use-package org-roam-protocol
   :ensure org-roam
@@ -396,6 +399,11 @@
 
 (use-package terraform-mode
   :ensure t)
+
+(use-package sql-indent
+  :ensure t
+  :config
+  (add-hook 'sql-mode-hook 'sqlind-minor-mode))
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
