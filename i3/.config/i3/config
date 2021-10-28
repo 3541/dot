@@ -186,9 +186,9 @@ client.urgent           $background $urgent $bright     $background
 
 
 # Gaps
-#gaps inner 20
-#gaps outer 7
-#smart_gaps on
+gaps inner 20
+gaps outer 7
+smart_gaps on
 
 # lock
 bindsym $mod+Shift+x exec i3lock -c 000000
@@ -209,9 +209,9 @@ bindsym XF86MonBrightnessDown        exec brightnessctl s 5%-
 bindsym Shift+XF86MonBrightnessUp    exec brightnessctl s 1%+
 bindsym Shift+XF86MonBrightnessDown  exec brightnessctl s 1%-
 
-bindsym XF86AudioPlay		exec cmus-remote -u
-bindsym XF86AudioPrev		exec cmus-remote -r
-bindsym XF86AudioNext		exec cmus-remote -n
+bindsym XF86AudioPlay		exec playerctl play-pause
+bindsym XF86AudioPrev		exec playerctl previous
+bindsym XF86AudioNext		exec playerctl next
 
 
 # Application launches
@@ -222,10 +222,11 @@ bindsym XF86AudioNext		exec cmus-remote -n
 #exec --no-startup-id swaymsg "workspace $ws0; exec urxvt -e pianobar"
 
 #exec_always xrdb /home/alex/.Xresources
-#new_window pixel 0
+new_window pixel 0
 exec_always feh --bg-fill /home/alex/pictures/wallpaper/current.*
 #exec_always xrandr --output DVI-D-0 --dpi 92
 #exec_always xrandr --output DVI-D-0 --mode 1680x1050
 exec_always xrandr --output DP-0 --mode 3840x2160 --right-of DVI-D-0
 #exec redshift-gtk
 exec syncthing
+exec opensnitch-ui
