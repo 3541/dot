@@ -36,6 +36,7 @@
     lm_sensors
     gnome.gnome-system-monitor
     linuxPackages.cpupower
+    acpi
 
     nixfmt
 
