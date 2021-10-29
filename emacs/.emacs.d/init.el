@@ -405,6 +405,10 @@
   :config
   (add-hook 'sql-mode-hook 'sqlind-minor-mode))
 
+(use-package nix-mode
+  :ensure t
+  :mode "\\.nix\\'")
+
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)
