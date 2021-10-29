@@ -7,6 +7,7 @@
   programs.emacs = {
     enable = true;
     extraPackages = (epkgs: (with epkgs; [ emacsql-sqlite ]));
+    package = pkgs.emacs.override { /*nativeComp = true;*/ };
   };
 
   # TODO: Port this to Nix.

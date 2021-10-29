@@ -25,8 +25,9 @@
     discord
     thunderbird
 
+    mathematica
+
     tree
-    jq
 
     pavucontrol
     brightnessctl
@@ -34,10 +35,13 @@
     sysstat
     lm_sensors
     gnome.gnome-system-monitor
+    linuxPackages.cpupower
 
     nixfmt
 
     (import ./i3blocks-contrib.nix)
+
+    (import ./me3t.nix { pkgs = pkgs; })
   ];
 
   home.file.sakuraConfig = {
@@ -82,6 +86,7 @@
       export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
       export MY_GPG_KEY=0x1EECFF9EE39ED7AA
       alias jp='jq . '
+      alias cpu-poke='sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance'
     '';
   };
 
@@ -116,9 +121,24 @@
       init = { defaultBranch = "trunk"; };
     };
   };
+  programs.gh.enable = true;
 
   services.syncthing = {
     enable = true;
     tray.enable = false;
+  };
+
+  programs.jq.enable = true;
+  programs.obs-studio.enable = true;
+  programs.texlive.enable = true;
+
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox (pkgs.firefox-esr-91-unwrapped.override {
+      alsaSupport = false;
+      waylandSupport = false;
+      privacySupport = true;
+      drmSupport = true;
+    }) { };
   };
 }
