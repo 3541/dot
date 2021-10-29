@@ -476,8 +476,8 @@
 (mapc 'frame-set-background-mode (frame-list))
 (enable-theme 'solarized)
 
-(set-frame-font "Iosevka Term-14" nil t)
-(add-to-list 'default-frame-alist '(font . "Iosevka Term-14"))
+(set-frame-font "Iosevka-14" nil t)
+(add-to-list 'default-frame-alist '(font . "Iosevka-14"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
