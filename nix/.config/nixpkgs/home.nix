@@ -32,6 +32,7 @@
 
     man-pages
     man-pages-posix
+    python3
 
     pavucontrol
     brightnessctl
