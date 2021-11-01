@@ -28,6 +28,10 @@
     mathematica
 
     tree
+    scrot
+
+    man-pages
+    man-pages-posix
 
     pavucontrol
     brightnessctl
