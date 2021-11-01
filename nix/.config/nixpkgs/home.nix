@@ -49,6 +49,8 @@
     (import ./me3t.nix { pkgs = pkgs; })
   ];
 
+  xdg.mimeApps.enable = true;
+
   home.file.sakuraConfig = {
     source = "/home/alex/dot/sakura/.config/sakura/sakura.conf";
     target = ".config/sakura/sakura.conf";
@@ -80,7 +82,7 @@
   programs.bash = {
     enable = true;
     enableVteIntegration = true;
-    bashrcExtra = ''
+    initExtra = ''
       shopt -s globstar
       set -o vi
       export CDPATH="$CDPATH:.:/home/alex:/home/alex/src"
@@ -92,7 +94,32 @@
       export MY_GPG_KEY=0x1EECFF9EE39ED7AA
       alias jp='jq . '
       alias cpu-poke='sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance'
+      alias nix-shell='nix-shell --pure'
     '';
+  };
+
+  programs.powerline-go = {
+    enable = true;
+    modules = [
+      "user"
+      "host"
+      "ssh"
+      "cwd"
+      "git"
+      "venv"
+      "hg"
+      "jobs"
+      "root"
+      "docker"
+      "nix-shell"
+      "node"
+    ];
+    settings = {
+      hostname-only-if-ssh = true;
+      cwd-mode = "plain";
+      max-width = 25;
+      theme = "solarized-dark16";
+    };
   };
 
   programs.ssh = { enable = true; };
@@ -132,6 +159,8 @@
     enable = true;
     tray.enable = false;
   };
+
+  #  services.notify-osd.enable = true;
 
   programs.jq.enable = true;
   programs.obs-studio.enable = true;

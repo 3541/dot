@@ -185,6 +185,8 @@
         "${mod}+Shift+z" = ''exec "i3lock -c 000000; systemctl hibernate"'';
         "${mod}+Shift+o" = "exec xrandr --output DVI-D-0 --off";
 
+        "${mod}+Shift+s" = ''exec "scrot -s 'pictures/screenshots/%Y-%m-%d_%H_%M_%S.png'"'';
+
         "XF86AudioRaiseVolume" = "exec pactl set-sink-volume 1 1%+";
         "XF86AudioLowerVolume" = "exec pactl set-sink-volume 1 1%-";
         "XF86AudioMute" = "exec pactl set-sink-mute 1 toggle";
