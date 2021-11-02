@@ -409,6 +409,11 @@
   :ensure t
   :mode "\\.nix\\'")
 
+(use-package direnv
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'direnv-mode))
+
 (load-file "~/.emacs.d/sensible-defaults.el")
 
 (sensible-defaults/use-all-settings)

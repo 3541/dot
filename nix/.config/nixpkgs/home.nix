@@ -24,11 +24,12 @@
     signal-desktop
     discord
     thunderbird
-
     mathematica
 
     tree
     scrot
+    ripgrep
+    evince
 
     man-pages
     man-pages-posix
@@ -95,9 +96,9 @@
       export MY_GPG_KEY=0x1EECFF9EE39ED7AA
       alias jp='jq . '
       alias cpu-poke='sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance'
-      alias nix-shell='nix-shell --pure'
     '';
   };
+  programs.direnv.enable = true;
 
   programs.powerline-go = {
     enable = true;
