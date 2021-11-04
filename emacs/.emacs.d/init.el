@@ -108,10 +108,8 @@
   (("C-c e r" . eglot-rename))
   (("C-c e a" . eglot-code-actions))
   :config
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-  (add-to-list
-   'eglot-server-programs
-   '(rust-mode . ("/home/alex/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer")))
   (add-to-list
    'eglot-server-programs
    '(python-mode . ("/home/alex/.local/bin/pyls")))
