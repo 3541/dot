@@ -99,6 +99,7 @@
     '';
   };
   programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
 
   programs.powerline-go = {
     enable = true;
@@ -166,7 +167,6 @@
 
   programs.jq.enable = true;
   programs.obs-studio.enable = true;
-  programs.texlive.enable = true;
 
   programs.firefox = {
     enable = true;
