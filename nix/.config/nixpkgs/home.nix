@@ -47,8 +47,6 @@
     nixfmt
 
     (import ./i3blocks-contrib.nix)
-
-    (import ./me3t.nix { pkgs = pkgs; })
   ];
 
   xdg.mimeApps.enable = true;
@@ -72,7 +70,6 @@
 
   gtk = {
     enable = true;
-
     theme = {
       package = pkgs.solarc-gtk-theme;
       name = "SolArc-Dark";
@@ -125,7 +122,7 @@
     };
   };
 
-  programs.ssh = { enable = true; };
+  programs.ssh.enable = true;
 
   programs.git = {
     enable = true;
@@ -147,13 +144,13 @@
     };
 
     extraConfig = {
-      submodule = { fetchJobs = 8; };
+      submodule.fetchJobs = 8;
       pull = {
         rebase = false;
         ff = "only";
       };
-      log = { showSignature = true; };
-      init = { defaultBranch = "trunk"; };
+      log.showSignature = true;
+      init.defaultBranch = "trunk";
     };
   };
   programs.gh.enable = true;
