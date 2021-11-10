@@ -469,6 +469,7 @@
 (setq sgml-basic-offset 4)
 (setq-default fill-column 100)
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+(add-hook 'prog-mode-hook 'electric-pair-mode)
 
 (defconst cc-style
   '("cc-mode"
