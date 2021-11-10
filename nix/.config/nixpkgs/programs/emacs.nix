@@ -1,4 +1,6 @@
 { config, pkgs, ... }: {
+  home.packages = [ pkgs.nixfmt ];
+
   services.emacs = {
     enable = true;
     client.enable = true;

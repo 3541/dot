@@ -1,8 +1,7 @@
-{ config, pkgs, ... }:
-
-{
+{ config, pkgs, ... }: {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  manual.manpages.enable = true;
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -41,25 +40,10 @@
     sysstat
     lm_sensors
     gnome.gnome-system-monitor
-    linuxPackages.cpupower
     acpi
-
-    nixfmt
-
-    (import ./i3blocks-contrib.nix)
   ];
 
   xdg.mimeApps.enable = true;
-
-  home.file.sakuraConfig = {
-    source = "/home/alex/dot/sakura/.config/sakura/sakura.conf";
-    target = ".config/sakura/sakura.conf";
-  };
-
-  home.file.gdbinit = {
-    text = "set disassembly-flavor intel";
-    target = ".gdbinit";
-  };
 
   xresources.extraConfig = builtins.readFile (pkgs.fetchFromGitHub {
     owner = "solarized";
@@ -76,84 +60,17 @@
     };
   };
 
-  imports = [ ./i3.nix ./emacs.nix ];
-
-  programs.bash = {
-    enable = true;
-    enableVteIntegration = true;
-    initExtra = ''
-      shopt -s globstar
-      set -o vi
-      export CDPATH="$CDPATH:.:/home/alex:/home/alex/src"
-      if [[ ! -S $HOME/.ssh/ssh_auth_sock ]]; then
-        eval $(ssh-agent)
-        ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
-      fi
-      export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
-      export MY_GPG_KEY=0x1EECFF9EE39ED7AA
-      alias jp='jq . '
-      alias cpu-poke='sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance'
-    '';
-  };
-  programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
-
-  programs.powerline-go = {
-    enable = true;
-    modules = [
-      "user"
-      "host"
-      "ssh"
-      "cwd"
-      "git"
-      "venv"
-      "hg"
-      "jobs"
-      "root"
-      "docker"
-      "nix-shell"
-      "node"
-    ];
-    settings = {
-      hostname-only-if-ssh = true;
-      cwd-mode = "plain";
-      max-width = 25;
-      theme = "solarized-dark16";
-    };
-  };
+  imports = [
+    ./programs/sakura.nix
+    ./programs/gdb.nix
+    ./programs/sh.nix
+    ./programs/git.nix
+    ./programs/emacs.nix
+    ./programs/firefox.nix
+    ./i3.nix
+  ];
 
   programs.ssh.enable = true;
-
-  programs.git = {
-    enable = true;
-    userName = "Alex O'Brien";
-    userEmail = "3541ax@gmail.com";
-
-    signing = {
-      key = "0x1EECFF9EE39ED7AA";
-      signByDefault = true;
-    };
-
-    delta = {
-      enable = true;
-      options = {
-        features = "side-by-side line-numbers";
-        syntax-theme = "Solarized (dark)";
-        whitespace-error-style = "22 reverse";
-      };
-    };
-
-    extraConfig = {
-      submodule.fetchJobs = 8;
-      pull = {
-        rebase = false;
-        ff = "only";
-      };
-      log.showSignature = true;
-      init.defaultBranch = "trunk";
-    };
-  };
-  programs.gh.enable = true;
 
   services.syncthing = {
     enable = true;
@@ -162,16 +79,5 @@
 
   #  services.notify-osd.enable = true;
 
-  programs.jq.enable = true;
   programs.obs-studio.enable = true;
-
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox (pkgs.firefox-esr-91-unwrapped.override {
-      alsaSupport = false;
-      waylandSupport = false;
-      privacySupport = true;
-      drmSupport = true;
-    }) { };
-  };
 }

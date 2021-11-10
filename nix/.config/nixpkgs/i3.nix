@@ -1,4 +1,6 @@
 { config, pkgs, ... }: {
+  home.packages = [ (import ./programs/i3blocks-contrib.nix) ];
+
   xsession.windowManager.i3 = let
     colors = {
       background = "#002b36";
@@ -66,7 +68,7 @@
       };
 
       bars = [{
-        statusCommand = "i3blocks";
+        statusCommand = "${pkgs.i3blocks}/bin/i3blocks";
         position = "top";
         fonts = {
           names = [ "Iosevka" ];
@@ -185,7 +187,8 @@
         "${mod}+Shift+z" = ''exec "i3lock -c 000000; systemctl hibernate"'';
         "${mod}+Shift+o" = "exec xrandr --output DVI-D-0 --off";
 
-        "${mod}+Shift+s" = ''exec "scrot -s 'pictures/screenshots/%Y-%m-%d_%H_%M_%S.png'"'';
+        "${mod}+Shift+s" =
+          ''exec "scrot -s 'pictures/screenshots/%Y-%m-%d_%H_%M_%S.png'"'';
 
         "XF86AudioRaiseVolume" = "exec pactl set-sink-volume 1 1%+";
         "XF86AudioLowerVolume" = "exec pactl set-sink-volume 1 1%-";
