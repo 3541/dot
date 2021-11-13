@@ -1,15 +1,19 @@
-{ config, pkgs, ... }: {
-  home.packages = [ pkgs.linuxPackages.cpupower ];
+{ lib, config, pkgs, ... }:
+let cfg = config.a3;
+in {
+  home.packages =
+    lib.mkIf (cfg.role == "workstation") [ pkgs.linuxPackages.cpupower ];
   programs.jq.enable = true;
 
-  home.sessionVariables = { EDITOR = "emacsclient -c"; };
+  home.sessionVariables =
+    lib.mkIf (cfg.role == "workstation") { EDITOR = "emacsclient -c"; };
 
   programs.bash = {
     enable = true;
-    enableVteIntegration = true;
+    enableVteIntegration = cfg.displayServer != "none";
     shellAliases = {
       jp = "jq . ";
-      cpu-poke =
+      cpu-poke = lib.mkIf (cfg.role == "workstation")
         "sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance";
     };
     initExtra = ''
@@ -25,7 +29,7 @@
     '';
   };
 
-  programs.direnv = {
+  programs.direnv = lib.mkIf (cfg.role == "workstation") {
     enable = true;
     nix-direnv.enable = true;
   };

@@ -1,15 +1,17 @@
-{ config, pkgs, ... }: {
+{ lib, config, pkgs, ... }:
+let cfg = config.a3;
+in {
   programs.git = {
     enable = true;
     userName = "Alex O'Brien";
     userEmail = "3541ax@gmail.com";
 
-    signing = {
+    signing = lib.mkIf (cfg.role == "workstation") {
       key = "0x1EECFF9EE39ED7AA";
       signByDefault = true;
     };
 
-    delta = {
+    delta = lib.mkIf (cfg.role == "workstation") {
       enable = true;
       options = {
         features = "side-by-side line-numbers";
@@ -29,5 +31,5 @@
     };
   };
 
-  programs.gh.enable = true;
+  programs.gh.enable = cfg.role == "workstation";
 }
