@@ -18,6 +18,7 @@ in {
       "swaylock -f -c 000000"
     else
       "i3lock -c 000000";
+    i3blocksContrib = import ./programs/i3blocks-contrib.nix;
     wmConfig = {
       enable = true;
 
@@ -120,8 +121,9 @@ in {
 
           "${mod}+Shift+q" = "kill";
           "${mod}+d" =
-            "exec ${pkgs.dmenu}/bin/dmenu_path | ${pkgs.dmenu}/bin/dmenu_run -fn iosevka-${toString cfg.fontSize}"
-            + (if (cfg.displayServer == "wayland") then
+            "exec ${pkgs.dmenu}/bin/dmenu_path | ${pkgs.dmenu}/bin/dmenu_run -fn iosevka-${
+              toString cfg.fontSize
+            }" + (if (cfg.displayServer == "wayland") then
               " | xargs swaymsg exec --"
             else
               "");
@@ -224,7 +226,6 @@ in {
     };
   in {
     home.packages = with pkgs; [
-      (import ./programs/i3blocks-contrib.nix)
       python3
       sysstat
       acpi
@@ -233,5 +234,113 @@ in {
     xsession.windowManager.i3 = lib.mkIf (cfg.displayServer == "xorg") wmConfig;
     wayland.windowManager.sway =
       lib.mkIf (cfg.displayServer == "wayland") wmConfig;
+
+    home.file.i3blocksConfig = {
+      text = ''
+        # Global properties
+        #
+        # The top properties below are applied to every block, but can be overridden.
+        # Each block command defaults to the script name to avoid boilerplate.
+        command=${i3blocksContrib}/libexec/i3blocks/$BLOCK_NAME
+        separator_block_width=15
+        markup=none
+
+        [mediaplayer]
+        command=echo $(${pkgs.playerctl}/bin/playerctl metadata album) - $(${pkgs.playerctl}/bin/playerctl metadata title)
+        interval=5
+
+        # Volume indicator
+        #
+        # The first parameter sets the step (and units to display)
+        # The second parameter overrides the mixer selection
+        # See the script for details.
+        [volume]
+        #label=VOL
+        label=♪
+        instance=Master
+        #instance=PCM
+        interval=once
+        signal=10
+
+        # Memory usage
+        #
+        # The type defaults to "mem" if the instance is not specified.
+        [memory]
+        label=MEM
+        separator=false
+        interval=30
+
+        [memory]
+        label=SWAP
+        instance=swap
+        interval=30
+
+        [disk]
+        label=ROOT
+        interval=30
+        instance=/
+
+        # Network interface monitoring
+        #
+        # If the instance is not specified, use the interface used for default route.
+        # The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+        [iface]
+        #instance=wlan0
+        color=#00FF00
+        interval=10
+        #separator=false
+
+
+        #[bandwidth]
+        #instance=eth0
+        #interval=5
+
+        # CPU usage
+        #
+        # The script may be called with -w and -c switches to specify thresholds,
+        # see the script for details.
+        [cpu_usage]
+        label=CPU
+        interval=10
+        #min_width=CPU: 100.00%
+        #separator=false
+
+        [load_average]
+        interval=10
+
+        [cpufreq]
+        command=bash -c "lscpu | grep 'CPU MHz' | tr -s ' ' | cut -d' ' -f3;"
+        interval=5
+
+        # Temperature
+        #
+        # Support multiple chips, though lm-sensors.
+        # The script may be called with -w and -c switches to specify thresholds,
+        # see the script for details.
+        [temperature-cpu]
+        command=${i3blocksContrib}/libexec/i3blocks/temperature --chip coretemp-isa-0000 -w 60 -c 80
+        label=CORE
+        interval=10
+
+        #[weather]
+        #command=curl -sS 'https://wttr.in/McKinnon?format=%c+%t+%h'
+        #interval=1800
+
+        # Date Time
+        #
+        [time]
+        command=date '+%Y-%m-%d %H:%M:%S'
+        interval=1
+
+        [time-taipei]
+        command=echo "T: $(TZ=":Asia/Taipei" date '+%T')"
+        interval=1
+
+        [time-seattle]
+        command=echo "S: $(TZ=":America/Vancouver" date '+%T')"
+        interval=1
+      '';
+      target = ".config/i3blocks/config";
+    };
   });
 }
