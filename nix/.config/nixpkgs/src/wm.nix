@@ -119,7 +119,7 @@ in {
 
         keybindings = {
           "${mod}+Return" = "exec ${term}";
-          "${mod}+semicolon" = "exec emacsclient -c";
+          "${mod}+semicolon" = "exec ${pkgs.emacs}/bin/emacsclient -c";
 
           "${mod}+Shift+q" = "kill";
           "${mod}+d" =
