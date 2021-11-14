@@ -81,6 +81,8 @@ in {
 
           man-pages
           man-pages-posix
+
+          virt-manager
         ] ++ lib.optionals (cfg.displayServer != "none") [
           evince
           pavucontrol

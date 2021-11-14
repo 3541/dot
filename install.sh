@@ -15,6 +15,16 @@ if command -v nix &> /dev/null; then
         sudo nix-channel --update
         nix-shell '<home-manager>' -A install
     fi
+
+    if [ -f /etc/NIXOS ]; then
+        if [ ! -f nixos/machines/current.nix ]; then
+            ln -s $(hostname).nix nixos/machines/current.nix
+        fi
+        sudo cp -r nixos/* /etc/nixos/
+        sudo chown -R root:root /etc/nixos
+        sudo chmod -R 600 /etc/nixos/configuration.nix /etc/nixos/machines /etc/nixos/src
+        sudo chmod 700 /etc/nixos/machines /etc/nixos/src
+    fi
 else
     for d in bash emacs i3 nvim sakura redshift git; do
         echo "$d"
