@@ -58,7 +58,16 @@ in {
     nixpkgs.config.allowUnfree = true;
     home = {
       packages = with pkgs;
-        [ tree ripgrep lm_sensors ]
+        [ tree ripgrep lm_sensors (writeShellScriptBin "up" ''
+          if command -v nixos-rebuild &> /dev/null; then
+             sudo nixos-rebuild --upgrade-all switch
+          elif command -v dnf &> /dev/null; then
+             sudo dnf upgrade
+          fi
+
+          nix-channel --update
+          home-manager switch
+        '') ]
         ++ lib.optionals (cfg.role == "workstation") [
           signal-desktop
           discord
