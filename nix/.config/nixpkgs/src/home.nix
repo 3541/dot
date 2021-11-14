@@ -47,6 +47,11 @@ in {
       else
         "/Users/${cfg.userName}";
     };
+
+    shExtra = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+    };
   };
 
   imports = [ ./programs ./wm.nix ];
