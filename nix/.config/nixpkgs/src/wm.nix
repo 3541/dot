@@ -1,3 +1,5 @@
+# Take care saving this file in editors which delete trailing whitespace. It is /required/ in the
+# i3blocks config.
 { lib, config, pkgs, ... }:
 let cfg = config.a3;
 in {
@@ -256,7 +258,7 @@ in {
         # See the script for details.
         [volume]
         #label=VOL
-        label=♪
+        label=♪ 
         instance=Master
         #instance=PCM
         interval=once
@@ -266,17 +268,17 @@ in {
         #
         # The type defaults to "mem" if the instance is not specified.
         [memory]
-        label=MEM
+        label=MEM 
         separator=false
         interval=30
 
         [memory]
-        label=SWAP
+        label=SWAP 
         instance=swap
         interval=30
 
         [disk]
-        label=ROOT
+        label=ROOT 
         interval=30
         instance=/
 
@@ -300,7 +302,7 @@ in {
         # The script may be called with -w and -c switches to specify thresholds,
         # see the script for details.
         [cpu_usage]
-        label=CPU
+        label=CPU 
         interval=10
         #min_width=CPU: 100.00%
         #separator=false
@@ -319,7 +321,7 @@ in {
         # see the script for details.
         [temperature-cpu]
         command=${i3blocksContrib}/libexec/i3blocks/temperature --chip coretemp-isa-0000 -w 60 -c 80
-        label=CORE
+        label=CORE 
         interval=10
 
         #[weather]
