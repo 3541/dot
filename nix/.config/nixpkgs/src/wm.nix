@@ -223,7 +223,7 @@ in {
           "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
         };
       } // lib.attrsets.optionalAttrs (cfg.displayServer == "wayland") {
-        "*".bg = "${cfg.homeDirectory}/pictures/wallpaper/current.*";
+        output."*".bg = "${cfg.homeDirectory}/pictures/wallpaper/current.* fill";
       };
     };
   in {
