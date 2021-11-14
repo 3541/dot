@@ -1,14 +1,13 @@
 { lib, config, pkgs, ... }:
 let
   cfg = config.a3;
-  firefoxOverride = (if !cfg.potato then {
+  firefoxOverride = if !cfg.potato then {
     alsaSupport = false;
     waylandSupport = cfg.displayServer != "wayland";
+    drmSupport = true;
     privacySupport = true;
   } else
-    { }) // {
-      drmSupport = true;
-    };
+    { };
 in {
   config = lib.mkIf (cfg.role == "workstation") {
     programs.firefox = {
