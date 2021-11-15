@@ -1,7 +1,7 @@
 {
   a3 = {
     enable = true;
-    platform = "linux";
+    platform = "nixos";
     displayServer = "wayland";
     potato = true;
     fontSize = 18.0;
