@@ -208,9 +208,9 @@ in {
                 exec ${pkgs.scrot}/bin/scrot -s "pictures/screenshots/%Y-%m-%d_%H_%M_%S.png"'';
 
             "XF86AudioRaiseVolume" =
-              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 1%+";
+              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +1%";
             "XF86AudioLowerVolume" =
-              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 1%-";
+              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -1%";
             "XF86AudioMute" =
               "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle";
             "XF86AudioMicMute" =
