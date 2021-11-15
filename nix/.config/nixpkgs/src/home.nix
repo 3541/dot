@@ -14,6 +14,11 @@ in {
       default = "nixos";
     };
 
+    formFactor = lib.mkOption {
+      type = lib.types.enum [ "stationary" "portable" ];
+      default = "stationary";
+    };
+
     displayServer = lib.mkOption {
       type = lib.types.enum ([ "none" ]
         ++ lib.optionals (cfg.platform != "macos") [ "xorg" "wayland" ]);

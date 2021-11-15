@@ -36,6 +36,6 @@ in {
     };
 
     hardware.opengl.driSupport32Bit = true;
-    fonts.fonts = with pkgs; [ iosevka vistafonts ];
+    fonts.fonts = with pkgs; [ iosevka vistafonts font-awesome ];
   };
 }

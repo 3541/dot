@@ -340,6 +340,13 @@ in {
         label=CORE 
         interval=10
 
+        ${if (cfg.formFactor == "portable") then ''
+          [battery2]
+          interval=30
+          markup=pango
+        '' else
+          ""}
+
         #[weather]
         #command=curl -sS 'https://wttr.in/McKinnon?format=%c+%t+%h'
         #interval=1800

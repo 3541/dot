@@ -5,6 +5,7 @@
     displayServer = "wayland";
     potato = true;
     fontSize = 16.0;
+    formFactor = "portable";
   };
 
   wayland.windowManager.sway.config = {
