@@ -1,5 +1,6 @@
-{
-  imports = [ <nixos-hardware/lenovo/thinkpad/x1-extreme> ];
+let nixos-hardware = builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; };
+in {
+  imports = [ "${nixos-hardware}/lenovo/thinkpad/x1-extreme" ];
 
   config = {
     a3 = {
