@@ -2,15 +2,15 @@
 let cfg = config.a3;
 in {
   config = {
-    boot.loader.efi.canTouchEfiVariables = true;
-    boot.loader.efi.efiSysMountPoint = "/boot/efi";
+    boot.loader.efi.canTouchEfiVariables = cfg.boot == "efi";
+    boot.loader.efi.efiSysMountPoint = lib.mkIf (cfg.boot == "efi") "/boot/efi";
 
     boot.loader.grub = lib.mkIf cfg.grub {
       enable = true;
-      device = "nodev";
+      device = if (cfg.boot == "efi") then "nodev" else cfg.bootDevice;
       version = 2;
-      efiSupport = true;
-      enableCryptodisk = true;
+      efiSupport = cfg.boot == "efi";
+      enableCryptodisk = cfg.luks;
     };
     boot.loader.systemd-boot.enable = !cfg.grub;
   };

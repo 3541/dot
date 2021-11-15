@@ -2,7 +2,7 @@
 let cfg = config.a3;
 in {
   home.packages =
-    lib.mkIf (cfg.role == "workstation") [ pkgs.linuxPackages.cpupower ];
+    lib.optional (cfg.role == "workstation") pkgs.linuxPackages.cpupower;
   programs.jq.enable = true;
 
   home.sessionVariables =
@@ -27,7 +27,10 @@ in {
       export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
       export MY_GPG_KEY=0x1EECFF9EE39ED7AA
       export DOTNET_CLI_TELEMETRY_OPTOUT=1
-    '' + cfg.shExtra + (if cfg.platform == "linux" then ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" else "");
+    '' + cfg.shExtra + (if cfg.platform == "linux" then
+      ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+    else
+      "");
   };
 
   programs.direnv = lib.mkIf (cfg.role == "workstation") {

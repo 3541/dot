@@ -4,6 +4,21 @@ in {
   options.a3 = {
     enable = lib.mkEnableOption "Configuration";
 
+    boot = lib.mkOption {
+      type = lib.types.enum [ "bios" "efi" ];
+      default = "efi";
+    };
+
+    bootDevice = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+    };
+
+    luks = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
+
     grub = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -52,6 +67,7 @@ in {
     ./net.nix
     ./nix.nix
     ./packages.nix
+    ./services.nix
     ./workstationServices.nix
     ./user.nix
   ];
