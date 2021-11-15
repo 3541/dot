@@ -17,7 +17,6 @@ in {
     networking.interfaces.wlp0s20f3.useDHCP = true;
 
     hardware.video.hidpi.enable = true;
-
-    users.users.root.initialHashedPassword = "";
+    services.xserver.dpi = 144;
   };
 }
