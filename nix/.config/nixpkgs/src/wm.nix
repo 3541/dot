@@ -24,7 +24,10 @@ in {
     wmConfig = {
       enable = true;
 
-      extraConfig = lib.mkIf cfg.windowGaps "default_border none";
+      # Call out XWayland windows.
+      extraConfig = lib.mkIf (cfg.displayServer == "wayland") ''
+        for_window [shell=".*"] title_format "%title (%shell)"
+      '';
       config = {
         modifier = mod;
         terminal = term;
@@ -41,6 +44,7 @@ in {
           inner = 20;
           outer = 7;
         };
+        window.titlebar = !cfg.windowGaps;
 
         workspaceAutoBackAndForth = true;
 
@@ -82,7 +86,7 @@ in {
           fonts = {
             names = [ "Iosevka" ];
             style = "Light";
-            size = 14.0;
+            size = cfg.fontSize;
           };
           colors = {
             statusline = colors.foreground;

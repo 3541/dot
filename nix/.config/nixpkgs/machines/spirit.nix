@@ -4,7 +4,7 @@
     platform = "nixos";
     displayServer = "wayland";
     potato = true;
-    fontSize = 18.0;
+    fontSize = 16.0;
   };
 
   wayland.windowManager.sway.config = {
