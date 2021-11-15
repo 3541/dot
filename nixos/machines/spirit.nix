@@ -8,6 +8,7 @@ in {
       hostname = "spirit";
       displayServer = "wayland";
       formFactor = "portable";
+      esp = "/boot";
     };
 
     swapDevices = [{ device = "/swapfile"; }];

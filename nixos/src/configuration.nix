@@ -24,6 +24,11 @@ in {
       default = false;
     };
 
+    esp = lib.mkOption {
+      type = lib.types.path;
+      default = "/boot/efi";
+    };
+
     smallMemory = lib.mkOption {
       type = lib.types.bool;
       default = false;

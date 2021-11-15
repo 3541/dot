@@ -3,7 +3,7 @@ let cfg = config.a3;
 in {
   config = {
     boot.loader.efi.canTouchEfiVariables = cfg.boot == "efi";
-    boot.loader.efi.efiSysMountPoint = lib.mkIf (cfg.boot == "efi") "/boot/efi";
+    boot.loader.efi.efiSysMountPoint = lib.mkIf (cfg.boot == "efi") cfg.esp;
 
     boot.loader.grub = lib.mkIf cfg.grub {
       enable = true;
