@@ -14,6 +14,8 @@ in {
         "x-systemd.device-timeout=5s"
         "x-systemd.mount-timeout=5s"
         "credentials=/etc/nixos/smbcredentials"
+        "uid=alex"
+        "gid=users"
       ];
     };
   };
