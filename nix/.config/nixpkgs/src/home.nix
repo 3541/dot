@@ -83,6 +83,7 @@ in {
           discord
           thunderbird
           mathematica
+          cmus
 
           man-pages
           man-pages-posix
