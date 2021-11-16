@@ -24,5 +24,7 @@ in {
     services.vnstat.enable = true;
 
     programs.dconf.enable = true;
+
+    services.usbmuxd.enable = true;
   };
 }

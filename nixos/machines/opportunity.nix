@@ -32,6 +32,7 @@
     swapDevices = [{ device = "/opt/swapfile"; }];
 
     networking.interfaces.enp0s25.useDHCP = true;
+    networking.interfaces.eth0.useDHCP = true;
 
     services.xserver.dpi = 96;
     hardware.video.hidpi.enable = true;
