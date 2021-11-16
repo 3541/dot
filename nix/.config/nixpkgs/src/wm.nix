@@ -21,6 +21,9 @@ in {
     else
       "i3lock -c 000000";
     i3blocksContrib = import ./programs/i3blocks-contrib.nix;
+    dmenuArgs = "-fn iosevka-${
+        toString cfg.fontSize
+      } -nb '${colors.background}' -nf '${colors.foreground}' -sb '${colors.focus}' -sf '${colors.bright}'";
     wmConfig = lib.mkMerge [
       {
         enable = true;
@@ -128,12 +131,17 @@ in {
 
             "${mod}+Shift+q" = "kill";
             "${mod}+d" =
-              "exec ${pkgs.dmenu}/bin/dmenu_path | ${pkgs.dmenu}/bin/dmenu_run -fn iosevka-${
-                toString cfg.fontSize
-              }" + (if (cfg.displayServer == "wayland") then
+              "exec ${pkgs.dmenu}/bin/dmenu_path | ${pkgs.dmenu}/bin/dmenu_run ${dmenuArgs}"
+              + (if (cfg.displayServer == "wayland") then
                 " | xargs swaymsg exec --"
               else
                 "");
+            "${mod}+Shift+w" = lib.mkIf (cfg.formFactor == "portable")
+              ("exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu ${dmenuArgs}"
+                + (if (cfg.displayServer == "wayland") then
+                  " | xargs swaymsg exec --"
+                else
+                  ""));
             "${mod}+Shift+r" =
               if (cfg.displayServer == "wayland") then "reload" else "restart";
             "${mod}+Shift+e" = if (cfg.displayServer == "wayland") then
@@ -243,12 +251,14 @@ in {
           export MOZ_ENABLE_WAYLAND=1
         '';
         wrapperFeatures.gtk = true;
-      } else {})
+      } else
+        { })
     ];
   in {
     home.packages = with pkgs; [ python3 sysstat acpi ];
 
-    xsession.windowManager.i3 = lib.mkIf (cfg.displayServer == "xorg") wmConfig;
+    xsession.windowManager.i3 =
+      if (cfg.displayServer == "xorg") then wmConfig else { };
     wayland.windowManager.sway =
       lib.mkIf (cfg.displayServer == "wayland") wmConfig;
 
@@ -365,6 +375,14 @@ in {
         interval=1
       '';
       target = ".config/i3blocks/config";
+    };
+
+    home.file.nmDmenuConfig = {
+      target = ".config/networkmanager-dmenu/config.ini";
+      text = ''
+        [dmenu]
+        dmenu_command = ${pkgs.dmenu}/bin/dmenu
+      '';
     };
   });
 }

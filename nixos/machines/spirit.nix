@@ -17,6 +17,7 @@ in {
     networking.interfaces.wlp0s20f3.useDHCP = true;
 
     hardware.video.hidpi.enable = true;
+    environment.variables.GDK_DPI_SCALE = "1.5";
     services.xserver.dpi = 144;
   };
 }
