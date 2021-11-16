@@ -249,6 +249,8 @@ in {
           export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
           export _JAVA_AWT_WM_NONREPARENTING=1
           export MOZ_ENABLE_WAYLAND=1
+          # Makes media keys work. Some kind of race condition bug in lightdm.
+          sleep 1
         '';
         wrapperFeatures.gtk = true;
       } else
