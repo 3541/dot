@@ -232,7 +232,7 @@ in {
         };
       }
 
-      (lib.mkIf (cfg.displayServer == "wayland") {
+      (if (cfg.displayServer == "wayland") then {
         config.output."*".bg =
           "${cfg.homeDirectory}/pictures/wallpaper/current.* fill";
         extraSessionCommands = ''
@@ -243,13 +243,12 @@ in {
           export MOZ_ENABLE_WAYLAND=1
         '';
         wrapperFeatures.gtk = true;
-      })
+      } else {})
     ];
   in {
     home.packages = with pkgs; [ python3 sysstat acpi ];
 
-    xsession.windowManager.i3 =
-      if (cfg.displayServer == "xorg") then wmConfig else { };
+    xsession.windowManager.i3 = lib.mkIf (cfg.displayServer == "xorg") wmConfig;
     wayland.windowManager.sway =
       lib.mkIf (cfg.displayServer == "wayland") wmConfig;
 
