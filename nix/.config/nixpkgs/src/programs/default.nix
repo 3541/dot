@@ -1,3 +1,11 @@
 {
-  imports = [ ./emacs.nix ./firefox.nix ./gdb.nix ./git.nix ./sakura.nix ./sh.nix ];
+  imports = [
+    ./cmus.nix
+    ./emacs.nix
+    ./firefox.nix
+    ./gdb.nix
+    ./git.nix
+    ./sakura.nix
+    ./sh.nix
+  ];
 }
