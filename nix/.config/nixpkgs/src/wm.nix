@@ -17,7 +17,7 @@ in {
     mod = "Mod4";
     term = "${pkgs.sakura}/bin/sakura";
     lockCommand = if (cfg.displayServer == "wayland") then
-      "swaylock -f -c 000000"
+      "${pkgs.swaylock}/bin/swaylock -f -c 000000"
     else
       "i3lock -c 000000";
     i3blocksContrib = import ./programs/i3blocks-contrib.nix;
