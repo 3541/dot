@@ -19,8 +19,16 @@ in {
 
     hardware.video.hidpi.enable = true;
     environment.variables.GDK_DPI_SCALE = "1.5";
-    services.xserver.dpi = 144;
-    hardware.nvidiaOptimus.disable = true;
+    services.xserver = {
+      videoDrivers = [ "modesetting" ];
+      dpi = 144;
+    };
+    # Once nVidia 490.44 lands, it should be possible to switch to PRIME Sync mode, instead (and
+    # hopefully get external displays working).
+    hardware.bumblebee = {
+      enable = true;
+      connectDisplay = true;
+    };
 
     # Something is broken with intel-gmmlib and i686 support.
     programs.steam.enable = lib.mkForce false;
