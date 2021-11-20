@@ -10,6 +10,8 @@ in {
       displayServer = "wayland";
       formFactor = "portable";
       esp = "/boot";
+      # Turn this off when 21.11 lands and tmpOnTmpfsSize can be configured.
+      smallMemory = true;
     };
 
     swapDevices = [{ device = "/swapfile"; }];
