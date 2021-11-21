@@ -4,7 +4,7 @@ in {
   config = lib.mkIf (cfg.role == "workstation") {
     home.packages = [ pkgs.nixfmt ];
 
-    services.emacs = {
+    services.emacs = lib.mkIf (cfg.platform != "macOS") {
       enable = true;
       client.enable = true;
     };
