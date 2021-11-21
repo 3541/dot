@@ -449,6 +449,9 @@ in {
           :config
           (add-hook 'prog-mode-hook 'direnv-mode))
 
+        (use-package bazel
+          :ensure t)
+
         (load-file "~/.emacs.d/sensible-defaults.el")
 
         (sensible-defaults/use-all-settings)
