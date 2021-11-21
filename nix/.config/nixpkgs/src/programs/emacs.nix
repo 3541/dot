@@ -520,14 +520,16 @@ in {
         (c-add-style "my-cc" cc-style)
         (add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
 
-        (add-to-list 'custom-theme-load-path "${homeDirectory}/.emacs.d/emacs-color-theme-solarized")
+        (add-to-list 'custom-theme-load-path "${cfg.homeDirectory}/.emacs.d/emacs-color-theme-solarized")
         (load-theme 'solarized t)
         (setq frame-background-mode 'dark)
         (mapc 'frame-set-background-mode (frame-list))
         (enable-theme 'solarized)
 
         (set-frame-font "Iosevka-${toString cfg.fontSize}" nil t)
-        (add-to-list 'default-frame-alist '(font . "Iosevka-${toString cfg.fontSize}"))
+        (add-to-list 'default-frame-alist '(font . "Iosevka-${
+          toString cfg.fontSize
+        }"))
       '';
     };
   };
