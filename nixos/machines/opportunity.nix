@@ -33,6 +33,8 @@
 
     networking.interfaces.enp0s25.useDHCP = true;
     networking.interfaces.eth0.useDHCP = true;
+    # Laptop USB ethernet.
+    networking.interfaces.enp0s20u3u3u4u2.useDHCP = false;
 
     services.xserver.dpi = 96;
     hardware.video.hidpi.enable = true;
