@@ -9,7 +9,7 @@ let
   } else
     { };
 in {
-  config = lib.mkIf (cfg.role == "workstation") {
+  config = lib.mkIf (cfg.role == "workstation" && cfg.platform != "macOS") {
     programs.firefox = {
       enable = true;
       package = pkgs.wrapFirefox

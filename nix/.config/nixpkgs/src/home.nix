@@ -85,15 +85,17 @@ in {
           '')
         ] ++ lib.optional (cfg.platform != "macOS") lm_sensors
         ++ lib.optionals (cfg.role == "workstation") [
+          man-pages
+          man-pages-posix
+        ] ++ lib.optionals
+        (cfg.role == "workstation" && cfg.platform != "macOS") [
           signal-desktop
           discord
           thunderbird
           mathematica
 
-          man-pages
-          man-pages-posix
-        ] ++ lib.optional (cfg.role == "workstation" && cfg.platform != "macOS")
-        virt-manager ++ lib.optionals (cfg.displayServer != "none") [
+          virt-manager
+        ] ++ lib.optionals (cfg.displayServer != "none") [
           evince
           pavucontrol
           gnome.gnome-system-monitor
