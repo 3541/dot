@@ -2,7 +2,8 @@
 let cfg = config.a3;
 in {
   home.packages =
-    lib.optional (cfg.role == "workstation") pkgs.linuxPackages.cpupower;
+    lib.optional (cfg.role == "workstation" && cfg.platform != "macOS")
+    pkgs.linuxPackages.cpupower;
   programs.jq.enable = true;
 
   home.sessionVariables =
@@ -13,7 +14,7 @@ in {
     enableVteIntegration = cfg.displayServer != "none";
     shellAliases = {
       jp = "jq . ";
-      cpu-poke = lib.mkIf (cfg.role == "workstation")
+      cpu-poke = lib.mkIf (cfg.role == "workstation" && cfg.platform != "macOS")
         "sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance";
     };
     initExtra = ''

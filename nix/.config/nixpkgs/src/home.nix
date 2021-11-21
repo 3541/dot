@@ -68,17 +68,21 @@ in {
     nixpkgs.config.allowUnfree = true;
     home = {
       packages = with pkgs;
-        [ tree ripgrep lm_sensors (writeShellScriptBin "up" ''
-          if command -v nixos-rebuild &> /dev/null; then
-             sudo nixos-rebuild --upgrade-all switch
-          elif command -v dnf &> /dev/null; then
-             sudo dnf upgrade
-          fi
+        [
+          tree
+          ripgrep
+          lm_sensors
+          (writeShellScriptBin "up" ''
+            if command -v nixos-rebuild &> /dev/null; then
+               sudo nixos-rebuild --upgrade-all switch
+            elif command -v dnf &> /dev/null; then
+               sudo dnf upgrade
+            fi
 
-          nix-channel --update
-          home-manager switch
-        '') ]
-        ++ lib.optionals (cfg.role == "workstation") [
+            nix-channel --update
+            home-manager switch
+          '')
+        ] ++ lib.optionals (cfg.role == "workstation") [
           signal-desktop
           discord
           thunderbird
@@ -86,9 +90,8 @@ in {
 
           man-pages
           man-pages-posix
-
-          virt-manager
-        ] ++ lib.optionals (cfg.displayServer != "none") [
+        ] ++ lib.optional (cfg.role == "workstation" && cfg.platform != "macOS")
+        virt-manager ++ lib.optionals (cfg.displayServer != "none") [
           evince
           pavucontrol
           gnome.gnome-system-monitor
