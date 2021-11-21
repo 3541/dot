@@ -57,7 +57,7 @@ in {
     settings = {
       hostname-only-if-ssh = true;
       cwd-mode = "plain";
-      max-width = 25;
+      max-width = 33;
       theme = "solarized-dark16";
     };
   };
