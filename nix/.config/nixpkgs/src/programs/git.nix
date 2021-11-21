@@ -20,6 +20,8 @@ in {
       };
     };
 
+    ignores = [ ".DS_Store" ];
+
     extraConfig = {
       submodule.fetchJobs = 8;
       pull = {
