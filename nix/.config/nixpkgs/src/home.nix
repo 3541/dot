@@ -69,6 +69,7 @@ in {
     home = {
       packages = with pkgs;
         [
+          bash # Listed here explicitly so it can be used as a login shell if needed.
           tree
           ripgrep
           (writeShellScriptBin "up" ''
