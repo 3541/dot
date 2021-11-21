@@ -77,6 +77,8 @@ in {
                sudo nixos-rebuild --upgrade-all switch
             elif command -v dnf &> /dev/null; then
                sudo dnf upgrade
+            elif [ "$(uname)" = "Darwin" ]; then
+               sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
             fi
 
             nix-channel --update
