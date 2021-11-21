@@ -2,7 +2,12 @@
 
 set -e
 
-cd $(dirname $(readlink -f "$0"))
+# macOS does not support readlink -f.
+if [ "$(uname)" = "Darwin" ]; then
+    cd $(perl -MCwd=abs_path -le 'print abs_path readlink(shift);' "$0")
+else
+    cd $(dirname $(readlink -f "$0"))
+fi
 
 if command -v nix &> /dev/null; then
     nix-shell -p stow --command 'stow nix'
