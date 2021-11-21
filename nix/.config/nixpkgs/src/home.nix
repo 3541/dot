@@ -71,7 +71,6 @@ in {
         [
           tree
           ripgrep
-          lm_sensors
           (writeShellScriptBin "up" ''
             if command -v nixos-rebuild &> /dev/null; then
                sudo nixos-rebuild --upgrade-all switch
@@ -84,7 +83,8 @@ in {
             nix-channel --update
             home-manager switch
           '')
-        ] ++ lib.optionals (cfg.role == "workstation") [
+        ] ++ lib.optional (cfg.platform != "macOS") lm_sensors
+        ++ lib.optionals (cfg.role == "workstation") [
           signal-desktop
           discord
           thunderbird
@@ -122,7 +122,8 @@ in {
       };
     };
 
-    services.syncthing.enable = cfg.role == "workstation" && cfg.platform != "macOS";
+    services.syncthing.enable = cfg.role == "workstation" && cfg.platform
+      != "macOS";
     # services.notify-osd.enable = cfg.role == "workstation";
   };
 }
