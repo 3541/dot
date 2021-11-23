@@ -31,7 +31,7 @@ if command -v nix &> /dev/null; then
         sudo chmod 700 /etc/nixos/machines /etc/nixos/src
     fi
 else
-    for d in bash emacs i3 nvim sakura redshift git; do
+    for d in bash; do
         echo "$d"
         stow "$d"
     done
