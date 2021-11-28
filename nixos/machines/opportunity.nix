@@ -70,5 +70,7 @@
         yearly = 12;
       };
     };
+
+    programs.steam.enable = true;
   };
 }

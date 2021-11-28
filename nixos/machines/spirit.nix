@@ -33,7 +33,6 @@ in {
     };
 
     # Something is broken with intel-gmmlib and i686 support.
-    programs.steam.enable = lib.mkForce false;
     hardware.opengl.driSupport32Bit = lib.mkForce false;
   };
 }

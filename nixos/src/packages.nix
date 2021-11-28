@@ -6,7 +6,5 @@ in {
 
     documentation.dev.enable = cfg.role == "workstation";
     documentation.man.generateCaches = cfg.role == "workstation";
-
-    programs.steam.enable = cfg.role == "workstation";
   };
 }
