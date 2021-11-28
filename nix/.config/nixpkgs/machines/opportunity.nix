@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }: {
   imports = [ ../src/programs/me3t.nix ];
 
   config = {
@@ -17,5 +17,7 @@
       "exec xrandr --output DVI-D-0 --off --output DP-4 --off";
 
     programs.obs-studio.enable = true;
+
+    home.packages = [ pkgs.lutris ];
   };
 }
