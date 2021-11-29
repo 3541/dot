@@ -86,8 +86,6 @@ in {
           '')
         ] ++ lib.optional (cfg.platform != "macOS") lm_sensors
         ++ lib.optionals (cfg.role == "workstation") [
-          zoom-us
-
           man-pages
           man-pages-posix
         ] ++ lib.optionals
@@ -96,6 +94,7 @@ in {
           discord
           thunderbird
           mathematica
+          zoom-us
 
           virt-manager
         ] ++ lib.optionals (cfg.displayServer != "none") [
