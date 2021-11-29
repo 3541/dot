@@ -530,7 +530,8 @@ in {
         (add-to-list 'default-frame-alist '(font . "Iosevka-${
           toString cfg.fontSize
         }"))
-      '';
+      '' + lib.optionalString (cfg.platform == "macOS")
+        ''(add-to-list 'exec-path "${cfg.homeDirectory}/.nix-profile/bin")'';
     };
   };
 }
