@@ -79,6 +79,10 @@ in {
                sudo dnf upgrade
             elif [ "$(uname)" = "Darwin" ]; then
                sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
+               MACPORTS=/opt/local/bin/port
+               if [ -f "$MACPORTS" ]; then
+                   sudo "$MACPORTS" selfupdate && sudo "$MACPORTS" upgrade outdated
+               fi
             fi
 
             nix-channel --update
