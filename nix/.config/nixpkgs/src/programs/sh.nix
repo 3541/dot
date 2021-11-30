@@ -20,7 +20,7 @@ in {
     initExtra = ''
       shopt -s globstar
       set -o vi
-      export CDPATH="$CDPATH:.:/home/alex:/home/alex/src"
+      export CDPATH="$CDPATH:.:$HOME:$HOME/src"
       if [[ ! -S $HOME/.ssh/ssh_auth_sock ]]; then
         eval $(ssh-agent)
         ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
