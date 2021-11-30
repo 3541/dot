@@ -8,5 +8,6 @@
     };
 
     programs.git.signing.signByDefault = lib.mkForce false;
+    programs.git.userEmail = lib.mkForce "alex.obrien@imc.com";
   };
 }
