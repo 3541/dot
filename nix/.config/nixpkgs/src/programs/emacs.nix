@@ -532,7 +532,8 @@ in {
         }"))
       '' + lib.optionalString (cfg.platform == "macOS")
         ''(add-to-list 'exec-path "${cfg.homeDirectory}/.nix-profile/bin")
-          (add-to-list 'exec-path "/nix/var/nix/profiles/default/bin")'';
+          (add-to-list 'exec-path "/nix/var/nix/profiles/default/bin")
+          (add-to-list 'exec-path "/usr/local/bin")'';
     };
   };
 }
