@@ -63,7 +63,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs.home-manager.enable = true;
-    home.stateVersion = "21.05";
+    home.stateVersion = "21.11";
 
     nixpkgs.config.allowUnfree = true;
     home = {
@@ -132,6 +132,6 @@ in {
 
     services.syncthing.enable = cfg.role == "workstation" && cfg.platform
       != "macOS";
-    # services.notify-osd.enable = cfg.role == "workstation";
+    services.notify-osd.enable = cfg.role == "workstation" && cfg.platform != "macOS";
   };
 }

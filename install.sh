@@ -16,7 +16,7 @@ if command -v nix &> /dev/null; then
     fi
 
     if ! command -v home-manager &> /dev/null; then
-        sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz home-manager
+        sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.11.tar.gz home-manager
         sudo nix-channel --update
         nix-shell '<home-manager>' -A install
     fi
