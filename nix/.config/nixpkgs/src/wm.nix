@@ -216,11 +216,11 @@ in {
                 exec ${pkgs.scrot}/bin/scrot -s "pictures/screenshots/%Y-%m-%d_%H_%M_%S.png"'';
 
             "XF86AudioRaiseVolume" =
-              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +1%";
+              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +1% && pkill -SIGRTMIN+10 i3blocks";
             "XF86AudioLowerVolume" =
-              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -1%";
+              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -1% && pkill -SIGRTMIN+10 i3blocks";
             "XF86AudioMute" =
-              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle";
+              "exec ${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle && pkill -SIGRTMIN+10 i3blocks";
             "XF86AudioMicMute" =
               "exec ${pkgs.pulseaudio}/bin/pactl set-source-mute 1 toggle";
 
@@ -234,8 +234,8 @@ in {
               "exec ${pkgs.brightnessctl}/bin/brightnessctl s 1%-";
 
             "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
-            "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
-            "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
+            "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
+            "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
           };
         };
       }
