@@ -236,6 +236,9 @@ in {
             "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
             "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
             "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
+            "Mod1+Shift+Space" = "exec ${pkgs.playerctl}/bin/playerctl play-pause && pkill -SIGRTMIN+11 i3blocks";
+            "Mod1+Shift+h" = "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
+            "Mod1+Shift+l" = "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
           };
         };
       }
