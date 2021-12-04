@@ -277,6 +277,7 @@ in {
         [mediaplayer]
         command=echo $(${pkgs.playerctl}/bin/playerctl metadata album) - $(${pkgs.playerctl}/bin/playerctl metadata title)
         interval=5
+        signal=11
 
         # Volume indicator
         #
@@ -338,7 +339,7 @@ in {
         interval=10
 
         [cpufreq]
-        command=bash -c "lscpu | grep 'CPU MHz' | tr -s ' ' | cut -d' ' -f3;"
+        command=awk '/MHz/ { t += $4; n++ } END { print t / n }' /proc/cpuinfo
         interval=5
 
         # Temperature
