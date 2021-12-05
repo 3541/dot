@@ -149,7 +149,7 @@ in {
           (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
           (add-to-list
            'eglot-server-programs
-           '(python-mode . ("/home/alex/.local/bin/pyls")))
+           '(python-mode . ("~/.local/bin/pyls")))
           (add-to-list 'eglot-server-programs '(swift-mode . ("sourcekit-lsp")))
           (add-hook 'c-mode-hook 'eglot-ensure)
           (add-hook 'c++-mode-hook 'eglot-ensure)
@@ -189,7 +189,7 @@ in {
         (use-package rust-mode
           :ensure t
           :config
-          (setq rust-rustfmt-bin "/home/alex/.cargo/bin/rustfmt"))
+          (setq rust-rustfmt-bin "~/.cargo/bin/rustfmt"))
 
         (use-package swift-mode
           :ensure t)
@@ -520,7 +520,7 @@ in {
         (c-add-style "my-cc" cc-style)
         (add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
 
-        (add-to-list 'custom-theme-load-path "${cfg.homeDirectory}/.emacs.d/emacs-color-theme-solarized")
+        (add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
         (load-theme 'solarized t)
         (setq frame-background-mode 'dark)
         (mapc 'frame-set-background-mode (frame-list))
@@ -531,7 +531,7 @@ in {
           toString cfg.fontSize
         }"))
       '' + lib.optionalString (cfg.platform == "macOS")
-        ''(add-to-list 'exec-path "${cfg.homeDirectory}/.nix-profile/bin")
+        ''(add-to-list 'exec-path "~/.nix-profile/bin")
           (add-to-list 'exec-path "/nix/var/nix/profiles/default/bin")
           (add-to-list 'exec-path "/usr/local/bin")'';
     };
