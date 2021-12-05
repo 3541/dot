@@ -132,6 +132,5 @@ in {
 
     services.syncthing.enable = cfg.role == "workstation" && cfg.platform
       != "macOS";
-    services.notify-osd.enable = cfg.role == "workstation" && cfg.platform != "macOS";
   };
 }

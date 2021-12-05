@@ -123,6 +123,8 @@ in {
             command =
               "feh --bg-fill ${cfg.homeDirectory}/pictures/wallpaper/current.*";
             always = true;
+          } ++ lib.optional (cfg.displayServer == "wayland") {
+            command = "mako";
           };
 
           keybindings = {
@@ -234,11 +236,16 @@ in {
               "exec ${pkgs.brightnessctl}/bin/brightnessctl s 1%-";
 
             "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
-            "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
-            "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
-            "Mod1+Shift+Space" = "exec ${pkgs.playerctl}/bin/playerctl play-pause && pkill -SIGRTMIN+11 i3blocks";
-            "Mod1+Shift+h" = "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
-            "Mod1+Shift+l" = "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
+            "XF86AudioPrev" =
+              "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
+            "XF86AudioNext" =
+              "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
+            "Mod1+Shift+Space" =
+              "exec ${pkgs.playerctl}/bin/playerctl play-pause && pkill -SIGRTMIN+11 i3blocks";
+            "Mod1+Shift+h" =
+              "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
+            "Mod1+Shift+l" =
+              "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
           };
         };
       }
@@ -389,6 +396,16 @@ in {
         [dmenu]
         dmenu_command = ${pkgs.dmenu}/bin/dmenu
       '';
+    };
+
+    services.notify-osd.enable = cfg.role == "workstation" && cfg.displayServer
+      == "xorg";
+    programs.mako = lib.mkIf (cfg.role == "workstation") {
+      enable = true;
+      backgroundColor = colors.background;
+      borderColor = colors.focus;
+      textColor = colors.foreground;
+      font = "Iosevka ${toString cfg.fontSize}";
     };
   });
 }
