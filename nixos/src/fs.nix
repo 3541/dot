@@ -3,6 +3,7 @@ let cfg = config.a3;
 in {
   config = {
     boot.tmpOnTmpfs = !cfg.smallMemory;
+    boot.tmpOnTmpfsSize = lib.mkIf (!cfg.smallMemory) "85%";
     boot.cleanTmpDir = cfg.smallMemory;
     fileSystems."/mnt/net_share" = lib.mkIf (cfg.role == "workstation") {
       device = "//sagittarius/share";
