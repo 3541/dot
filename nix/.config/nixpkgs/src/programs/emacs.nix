@@ -160,7 +160,12 @@ in {
           (add-hook 'python-mode-hook 'eglot-ensure)
           (add-hook 'haskell-mode-hook 'eglot-ensure)
           (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
-          (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact))
+          (setcdr (assq 'java-mode eglot-server-programs) #'jdtls-contact)
+          (defun eglot-format-buffer-on-save ()
+            (if (and (project-current) (eglot-managed-p))
+                (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)
+              (remove-hook 'before-save-hook #'eglot-format-buffer 'local)))
+          (add-hook 'eglot-managed-mode-hook #'eglot-format-buffer-on-save))
 
         (use-package tree-sitter-langs
           :ensure t)
@@ -450,7 +455,12 @@ in {
           (add-hook 'prog-mode-hook 'direnv-mode))
 
         (use-package bazel
-          :ensure t)
+          :ensure t
+          :config
+          (add-hook 'bazel-mode-hook
+                    (lambda ()
+                      (add-hook 'before-save-hook #'bazel-buildifier))))
+
 
         (load-file "~/.emacs.d/sensible-defaults.el")
 
