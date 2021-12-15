@@ -192,9 +192,7 @@ in {
           :ensure t)
 
         (use-package rust-mode
-          :ensure t
-          :config
-          (setq rust-rustfmt-bin "~/.cargo/bin/rustfmt"))
+          :ensure t)
 
         (use-package swift-mode
           :ensure t)
