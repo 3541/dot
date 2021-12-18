@@ -31,8 +31,5 @@ in {
 #      intelBusId = "PCI:0:2:0";
 #      nvidiaBusId = "PCI:1:0:0";
 #    };
-
-    # Something is broken with intel-gmmlib and i686 support.
-    hardware.opengl.driSupport32Bit = lib.mkForce false;
   };
 }
