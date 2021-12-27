@@ -74,6 +74,7 @@ in {
     ./packages.nix
     ./services.nix
     ./workstationServices.nix
+    ./workstation.nix
     ./user.nix
   ];
 
