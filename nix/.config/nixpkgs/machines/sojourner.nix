@@ -8,9 +8,14 @@
       shExtra = ''
         export PATH="$PATH:/opt/local/bin"
         export SPINUP_CONFIG="default_config/roadrunner_syd.sh"
-        alias imc='ssh -X sytes172'
+        alias imc='ssh -Y sytes172'
+        alias imcb='ssh sydtl003'
         alias ss='~/src/docker_spinup/spinup shell'
         alias sst='~/src/docker_spinup/spinup stop'
+
+        if [[ -f ~/generate_j_aliases.sh ]]; then
+            . ~/generate_j_aliases.sh
+        fi
       '';
     };
 
