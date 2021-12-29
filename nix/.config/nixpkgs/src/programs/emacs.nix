@@ -67,7 +67,7 @@ in {
           (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
           (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
           (setq x-select-enable-clipboard nil)
-          (setq evil-undo-system 'undo-tree)
+          (evil-set-undo-system 'undo-tree)
           (global-undo-tree-mode))
 
         (use-package evil-collection
@@ -495,8 +495,8 @@ in {
 
         (setq-default indent-tabs-mode nil)
 
-        (setq-default display-line-numbers 'visual)
-        (setq display-line-numbers-type 'visual)
+        (setq-default display-line-numbers t)
+        (setq display-line-numbers-type t)
         (global-display-line-numbers-mode)
 
         (add-to-list 'auto-mode-alist '("\\.pro\\'" . prolog-mode))
