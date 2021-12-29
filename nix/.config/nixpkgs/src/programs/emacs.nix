@@ -453,11 +453,7 @@ in {
           (add-hook 'prog-mode-hook 'direnv-mode))
 
         (use-package bazel
-          :ensure t
-          :config
-          (add-hook 'bazel-mode-hook
-                    (lambda ()
-                      (add-hook 'before-save-hook #'bazel-buildifier))))
+          :ensure t)
 
 
         (load-file "~/.emacs.d/sensible-defaults.el")
