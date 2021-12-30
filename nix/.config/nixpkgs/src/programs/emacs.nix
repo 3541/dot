@@ -516,6 +516,7 @@ in {
         (add-hook 'prog-mode-hook 'electric-pair-mode)
 
         (show-paren-mode t)
+        (column-number-mode)
 
         (defconst cc-style
           '("cc-mode"
