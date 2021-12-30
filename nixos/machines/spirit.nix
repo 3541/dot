@@ -1,5 +1,7 @@
 { lib, ... }:
-let nixos-hardware = builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; };
+let
+  nixos-hardware =
+    builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; };
 in {
   imports = [ "${nixos-hardware}/lenovo/thinkpad/x1-extreme" ];
 
@@ -25,11 +27,13 @@ in {
     };
     # Once nVidia 490.44 lands, it should be possible to switch to PRIME Sync mode, instead (and
     # hopefully get external displays working).
-#    hardware.bumblebee.enable = true;
-#    hardware.nvidia.prime = {
-#      sync.enable = true;
-#      intelBusId = "PCI:0:2:0";
-#      nvidiaBusId = "PCI:1:0:0";
-#    };
+    #    hardware.bumblebee.enable = true;
+    #    hardware.nvidia.prime = {
+    #      sync.enable = true;
+    #      intelBusId = "PCI:0:2:0";
+    #      nvidiaBusId = "PCI:1:0:0";
+    #    };
+
+    programs.steam.enable = true;
   };
 }

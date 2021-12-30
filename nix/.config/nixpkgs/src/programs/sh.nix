@@ -16,6 +16,9 @@ in {
       jp = "jq . ";
       cpu-poke = lib.mkIf (cfg.role == "workstation" && cfg.platform != "macOS")
         "sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance";
+      b = "bazel build //...";
+      t = "bazel test //...";
+      r = "bazel run //...";
     };
     initExtra = ''
       shopt -s globstar
@@ -28,6 +31,8 @@ in {
       export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
       export MY_GPG_KEY=0x1EECFF9EE39ED7AA
       export DOTNET_CLI_TELEMETRY_OPTOUT=1
+      export ALTERNATE_EDITOR=""
+      export EDITOR="emacsclient -c -nw"
     '' + cfg.shExtra + (if cfg.platform == "linux" then
       ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
     else
