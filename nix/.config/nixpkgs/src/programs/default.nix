@@ -6,6 +6,7 @@
     ./gdb.nix
     ./git.nix
     ./sakura.nix
+    ./kitty.nix
     ./sh.nix
   ];
 }

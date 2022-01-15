@@ -455,6 +455,34 @@ in {
         (use-package bazel
           :ensure t)
 
+        (use-package ligature
+          :load-path "${pkgs.fetchFromGitHub {
+            owner = "mickeynp";
+            repo = "ligature.el";
+            rev = "c0e696a88824be6afa1f33fad548d36f96801d8e";
+            sha256 = "10k7dwj0z0jckjla44icq1wcaw1jm4wnsvyzv8s1kf9nn6pb6gp8";
+          }}"
+          :config
+          (ligature-set-ligatures 'prog-mode '(("<" (rx (| ">"
+                                                           (: "<" (? (| (+ "-") (+ "=") (+ "<"))))
+                                                           (: (| (+ "-") (+ "=") (+ "*")) (? ">"))
+                                                           (: "|" (? ">"))
+                                                           (: "!" (+ "-"))
+                                                           (: "." (? ">")))))
+                                               ("-" (rx (* "-") (|
+                                                                 ":" "|"
+                                                                 (: ">" (? (| (+ "-") ">")))
+                                                                 (: "<" (? (| (+ "-") "<"))))))
+                                               ("=" (rx (* "=") (| (: ">" (? (| (+ "=") ">")))
+                                                                   (: "<" (? (| (+ "=") "<")))
+                                                                   "="
+                                                                   ":")))
+                                               (">" (rx (| (: (? ">") (| (+ "-") (+ "=")))
+                                                           (+ ">"))))
+                                               "::" ":::" ":=" ":-" ":+" ":>" "+:" "!=" "!==" "(*"
+                                               "*)" "|-"
+                                               ("_" (rx (+ "_")))))
+          (global-ligature-mode t))
 
         (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -531,8 +559,8 @@ in {
         (mapc 'frame-set-background-mode (frame-list))
         (enable-theme 'solarized)
 
-        (set-frame-font "Iosevka-${toString cfg.fontSize}" nil t)
-        (add-to-list 'default-frame-alist '(font . "Iosevka-${
+        (set-frame-font "Iosevka Custom-${toString cfg.fontSize}" nil t)
+        (add-to-list 'default-frame-alist '(font . "Iosevka Custom-${
           toString cfg.fontSize
         }"))
       '' + lib.optionalString (cfg.platform == "macOS")

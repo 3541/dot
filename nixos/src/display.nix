@@ -31,11 +31,37 @@ in {
         export _JAVA_AWT_WM_NONREPARENTING=1
         export MOZ_ENABLE_WAYLAND=1
       '';
-      extraPackages = [];
+      extraPackages = [ ];
       wrapperFeatures.gtk = true;
     };
 
     hardware.opengl.driSupport32Bit = true;
-    fonts.fonts = with pkgs; [ iosevka vistafonts font-awesome nerdfonts ];
+    fonts.fonts = with pkgs; [
+      (iosevka.override {
+        privateBuildPlan = {
+          family = "Iosevka Custom";
+          spacing = "normal";
+          serifs = "slab";
+          no-cv-ss = true;
+          variants.design = {
+            percent = "dots";
+            lig-ltgteq = "slanted";
+          };
+          ligations = {
+            inherits = "dlig";
+            disables = [
+              "brace-bar"
+              "brack-bar"
+              "connected-tilde-as-wave"
+              "plusplus"
+            ];
+          };
+        };
+        set = "custom";
+      })
+      vistafonts
+      font-awesome
+      nerdfonts
+    ];
   };
 }

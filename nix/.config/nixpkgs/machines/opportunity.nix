@@ -10,11 +10,11 @@
 
     xsession.windowManager.i3.config.startup = [{
       command =
-        "xrandr --output DP-4 --mode 3840x2160 --left-of DP-0 --output DP-0 --left-of DVI-D-0 --output DVI-D-0 --mode 1680x1050";
+        "xrandr --output DP-0 --mode 3840x2160 --output DVI-D-0 --mode 1680x1050 --right-of DP-0";
       always = true;
     }];
     xsession.windowManager.i3.config.keybindings."Mod4+Shift+o" =
-      "exec xrandr --output DVI-D-0 --off --output DP-4 --off";
+      "exec xrandr --output DVI-D-0 --off";
 
     programs.obs-studio.enable = true;
 
