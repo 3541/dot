@@ -1,8 +1,9 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 let cfg = config.a3;
 in {
   config = lib.mkIf (cfg.role == "workstation") {
     services.printing.enable = true;
+    services.printing.drivers = [ pkgs.hll2390dw-cups ];
 
     sound.enable = true;
     hardware.pulseaudio = {
