@@ -61,6 +61,7 @@ in {
       })
       vistafonts
       font-awesome
+      font-awesome_4
       nerdfonts
     ];
   };
