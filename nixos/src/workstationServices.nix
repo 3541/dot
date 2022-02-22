@@ -3,7 +3,7 @@ let cfg = config.a3;
 in {
   config = lib.mkIf (cfg.role == "workstation") {
     services.printing.enable = true;
-    services.printing.drivers = [ pkgs.hll2390dw-cups ];
+    services.printing.drivers = with pkgs; [ hll2390dw-cups epson-escpr2 ];
 
     sound.enable = true;
     hardware.pulseaudio = {
