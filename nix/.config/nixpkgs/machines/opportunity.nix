@@ -18,6 +18,6 @@
 
     programs.obs-studio.enable = true;
 
-    home.packages = [ pkgs.lutris ];
+    home.packages = with pkgs; [ lutris multimc qmk ];
   };
 }

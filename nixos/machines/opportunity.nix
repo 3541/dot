@@ -70,5 +70,9 @@
     };
 
     programs.steam.enable = true;
+
+    services.udev.extraRules = ''
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
+    '';
   };
 }
