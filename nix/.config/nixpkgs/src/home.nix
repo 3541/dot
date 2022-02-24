@@ -95,6 +95,7 @@ in {
         ] ++ lib.optionals
         (cfg.role == "workstation" && cfg.platform != "macOS") [
           signal-desktop
+          slack
           discord
           thunderbird
           mathematica
