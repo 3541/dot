@@ -27,5 +27,8 @@ in {
     programs.dconf.enable = true;
 
     services.usbmuxd.enable = true;
+
+    services.opensnitch.enable = cfg.role == "workstation";
+    environment.systemPackages = [ pkgs.opensnitch-ui ];
   };
 }

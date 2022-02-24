@@ -125,6 +125,8 @@ in {
             always = true;
           } ++ lib.optional (cfg.displayServer == "wayland") {
             command = "mako";
+          } ++ lib.optional (cfg.role == "workstation") {
+            command = "opensnitch-ui";
           };
 
           keybindings = {
