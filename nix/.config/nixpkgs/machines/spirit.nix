@@ -15,9 +15,7 @@
         scale = "1.0";
       };
       "HDMI-A-1" = {
-#        resolution = "1280x720";
-        pos = "0 0";
-#        scale = "0.5";
+        resolution = "1920x1080";
       };
     };
 
