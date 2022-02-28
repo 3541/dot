@@ -60,11 +60,17 @@ in {
       type = lib.types.enum [ "intel" "amd" ];
       default = "intel";
     };
+
+    flakes = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   imports = [
     ./boot.nix
     ./display.nix
+    ./flake.nix
     ./fs.nix
     ./hardened.nix
     ./hardware.nix
