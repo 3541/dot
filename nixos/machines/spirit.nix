@@ -35,5 +35,11 @@ in {
     #    };
 
     programs.steam.enable = true;
+
+    services.undervolt = {
+      enable = true;
+      coreOffset = -160;
+      uncoreOffset = -160;
+    };
   };
 }
