@@ -14,9 +14,7 @@
         resolution = "3840x2160";
         scale = "1.0";
       };
-      "HDMI-A-1" = {
-        resolution = "1920x1080";
-      };
+      "HDMI-A-1".resolution = "1920x1080";
     };
 
     input = {

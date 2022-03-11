@@ -25,14 +25,6 @@ in {
       videoDrivers = [ "modesetting" "nouveau" ];
       dpi = 96;
     };
-    # Once nVidia 490.44 lands, it should be possible to switch to PRIME Sync mode, instead (and
-    # hopefully get external displays working).
-    #    hardware.bumblebee.enable = true;
-    #    hardware.nvidia.prime = {
-    #      sync.enable = true;
-    #      intelBusId = "PCI:0:2:0";
-    #      nvidiaBusId = "PCI:1:0:0";
-    #    };
 
     programs.steam.enable = true;
 

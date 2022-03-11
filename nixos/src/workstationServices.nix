@@ -16,11 +16,9 @@ in {
     };
 
     virtualisation.libvirtd.enable = true;
+    virtualisation.docker.enable = true;
 
-    programs.gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
+    programs.gnupg.agent.enable = true;
     services.pcscd.enable = true;
     services.vnstat.enable = true;
 
@@ -30,5 +28,7 @@ in {
 
     services.opensnitch.enable = cfg.role == "workstation";
     environment.systemPackages = [ pkgs.opensnitch-ui ];
+
+    programs.ssh.startAgent = true;
   };
 }

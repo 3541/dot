@@ -7,6 +7,7 @@ in {
       extraGroups = [ "wheel" ]
         ++ lib.optional (cfg.displayServer != "none") "video"
         ++ lib.optional (cfg.role == "workstation") "libvirtd"
+        ++ lib.optional (cfg.role == "workstation") "docker"
         ++ lib.optional (cfg.formFactor == "portable") "networkmanager";
       openssh.authorizedKeys.keys = [
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLTwFclui7JdzUVdxNI9pMEXs+d0FtDHfBf/rcfqjf5D3JdtEi6qehzdg/fZcG/ZR7d1dFY/pQem/8TnY4d/KNs= alex@spirit"
