@@ -87,6 +87,10 @@ in {
 
             nix-channel --update
             home-manager switch
+
+            if command -v flatpak; then
+              flatpak update
+            fi
           '')
         ] ++ lib.optional (cfg.platform != "macOS") lm_sensors
         ++ lib.optionals (cfg.role == "workstation") [
