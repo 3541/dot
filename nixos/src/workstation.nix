@@ -1,8 +1,8 @@
 { lib, config, ... }:
 let cfg = config.a3;
 in {
-  config = {
-    security.pam.loginLimits = lib.mkIf (cfg.role == "workstation") [{
+  config = lib.mkIf (cfg.role == "workstation") {
+    security.pam.loginLimits = [{
       domain = "*";
       type = "hard";
       item = "memlock";
