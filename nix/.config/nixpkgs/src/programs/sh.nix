@@ -62,4 +62,14 @@ in {
       theme = "solarized-dark16";
     };
   };
+
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    newSession = true;
+    keyMode = "vi";
+    extraConfig = ''
+      set -g mouse on
+    '';
+  };
 }
