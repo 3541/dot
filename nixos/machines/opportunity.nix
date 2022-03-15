@@ -31,9 +31,6 @@
 
     swapDevices = [{ device = "/opt/swapfile"; }];
 
-    networking.interfaces.enp0s25.useDHCP = true;
-    networking.interfaces.eth0.useDHCP = true;
-
     services.xserver.dpi = 96;
     hardware.video.hidpi.enable = true;
 
@@ -74,5 +71,14 @@
     services.udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
     '';
+
+    networking = {
+      interfaces.enp0s25.useDHCP = true;
+      bridges.br0.interfaces = [ "eth0" ];
+      firewall = {
+        checkReversePath = false;
+        interfaces.eth0.allowedTCPPorts = [ 80 ];
+      };
+    };
   };
 }
