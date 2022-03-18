@@ -249,6 +249,19 @@ in {
             "Mod1+Shift+l" =
               "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
           };
+
+          modes.resize = {
+            Escape = "mode default";
+            Return = "mode default";
+            Down = "resize grow height 10 px or 10 ppt";
+            j = "resize grow height 10 px or 10 ppt";
+            Left = "resize shrink width 10 px or 10 ppt";
+            h = "resize shrink width 10 px or 10 ppt";
+            Right = "resize grow width 10 px or 10 ppt";
+            l = "resize grow width 10 px or 10 ppt";
+            Up = "resize shrink height 10 px or 10 ppt";
+            k = "resize shrink height 10 px or 10 ppt";
+          };
         };
       }
 
