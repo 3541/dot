@@ -54,7 +54,10 @@ in {
           (auto-package-update-at-time "12:00"))
 
         (use-package undo-tree
-          :ensure t)
+          :ensure t
+          :config
+          (global-undo-tree-mode)
+          (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 
         (use-package evil
           :ensure t
@@ -67,8 +70,7 @@ in {
           (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
           (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
           (setq x-select-enable-clipboard nil)
-          (evil-set-undo-system 'undo-tree)
-          (global-undo-tree-mode))
+          (evil-set-undo-system 'undo-tree))
 
         (use-package evil-collection
           :after evil
