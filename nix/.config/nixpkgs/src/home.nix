@@ -106,6 +106,8 @@ in {
           zoom-us
 
           virt-manager
+
+          libreoffice
         ] ++ lib.optionals (cfg.displayServer != "none") [
           evince
           pavucontrol
