@@ -119,6 +119,7 @@ in {
 
     programs.ssh.enable = true;
     manual.manpages.enable = cfg.role == "workstation";
+    programs.man.enable = cfg.role == "workstation";
     xdg.mimeApps.enable = cfg.displayServer != "none";
 
     xresources.extraConfig = lib.mkIf (cfg.displayServer != "none")
