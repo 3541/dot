@@ -415,7 +415,7 @@ in {
 
     services.notify-osd.enable = cfg.role == "workstation" && cfg.displayServer
       == "xorg";
-    programs.mako = lib.mkIf (cfg.role == "workstation") {
+    programs.mako = lib.mkIf (cfg.role == "workstation" && cfg.displayServer == "wayland") {
       enable = true;
       backgroundColor = colors.background;
       borderColor = colors.focus;
