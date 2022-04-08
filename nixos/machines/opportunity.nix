@@ -6,6 +6,7 @@
       hostname = "opportunity";
       displayServer = "xorg";
       videoDrivers = [ "nvidia" ];
+      flakes = true;
     };
 
     boot.initrd.secrets = { "keyfile" = "/etc/secrets/initrd/keyfile"; };
