@@ -255,7 +255,8 @@ in {
           :after org
           :config
           (setq org-drill-scope 'directory)
-          (setq org-drill-add-random-noise-to-intervals-p t))
+          (setq org-drill-add-random-noise-to-intervals-p t)
+          (setq org-drill-adjust-intervals-for-early-and-late-repetitions-p t))
 
         (use-package evil-org
           :ensure t
