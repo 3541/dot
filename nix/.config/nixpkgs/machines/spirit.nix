@@ -21,7 +21,11 @@
       "type:touchpad".events = "disabled";
       "type:touch".events = "disabled";
       "type:tablet tool".events = "disabled";
-      "type:pointer".pointer_accel = "1.0";
+      "type:pointer" = {
+        pointer_accel = "1.0";
+        accel_profile = "adaptive";
+      };
+      "type:keyboard".xkb_options = "ctrl:nocaps";
     };
   };
 }
