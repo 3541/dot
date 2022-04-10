@@ -105,9 +105,56 @@ in {
           mathematica
           zoom-us
 
-          virt-manager
-
           libreoffice
+          virt-manager
+          (writeShellScriptBin "vup" ''
+            set -euo pipefail
+
+            GREEN='\e[0;32m'
+            BLUE='\e[0;34m'
+            NC='\e[0m'
+
+            info() {
+                printf "[''${BLUE}%-21s''${NC}] %-11s" "$1" "$2"
+            }
+
+            idone() {
+                printf "''${GREEN}Done.''${NC}\n"
+            }
+
+            v() {
+                virsh -c qemu:///system "$@"
+            }
+
+            for vm in $(v list --inactive | tail -n '+3' | awk '{ print $2 }'); do
+                if [[ "$vm" == *"win"* ]]; then
+                    info "$vm" "SKIPPED."
+                    continue
+                fi
+
+                info "$vm" "Starting... "
+                v start "$vm" > /dev/null
+
+                while ! grep -q "ipv4" <(v domifaddr "$vm"); do
+                    sleep 1
+                done
+
+                ip=$(v domifaddr "$vm" | tail -n '+3' | awk '{ print $4 }' | cut -d'/' -f1)
+                while ! ssh alex@"$ip" exit 0 2> /dev/null; do
+                    sleep 1
+                done
+                idone
+                info "$vm" "$ip"
+                echo
+
+                info "$vm" "Updating..."
+                echo
+                ssh alex@"$ip" up
+                ssh alex@"$ip" sudo poweroff || true
+                info "$vm" "Updating..."
+                idone
+            done
+          '')
         ] ++ lib.optionals (cfg.displayServer != "none") [
           evince
           pavucontrol
