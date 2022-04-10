@@ -113,47 +113,69 @@ in {
             GREEN='\e[0;32m'
             BLUE='\e[0;34m'
             NC='\e[0m'
+            INFO_PREFIX="[''${BLUE}%-21s''${NC}]"
 
             info() {
-                printf "[''${BLUE}%-21s''${NC}] %-11s" "$1" "$2"
+                printf "''${INFO_PREFIX} %b\n" "$1" "$2"
             }
 
             idone() {
-                printf "''${GREEN}Done.''${NC}\n"
+                info "$1" "$2 ''${GREEN}Done.''${NC}"
             }
 
             v() {
                 virsh -c qemu:///system "$@"
             }
 
-            for vm in $(v list --inactive | tail -n '+3' | awk '{ print $2 }'); do
-                if [[ "$vm" == *"win"* ]]; then
+            update_vm() (
+                vm="$1"
+
+                if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]]; then
                     info "$vm" "SKIPPED."
-                    continue
+                    return
                 fi
 
-                info "$vm" "Starting... "
+                info "$vm" "Starting..."
                 v start "$vm" > /dev/null
 
-                while ! grep -q "ipv4" <(v domifaddr "$vm"); do
-                    sleep 1
-                done
+                case "$vm" in
+                    *gentoo*)
+                        ip="192.168.1.79"
+                    ;;
+                    *macOS*)
+                        while ! grep -q "macos" <(v net-dhcp-leases default); do
+                            sleep 5
+                        done
 
-                ip=$(v domifaddr "$vm" | tail -n '+3' | awk '{ print $4 }' | cut -d'/' -f1)
+                        ip=$(v net-dhcp-leases default | grep "macos" | awk '{ print $5 }' | cut -d '/' -f1)
+                    ;;
+                    *)
+                        while ! grep -q "ipv4" <(v domifaddr "$vm"); do
+                            sleep 5
+                        done
+
+                        ip=$(v domifaddr "$vm" | tail -n '+3' | awk '{ print $4 }' | cut -d'/' -f1)
+                    ;;
+                esac
+
                 while ! ssh alex@"$ip" exit 0 2> /dev/null; do
-                    sleep 1
+                    sleep 5
                 done
-                idone
+                idone "$vm" "Starting..."
                 info "$vm" "$ip"
-                echo
 
-                info "$vm" "Updating..."
-                echo
-                ssh alex@"$ip" up
-                ssh alex@"$ip" sudo poweroff || true
-                info "$vm" "Updating..."
-                idone
+                info "$vm" "Updating... "
+                ssh alex@"$ip" "\$SHELL -l -c 'up'" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
+                ssh alex@"$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
+                    | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+                idone "$vm" "Updating..."
+            )
+
+            for vm in $(v list --inactive | tail -n '+3' | awk '{ print $2 }'); do
+                update_vm "$vm" &
             done
+
+            wait
           '')
         ] ++ lib.optionals (cfg.displayServer != "none") [
           evince
