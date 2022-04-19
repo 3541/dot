@@ -1,7 +1,7 @@
 { lib, config, pkgs, ... }:
 let cfg = config.a3;
 in {
-  config = lib.mkIf (cfg.displayServer != "none") {
+  config = if (cfg.displayServer != "none") then {
     services.xserver = {
       enable = true;
       videoDrivers = cfg.videoDrivers;
@@ -49,12 +49,8 @@ in {
           };
           ligations = {
             inherits = "dlig";
-            disables = [
-              "brace-bar"
-              "brack-bar"
-              "connected-tilde-as-wave"
-              "plusplus"
-            ];
+            disables =
+              [ "brace-bar" "brack-bar" "connected-tilde-as-wave" "plusplus" ];
           };
         };
         set = "custom";
@@ -64,5 +60,7 @@ in {
       font-awesome_4
       nerdfonts
     ];
+  } else {
+    environment.noXlibs = true;
   };
 }
