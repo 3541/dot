@@ -16,7 +16,10 @@ in {
     };
 
     virtualisation.libvirtd.enable = true;
-    virtualisation.docker.enable = true;
+    virtualisation.docker = {
+      enable = true;
+      extraOptions = "--ipv6 --fixed-cidr-v6 fd00::/80";
+    };
 
     programs.gnupg.agent.enable = true;
     services.pcscd.enable = true;
