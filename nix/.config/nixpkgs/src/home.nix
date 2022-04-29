@@ -130,6 +130,13 @@ in {
             update_vm() (
                 vm="$1"
 
+                mkdir -p ~/.cache/vup
+                timestamp_file="$HOME/.cache/vup/$vm"
+                if [[ -f "$timestamp_file" ]] && [[ "$(($(cat $timestamp_file) + 60 * 60 * 24))" -ge "$(date '+%s')" ]]; then
+                    info "$vm" "Already updated."
+                    return
+                fi
+
                 if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]]; then
                     info "$vm" "SKIPPED."
                     return
@@ -166,9 +173,11 @@ in {
 
                 info "$vm" "Updating... "
                 ssh alex@"$ip" "\$SHELL -l -c 'up'" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
-                ssh alex@"$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
+                timeout 3 ssh alex@"$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
                     | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
                 idone "$vm" "Updating..."
+
+                date '+%s' > "$timestamp_file"
             )
 
             for vm in $(v list --inactive | tail -n '+3' | awk '{ print $2 }'); do
