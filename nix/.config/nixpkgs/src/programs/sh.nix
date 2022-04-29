@@ -19,6 +19,7 @@ in {
       b = "bazel build //...";
       t = "bazel test //...";
       r = "bazel run //...";
+      g = "git";
     };
     initExtra = ''
       shopt -s globstar

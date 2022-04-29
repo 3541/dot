@@ -6,6 +6,17 @@ in {
     userName = "Alex O'Brien";
     userEmail = "3541ax@gmail.com";
 
+    aliases = {
+      d = "diff";
+      ds = "diff --staged";
+      a = "add";
+      c = "commit";
+      p = "push";
+      cl = "clone";
+      s = "status";
+      l = "log";
+    };
+
     signing = lib.mkIf (cfg.role == "workstation") {
       key = "0x1EECFF9EE39ED7AA";
       signByDefault = true;
