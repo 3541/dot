@@ -340,7 +340,8 @@ in {
         	      (setq TeX-PDF-mode t)
         	      (setq TeX-source-correlate-method 'synctex)
         	      (setq TeX-source-correlate-start-server t)
-        	      (pdf-tools-install)))
+        	      (pdf-tools-install)
+                (LaTeX-math-mode)))
           (setq TeX-engine 'xetex)
           (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
         	    #'TeX-revert-document-buffer)
