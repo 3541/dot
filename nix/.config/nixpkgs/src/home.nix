@@ -181,7 +181,7 @@ in {
             )
 
             for vm in $(v list --inactive | tail -n '+3' | awk '{ print $2 }'); do
-                update_vm "$vm" &
+                update_vm "$vm"
             done
 
             wait
