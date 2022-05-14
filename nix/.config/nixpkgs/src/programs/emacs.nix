@@ -545,6 +545,9 @@ in {
             (if (window-dedicated-p (selected-window))
                 nil t))))
 
+        (define-key prog-mode-map (kbd "C-c e n") 'flymake-goto-next-error)
+        (define-key prog-mode-map (kbd "C-c e p") 'flymake-goto-prev-error)
+
         (setq gdb-many-windows t)
 
         (setq tab-width 4)
