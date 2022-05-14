@@ -46,6 +46,12 @@
         ];
         path = "/share/backup-marx";
       };
+      spirit = {
+        authorizedKeys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIChbiN2rLQEFvc/hmjWCWBU4nBvl9NOw3X320E5my3es root@spirit"
+        ];
+        path = "/share/backup-spirit";
+      };
     };
 
     # Open ports in the firewall.
