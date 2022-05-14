@@ -4,7 +4,7 @@ in {
   programs.git = {
     enable = true;
     userName = "Alex O'Brien";
-    userEmail = "3541ax@gmail.com";
+    userEmail = "3541@3541.website";
 
     aliases = {
       d = "diff";
@@ -41,6 +41,7 @@ in {
       };
       log.showSignature = true;
       init.defaultBranch = "trunk";
+      merge.renamelimit = 10000;
     };
   };
 
