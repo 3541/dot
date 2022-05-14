@@ -488,6 +488,14 @@ in {
                                                ("_" (rx (+ "_")))))
           (global-ligature-mode t))
 
+        (use-package json-mode
+          :ensure t)
+
+        (use-package nasm-mode
+          :ensure t
+          :config
+          (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode)))
+
         (load-file "~/.emacs.d/sensible-defaults.el")
 
         (sensible-defaults/use-all-settings)
