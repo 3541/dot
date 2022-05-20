@@ -38,14 +38,14 @@
     services.borgbackup.jobs.backup = {
       paths = [ "/home/alex" "/etc/nixos" ];
       exclude = [
-        ".cache"
+        "/home/alex/.cache"
         "*/Cache"
         "*/cache"
-        "images"
-        ".local/share/Steam"
-        ".cargo"
-        ".config"
-        ".npm"
+        "/home/alex/images"
+        "/home/alex/.local/share/Steam"
+        "/home/alex/.cargo"
+        "/home/alex/.config"
+        "/home/alex/.npm"
         "*/node_modules"
         "*/build"
         "*/venv"
