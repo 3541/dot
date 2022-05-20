@@ -72,7 +72,6 @@ in {
     ./display.nix
     ./flake.nix
     ./fs.nix
-    ./hardened.nix
     ./hardware.nix
     ./l10n.nix
     ./net.nix
