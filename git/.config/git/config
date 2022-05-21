@@ -1,0 +1,55 @@
+[alias]
+	a = "add"
+	c = "commit"
+	cl = "clone"
+	d = "diff"
+	ds = "diff --staged"
+	l = "log"
+	p = "push"
+	r = "rebase"
+	ri = "rebase -i"
+	s = "status"
+
+[commit]
+	gpgSign = true
+
+[core]
+	pager = "delta"
+
+[credential "https://github.com"]
+	helper = "gh auth git-credential"
+
+[delta]
+	features = "side-by-side line-numbers"
+	syntax-theme = "Solarized (dark)"
+	whitespace-error-style = "22 reverse"
+
+[gpg]
+	program = "gpg2"
+
+[init]
+	defaultBranch = "trunk"
+
+[interactive]
+	diffFilter = "delta --color-only"
+
+[log]
+	showSignature = true
+
+[merge]
+	renamelimit = 10000
+
+[pull]
+	ff = "only"
+	rebase = false
+
+[rebase]
+	autoSquash = true
+
+[submodule]
+	fetchJobs = 8
+
+[user]
+	email = "3541@3541.website"
+	name = "Alex O'Brien"
+	signingKey = "0x1EECFF9EE39ED7AA"
