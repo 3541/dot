@@ -15,6 +15,8 @@ in {
       cl = "clone";
       s = "status";
       l = "log";
+      r = "rebase";
+      ri = "rebase -i";
     };
 
     signing = lib.mkIf (cfg.role == "workstation") {
@@ -42,6 +44,7 @@ in {
       log.showSignature = true;
       init.defaultBranch = "trunk";
       merge.renamelimit = 10000;
+      rebase.autoSquash = true;
     };
   };
 
