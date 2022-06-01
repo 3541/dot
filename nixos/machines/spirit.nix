@@ -14,8 +14,6 @@ in {
       esp = "/boot";
     };
 
-    swapDevices = [{ device = "/swapfile"; }];
-
     networking.interfaces.enp0s31f6.useDHCP = true;
     networking.interfaces.wlp0s20f3.useDHCP = true;
 
