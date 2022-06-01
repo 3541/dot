@@ -102,7 +102,6 @@ in {
           slack
           discord
           thunderbird
-          mathematica
           zoom-us
 
           libreoffice
