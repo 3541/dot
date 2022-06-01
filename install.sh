@@ -17,7 +17,7 @@ if command -v nix &> /dev/null; then
 
     if ! command -v home-manager &> /dev/null; then
         sudo nix-channel --add \
-             https://github.com/nix-community/home-manager/archive/release-21.11.tar.gz \
+             https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz \
              home-manager
         sudo nix-channel --update
         nix-shell '<home-manager>' -A install
