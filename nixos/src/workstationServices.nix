@@ -29,7 +29,8 @@ in {
 
     services.usbmuxd.enable = true;
 
-    services.opensnitch.enable = cfg.role == "workstation";
+    # Temporarily disabled. Breaks iptables command (and consequently libvirtd) in NixOS 22.05.
+    # services.opensnitch.enable = cfg.role == "workstation";
     environment.systemPackages = [ pkgs.opensnitch-ui ];
 
     programs.ssh.startAgent = true;
