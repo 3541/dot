@@ -5,8 +5,10 @@
     ./firefox.nix
     ./gdb.nix
     ./git.nix
-    ./sakura.nix
     ./kitty.nix
+    ./sakura.nix
     ./sh.nix
+    ./up.nix
+    ./vup.nix
   ];
 }
