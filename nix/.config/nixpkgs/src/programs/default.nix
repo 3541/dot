@@ -9,6 +9,7 @@
     ./sakura.nix
     ./sh.nix
     ./up.nix
+    ./vrun.nix
     ./vup.nix
   ];
 }
