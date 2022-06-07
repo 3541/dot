@@ -3,7 +3,7 @@ set -euo pipefail
 GREEN='\e[0;32m'
 BLUE='\e[0;34m'
 NC='\e[0m'
-INFO_PREFIX="[${BLUE}%-21s${NC}]"
+INFO_PREFIX="[${BLUE}%-17s${NC}]"
 
 info() {
     printf "${INFO_PREFIX} %b\n" "$1" "$2"
@@ -17,11 +17,18 @@ v() {
     virsh -c qemu:///system "$@"
 }
 
-update_vm() (
+vm_run() (
     vm="$1"
     command="$2"
+    status_file="$3"
 
-    if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]]; then
+    if [[ -f "$status_file" ]] && grep -q "$command" "$status_file" && \
+           grep -q "$vm" "$status_file"; then
+        info "$vm" "Already run."
+        return
+    fi
+
+    if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]] || [[ "$vm" = *"ubuntu16.04"* ]]; then
         info "$vm" "SKIPPED."
         return
     fi
@@ -57,7 +64,10 @@ update_vm() (
 
     info "$vm" "Copying directory... "
     tmpdir=$(ssh alex@"$ip" "mktemp -d")
-    scp -rq . alex@"$ip":"$tmpdir/"
+    rsync -a -e ssh --exclude='/.git' --filter=':- .gitignore' . "$ip":"$tmpdir/"
+    if [[ -d "subprojects" ]]; then
+        rsync -a -e ssh subprojects/* "$ip":"$tmpdir/subprojects/"
+    fi
     idone "$vm" "Copying directory... "
 
     info "$vm" "Running command..."
@@ -70,10 +80,19 @@ update_vm() (
 
     timeout 3 ssh alex@"$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
         | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+
+    echo "$vm" >> "$status_file"
 )
 
-for vm in $(v list | tail -n '+3' | awk '{ print $2 }'); do
-    update_vm "$vm" "$*"
+mkdir -p ~/.cache/vrun
+if [[ ! -f ~/.cache/vrun/progress ]] || ! grep -q "$*" ~/.cache/vrun/progress; then
+    echo "$*" > ~/.cache/vrun/progress
+fi
+
+for vm in $(v list --all | tail -n '+3' | awk '{ print $2 }'); do
+    vm_run "$vm" "$*" ~/.cache/vrun/progress
 done
+
+rm -f ~/.cache/vrun/progress
 
 wait
