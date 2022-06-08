@@ -4,5 +4,6 @@ in {
   config.networking = {
     hostName = cfg.hostname;
     networkmanager.enable = cfg.formFactor == "portable";
+    firewall.checkReversePath = "loose";
   };
 }
