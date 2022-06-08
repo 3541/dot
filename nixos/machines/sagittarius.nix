@@ -50,5 +50,8 @@
         path = "/share/backup-spirit";
       };
     };
+
+    # Requires rebuilds, some of which don't work.
+    environment.noXlibs = false;
   };
 }
