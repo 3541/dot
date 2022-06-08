@@ -17,6 +17,17 @@ v() {
     virsh -c qemu:///system "$@"
 }
 
+run_command() (
+    ip="$1"
+    command="$2"
+
+    if ssh "$ip" uname &> /dev/null; then
+        ssh "$ip" "$command"
+    else
+        ssh "$ip" "bash -c \"$command\""
+    fi
+)
+
 vm_run() (
     vm="$1"
     command="$2"
@@ -28,7 +39,7 @@ vm_run() (
         return
     fi
 
-    if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]] || [[ "$vm" = *"ubuntu16.04"* ]]; then
+    if [[ "$vm" = *"guix"* ]]; then
         info "$vm" "SKIPPED."
         return
     fi
@@ -56,14 +67,20 @@ vm_run() (
             ;;
     esac
 
-    while ! ssh alex@"$ip" exit 0 2> /dev/null; do
+    while ! ssh "$ip" exit 0 2> /dev/null; do
         sleep 5
     done
     idone "$vm" "Starting..."
     info "$vm" "$ip"
 
     info "$vm" "Copying directory... "
-    tmpdir=$(ssh alex@"$ip" "mktemp -d")
+    if [[ "$vm" != *"win"* ]]; then
+        tmpdir="$(ssh "$ip" "mktemp -d")"
+        tmpdir_rsync="$tmpdir"
+    else
+        tmpdir="AppData/Local/Temp/$(mktemp -u XXXXXX)"
+        ssh "$ip" "bash -c \"mkdir -p $tmpdir\""
+    fi
     rsync -a -e ssh --exclude='/.git' --filter=':- .gitignore' . "$ip":"$tmpdir/"
     if [[ -d "subprojects" ]]; then
         rsync -a -e ssh subprojects/* "$ip":"$tmpdir/subprojects/"
@@ -71,15 +88,19 @@ vm_run() (
     idone "$vm" "Copying directory... "
 
     info "$vm" "Running command..."
-    ssh alex@"$ip" "cd $tmpdir && $command" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
+    run_command "$ip" "cd $tmpdir && \"$command\"" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
     idone "$vm" "Running command..."
 
     info "$vm" "Cleaning up..."
-    ssh alex@"$ip" "rm -rf $tmpdir"
+    run_command "$ip" "rm -rf $tmpdir"
     idone "$vm" "Cleaning up..."
 
-    timeout 3 ssh alex@"$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
-        | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+    if [[ "$vm" != *"win"* ]]; then
+        timeout 3 ssh "$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
+            | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+    else
+        ssh "$ip" "shutdown /s" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+    fi
 
     echo "$vm" >> "$status_file"
 )
