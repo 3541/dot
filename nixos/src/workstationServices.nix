@@ -15,7 +15,17 @@ in {
       '';
     };
 
-    virtualisation.libvirtd.enable = true;
+    virtualisation.libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+        # OVMFFull is broken at the moment. https://github.com/NixOS/nixpkgs/issues/164064
+        ovmf.package = pkgs.OVMF.override {
+          secureBoot = true;
+          tpmSupport = true;
+        };
+      };
+    };
     virtualisation.docker = {
       enable = true;
       extraOptions = "--ipv6 --fixed-cidr-v6 fd00::/80";
