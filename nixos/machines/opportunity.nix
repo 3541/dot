@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   config = {
     a3 = {
       enable = true;
@@ -77,7 +77,7 @@
       interfaces.enp0s25.useDHCP = true;
       bridges.br0.interfaces = [ "eth0" ];
       firewall = {
-        checkReversePath = false;
+        checkReversePath = lib.mkForce false;
         interfaces.eth0.allowedTCPPorts = [ 80 ];
       };
     };
