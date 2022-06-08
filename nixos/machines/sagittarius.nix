@@ -15,14 +15,11 @@
 
     services.samba = {
       enable = true;
-      securityType = "user";
+      openFirewall = true;
       extraConfig = ''
         server string = sagittarius
         netbios name = sagittarius
-        security = user
-        log level = 4
-        log file = /var/log/samba/samba.log
-        hosts allow = 192.168.1.0/24
+        hosts allow = 192.168.1.0/24 100.64.0.0/10
         smb encrypt = required
       '';
 
@@ -53,22 +50,5 @@
         path = "/share/backup-spirit";
       };
     };
-
-    # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
-    networking.firewall.allowPing = true;
-    networking.firewall.allowedTCPPorts = [
-      # samba
-      445
-      139
-    ];
-    networking.firewall.allowedUDPPorts = [
-      # samba
-      137
-      138
-    ];
   };
 }
