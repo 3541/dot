@@ -1,3 +1,3 @@
 {
-  imports = [ ./machines/current.nix ./src/home.nix ];
+  imports = [ ./machines/current.nix ./src/home.nix ./private.nix ];
 }
