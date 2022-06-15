@@ -20,6 +20,7 @@ in {
       t = "bazel test //...";
       r = "bazel run //...";
       g = "git";
+      s = "stg";
     };
     initExtra = ''
       shopt -s globstar

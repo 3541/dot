@@ -49,4 +49,6 @@ in {
   };
 
   programs.gh.enable = cfg.role == "workstation";
+
+  home.packages = [ pkgs.stgit ];
 }
