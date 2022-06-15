@@ -7,7 +7,5 @@ in {
       permitRootLogin = "no";
       passwordAuthentication = false;
     };
-
-    services.tailscale.enable = true;
   };
 }

@@ -8,7 +8,7 @@ in {
       networkmanager.enable = cfg.formFactor == "portable";
 
       firewall.checkReversePath = "loose";
-      nameservers = [ "100.100.100.100" " 1.1.1.1" ];
+      nameservers = [ "192.168.1.1" "1.1.1.1" "100.100.100.100" ];
       search = [ "3541.github.beta.tailscale.net" ];
     };
   };
