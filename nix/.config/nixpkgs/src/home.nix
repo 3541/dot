@@ -72,6 +72,7 @@ in {
           bashInteractive # Listed here explicitly so it can be used as a login shell if needed.
           tree
           ripgrep
+          pv
         ] ++ lib.optional (cfg.platform != "macOS") lm_sensors
         ++ lib.optionals (cfg.role == "workstation") [
           man-pages
@@ -83,7 +84,6 @@ in {
           discord
           thunderbird
           zoom-us
-
           libreoffice
           virt-manager
         ] ++ lib.optionals (cfg.displayServer != "none") [
