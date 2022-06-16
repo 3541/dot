@@ -13,6 +13,7 @@ in {
         keep-outputs = true
         keep-derivations = true
       '';
+      settings.trusted-users = [ "@wheel" ];
     };
 
     system.autoUpgrade = lib.mkIf (cfg.role == "server") {
