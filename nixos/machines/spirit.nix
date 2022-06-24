@@ -1,7 +1,15 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
-  nixos-hardware =
-    builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; };
+  nixos-hardware = builtins.fetchGit {
+    name = "nixos-hardware";
+    url = "https://github.com/NixOS/nixos-hardware.git";
+  };
+  nixpkgs-bcachefs = import (builtins.fetchTarball {
+    name = "nixpkgs-for-bcachefs";
+    url =
+      "https://github.com/NixOS/nixpkgs/archive/efb6eb853e8b1546ad7760a31159bf1a8ea132b3.tar.gz";
+    sha256 = "0kl5kx9g7ilfz05xa48gc8a6q5k73dzxksxdiqydvgb7sb84zbsb";
+  }) { };
 in {
   imports = [ "${nixos-hardware}/lenovo/thinkpad/x1-extreme" ];
 
@@ -63,5 +71,12 @@ in {
       coreOffset = -160;
       uncoreOffset = -160;
     };
+
+    # bcachefs needs 5.17.14. Builds on 5.17.15 and up appear to be broken. Remove this once nixpkgs
+    # updates.
+    boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor
+      (pkgs.linuxKernel.kernels.linux_testing_bcachefs.override {
+        kernel = nixpkgs-bcachefs.linuxKernel.kernels.linux_5_17;
+      }));
   };
 }
