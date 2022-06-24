@@ -20,6 +20,7 @@ in {
       displayServer = "wayland";
       formFactor = "portable";
       esp = "/boot";
+      buildSshKey = "id_ecdsa";
     };
 
     networking.interfaces.enp0s31f6.useDHCP = true;

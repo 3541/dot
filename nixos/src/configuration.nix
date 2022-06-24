@@ -63,12 +63,18 @@ in {
 
     flakes = lib.mkOption {
       type = lib.types.bool;
-      default = false;
+      default = true;
+    };
+
+    buildSshKey = lib.mkOption {
+      type = lib.types.str;
+      default = "id_ed25519";
     };
   };
 
   imports = [
     ./boot.nix
+    ./build.nix
     ./display.nix
     ./flake.nix
     ./fs.nix
