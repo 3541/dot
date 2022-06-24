@@ -5,7 +5,10 @@ in {
     home.packages = [ pkgs.sakura ];
 
     home.file.sakuraConfig = {
-      source = ./sakura.conf;
+      source = pkgs.substituteAll {
+        font = "${cfg.editorFont} ${toString cfg.fontSize}";
+        src = ./sakura.conf;
+      };
       target = ".config/sakura/sakura.conf";
     };
   };

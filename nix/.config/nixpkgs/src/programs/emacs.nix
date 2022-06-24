@@ -460,12 +460,14 @@ in {
           :ensure t)
 
         (use-package ligature
-          :load-path "${pkgs.fetchFromGitHub {
-            owner = "mickeynp";
-            repo = "ligature.el";
-            rev = "c0e696a88824be6afa1f33fad548d36f96801d8e";
-            sha256 = "10k7dwj0z0jckjla44icq1wcaw1jm4wnsvyzv8s1kf9nn6pb6gp8";
-          }}"
+          :load-path "${
+            pkgs.fetchFromGitHub {
+              owner = "mickeynp";
+              repo = "ligature.el";
+              rev = "c0e696a88824be6afa1f33fad548d36f96801d8e";
+              sha256 = "10k7dwj0z0jckjla44icq1wcaw1jm4wnsvyzv8s1kf9nn6pb6gp8";
+            }
+          }"
           :config
           (ligature-set-ligatures 'prog-mode '(("<" (rx (| ">"
                                                            (: "<" (? (| (+ "-") (+ "=") (+ "<"))))
@@ -574,14 +576,15 @@ in {
         (mapc 'frame-set-background-mode (frame-list))
         (enable-theme 'solarized)
 
-        (set-frame-font "Iosevka Custom-${toString cfg.fontSize}" nil t)
-        (add-to-list 'default-frame-alist '(font . "Iosevka Custom-${
+        (set-frame-font "${cfg.editorFont}-${toString cfg.fontSize}" nil t)
+        (add-to-list 'default-frame-alist '(font . "${cfg.editorFont}-${
           toString cfg.fontSize
         }"))
-      '' + lib.optionalString (cfg.platform == "macOS")
-        ''(add-to-list 'exec-path "~/.nix-profile/bin")
-          (add-to-list 'exec-path "/nix/var/nix/profiles/default/bin")
-          (add-to-list 'exec-path "/usr/local/bin")'';
+      '' + lib.optionalString (cfg.platform == "macOS") ''
+        (add-to-list 'exec-path "~/.nix-profile/bin")
+        (add-to-list 'exec-path "/nix/var/nix/profiles/default/bin")
+        (add-to-list 'exec-path "/usr/local/bin")
+      '';
     };
   };
 }

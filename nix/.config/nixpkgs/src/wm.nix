@@ -21,9 +21,10 @@ in {
     else
       "i3lock -c 000000";
     i3blocksContrib = import ./programs/i3blocks-contrib.nix;
-    dmenuArgs = "-fn iosevka-${
+    # Yes, this is meant to be editorFont, not uiFont.
+    dmenuArgs = "-fn '${cfg.editorFont}-${
         toString cfg.fontSize
-      } -nb '${colors.background}' -nf '${colors.foreground}' -sb '${colors.focus}' -sf '${colors.bright}'";
+      }' -nb '${colors.background}' -nf '${colors.foreground}' -sb '${colors.focus}' -sf '${colors.bright}'";
     wmConfig = lib.mkMerge [
       {
         enable = true;
@@ -37,7 +38,7 @@ in {
           terminal = term;
 
           fonts = {
-            names = [ "Iosevka" ];
+            names = [ cfg.uiFont ];
             style = "Regular";
             size = cfg.fontSize;
           };
@@ -88,7 +89,7 @@ in {
             statusCommand = "${pkgs.i3blocks}/bin/i3blocks";
             position = "top";
             fonts = {
-              names = [ "Iosevka" ];
+              names = [ cfg.uiFont ];
               style = "Light";
               size = cfg.fontSize;
             };
@@ -420,7 +421,7 @@ in {
       backgroundColor = colors.background;
       borderColor = colors.focus;
       textColor = colors.foreground;
-      font = "Iosevka ${toString cfg.fontSize}";
+      font = "${cfg.uiFont} ${toString cfg.fontSize}";
     };
   });
 }

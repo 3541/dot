@@ -40,6 +40,16 @@ in {
       default = false;
     };
 
+    uiFont = lib.mkOption {
+      type = lib.types.str;
+      default = "Iosevka";
+    };
+
+    editorFont = lib.mkOption {
+      type = lib.types.str;
+      default = "Iosevka Custom";
+    };
+
     fontSize = lib.mkOption {
       type = lib.types.float;
       default = 14.0;
