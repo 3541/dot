@@ -7,5 +7,6 @@ in {
       permitRootLogin = "no";
       passwordAuthentication = false;
     };
+    services.sshguard.enable = true;
   };
 }
