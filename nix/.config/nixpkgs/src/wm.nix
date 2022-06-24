@@ -21,7 +21,7 @@ in {
     else
       "i3lock -c 000000";
     i3blocksContrib = import ./programs/i3blocks-contrib.nix;
-    # Yes, this is meant to be editorFont, not uiFont.
+    # Yes, this is meant to be editorFont, not uiFont, but with the UI font size.
     dmenuArgs = "-fn '${cfg.editorFont}-${
         toString cfg.fontSize
       }' -nb '${colors.background}' -nf '${colors.foreground}' -sb '${colors.focus}' -sf '${colors.bright}'";

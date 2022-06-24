@@ -576,9 +576,9 @@ in {
         (mapc 'frame-set-background-mode (frame-list))
         (enable-theme 'solarized)
 
-        (set-frame-font "${cfg.editorFont}-${toString cfg.fontSize}" nil t)
+        (set-frame-font "${cfg.editorFont}-${toString cfg.editorFontSize}" nil t)
         (add-to-list 'default-frame-alist '(font . "${cfg.editorFont}-${
-          toString cfg.fontSize
+          toString cfg.editorFontSize
         }"))
       '' + lib.optionalString (cfg.platform == "macOS") ''
         (add-to-list 'exec-path "~/.nix-profile/bin")

@@ -6,7 +6,7 @@ in {
 
     home.file.sakuraConfig = {
       source = pkgs.substituteAll {
-        font = "${cfg.editorFont} ${toString cfg.fontSize}";
+        font = "${cfg.editorFont} ${toString (builtins.floor cfg.editorFontSize)}";
         src = ./sakura.conf;
       };
       target = ".config/sakura/sakura.conf";

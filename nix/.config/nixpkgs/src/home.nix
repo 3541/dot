@@ -45,12 +45,17 @@ in {
       default = "Iosevka";
     };
 
+    fontSize = lib.mkOption {
+      type = lib.types.float;
+      default = 14.0;
+    };
+
     editorFont = lib.mkOption {
       type = lib.types.str;
       default = "Iosevka Custom";
     };
 
-    fontSize = lib.mkOption {
+    editorFontSize = lib.mkOption {
       type = lib.types.float;
       default = 14.0;
     };
