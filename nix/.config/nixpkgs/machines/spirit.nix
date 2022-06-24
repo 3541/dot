@@ -6,6 +6,7 @@
     potato = true;
     fontSize = 16.0;
     formFactor = "portable";
+    editorFont = "Berkeley Mono";
   };
 
   wayland.windowManager.sway.config = {
