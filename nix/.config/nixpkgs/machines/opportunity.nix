@@ -6,6 +6,7 @@
       enable = true;
       displayServer = "xorg";
       windowGaps = true;
+      editorFont = "Berkeley Mono";
     };
 
     xsession.windowManager.i3.config.startup = [{
