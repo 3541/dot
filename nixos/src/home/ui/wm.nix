@@ -6,7 +6,7 @@
     lockCommand = if (cfg.display.server == "wayland") then
       "${pkgs.swaylock}/bin/swaylock -f -c 000000"
     else
-      "${pkgs.i3lock} -c 000000";
+      "${pkgs.i3lock}/bin/i3lock -c 000000";
 
     dmenuArgs = " -fn '${cfg.home.ui.fonts.editor.font}-${
          toString cfg.home.ui.fonts.ui.size
@@ -330,7 +330,7 @@
             # See the script for details.
             [volume]
             #label=VOL
-            label=♪
+            label=♪ 
             instance=Master
             #instance=PCM
             interval=once
@@ -340,17 +340,17 @@
             #
             # The type defaults to "mem" if the instance is not specified.
             [memory]
-            label=MEM
+            label=MEM 
             separator=false
             interval=30
 
             [memory]
-            label=SWAP
+            label=SWAP 
             instance=swap
             interval=30
 
             [disk]
-            label=ROOT
+            label=ROOT 
             interval=30
             instance=/
 
@@ -379,7 +379,7 @@
             # The script may be called with -w and -c switches to specify thresholds,
             # see the script for details.
             [cpu_usage]
-            label=CPU
+            label=CPU 
             interval=10
             #min_width=CPU: 100.00%
             #separator=false
@@ -398,7 +398,7 @@
             # see the script for details.
             [temperature-cpu]
             command=${i3b-contrib}/libexec/i3blocks/temperature --chip coretemp-isa-0000 -w 60 -c 80
-            label=CORE
+            label=CORE 
             interval=10
 
             #[weather]
