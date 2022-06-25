@@ -1,18 +1,10 @@
-{ config, lib, ... }:
+{ lib, config, ... }:
 let cfg = config.a3;
 in {
-  options.a3.fs.tmpOnTmpfs = lib.mkOption {
-    type = lib.types.bool;
-    default = true;
-  };
-
-  config = lib.mkIf cfg.enable {
-    boot = {
-      tmpOnTmpfs = cfg.fs.tmpOnTmpfs;
-      tmpOnTmpfsSize = lib.optionalString cfg.fs.tmpOnTmpfs "85%";
-      cleanTmpDir = !cfg.fs.tmpOnTmpfs;
-    };
-
+  config = {
+    boot.tmpOnTmpfs = !cfg.smallMemory;
+    boot.tmpOnTmpfsSize = lib.mkIf (!cfg.smallMemory) "85%";
+    boot.cleanTmpDir = cfg.smallMemory;
     fileSystems."/mnt/net_share" = lib.mkIf (cfg.role == "workstation") {
       device = "//sagittarius/share";
       fsType = "cifs";

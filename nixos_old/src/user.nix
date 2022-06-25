@@ -1,10 +1,15 @@
-{ config, lib, ... }:
+{ lib, config, ... }:
 let cfg = config.a3;
 in {
-  options.a3.user = {
-    authorizedKeys = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [
+  config = {
+    users.users.alex = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ]
+        ++ lib.optional (cfg.displayServer != "none") "video"
+        ++ lib.optional (cfg.role == "workstation") "libvirtd"
+        ++ lib.optional (cfg.role == "workstation") "docker"
+        ++ lib.optional (cfg.formFactor == "portable") "networkmanager";
+      openssh.authorizedKeys.keys = [
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLTwFclui7JdzUVdxNI9pMEXs+d0FtDHfBf/rcfqjf5D3JdtEi6qehzdg/fZcG/ZR7d1dFY/pQem/8TnY4d/KNs= alex@spirit"
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJwJvUR+hIuXjHYR2SPbNsRlbkWy4yCDF+QAQVidJWkMAAAABHNzaDo= alex@snafu"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOa+tkiKGgQz0tLv5b9qswiSXfGdv4ThJpfxeIWOoLM alex@opportunity"
@@ -12,23 +17,5 @@ in {
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDhFMPPiVu23qzo2gWjm8RCsaOC/xn8559oVdyAuryLy alex@viking-1.my.domain"
       ];
     };
-
-    groups = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-    };
-  };
-
-  config.users.users.alex = lib.mkIf cfg.enable {
-    isNormalUser = true;
-    initialPassword = "changeme";
-
-    extraGroups = [ "wheel" ] ++ lib.optional cfg.display.enable "video"
-      ++ lib.optional (cfg.role == "workstation") "libvirtd"
-      ++ lib.optional (cfg.role == "workstation") "docker"
-      ++ lib.optional (cfg.hardware.formFactor == "portable") "networkmanager"
-      ++ cfg.user.groups;
-
-    openssh.authorizedKeys.keys = cfg.user.authorizedKeys;
   };
 }

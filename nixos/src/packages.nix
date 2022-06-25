@@ -1,16 +1,18 @@
-{ lib, config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let cfg = config.a3;
 in {
-  config = {
-    environment.systemPackages = with pkgs; [ vim wget file borgbackup ];
-    services.flatpak.enable = cfg.role == "workstation";
-    xdg.portal = lib.mkIf (cfg.role == "workstation") {
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [ vim wget file ];
+    services.flatpak.enable = cfg.role == "workstation" && cfg.display.enable;
+    xdg.portal = lib.mkIf (cfg.role == "workstation" && cfg.display.enable) {
       enable = true;
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-      wlr.enable = cfg.displayServer == "wayland";
+      wlr.enable = cfg.display.server == "wayland";
     };
 
-    documentation.dev.enable = cfg.role == "workstation";
-    documentation.man.generateCaches = cfg.role == "workstation";
+    documentation = lib.mkIf (cfg.role == "workstation") {
+      dev.enable = true;
+      man.generateCaches = true;
+    };
   };
 }

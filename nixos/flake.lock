@@ -1,0 +1,156 @@
+{
+  "nodes": {
+    "a3": {
+      "inputs": {
+        "home": "home",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-I4VpWvVWkd/tgfv+ARZqjI6ZsMm04tDb4okpH+nE9nk=",
+        "path": "/nix/store/4xhiqqjdczn7f0y3b341bbi85mgbp3hf-source/nixos/src",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/4xhiqqjdczn7f0y3b341bbi85mgbp3hf-source/nixos/src",
+        "type": "path"
+      }
+    },
+    "emacs-color-theme-solarized": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1508858744,
+        "narHash": "sha256-oxX0lo6sxotEiR3nPrKPE9H01HKB3ohB/p8eEHFTp5k=",
+        "owner": "sellout",
+        "repo": "emacs-color-theme-solarized",
+        "rev": "f3ca8902ea056fb8e46cb09f09c96294e31cd4ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sellout",
+        "repo": "emacs-color-theme-solarized",
+        "type": "github"
+      }
+    },
+    "emacs-sensible-defaults": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1652976211,
+        "narHash": "sha256-MiW8Jxy9Wv9txfYx9Y+QbUjlUSeNtGVNX7KNeN39cKY=",
+        "owner": "hrs",
+        "repo": "sensible-defaults.el",
+        "rev": "82f45b3f06ae76e45756e5b89b4be9d5e479105f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hrs",
+        "repo": "sensible-defaults.el",
+        "type": "github"
+      }
+    },
+    "home": {
+      "inputs": {
+        "emacs-color-theme-solarized": "emacs-color-theme-solarized",
+        "emacs-sensible-defaults": "emacs-sensible-defaults",
+        "home-manager": "home-manager",
+        "i3blocks-contrib": "i3blocks-contrib",
+        "nixpkgs": [
+          "a3",
+          "nixpkgs"
+        ],
+        "solarized-xresources": "solarized-xresources"
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-3DKJMdfNebxRxW5pyk6FVUl//LS3djQUgdrlGKlINr8=",
+        "path": "/nix/store/vbla5i0h9kmh0qx8i7fvzgvvr9k2qb9m-source/home",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/vbla5i0h9kmh0qx8i7fvzgvvr9k2qb9m-source/home",
+        "type": "path"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "a3",
+          "home",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1655880690,
+        "narHash": "sha256-pO+EqUefNFolIWV1DHXPfI8NuUtD4fd7JFKoaCjVXOs=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "a839432a5c3d2a762d68168093349097e6affb07",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-22.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "i3blocks-contrib": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1652480301,
+        "narHash": "sha256-00mmkOSOhcAU3FXdg2psiFJSo0TLrCUUvB6aMJhAgUo=",
+        "owner": "vivien",
+        "repo": "i3blocks-contrib",
+        "rev": "719da43e036bae48be01b72f2d1fe24342b19ffc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vivien",
+        "repo": "i3blocks-contrib",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1656007306,
+        "narHash": "sha256-MsC44YZ6wuBwn5Bu8T+RVoQWlp2l5BR6hhmNoAAHIEw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ccf8bdf72624521358be6bb7d9b524c4cbcf7aff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-22.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "a3": "a3",
+        "nixpkgs": "nixpkgs"
+      }
+    },
+    "solarized-xresources": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1430001079,
+        "narHash": "sha256-Ls2wr69YKMDUBHKgOB4Im01dQ9V2WURHSx4NWN8Zu1M=",
+        "owner": "solarized",
+        "repo": "xresources",
+        "rev": "025ceddbddf55f2eb4ab40b05889148aab9699fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "solarized",
+        "repo": "xresources",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

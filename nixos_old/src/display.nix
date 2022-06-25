@@ -1,37 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 let cfg = config.a3;
 in {
-  options.a3.display = {
-    enable = lib.mkEnableOption "Enable a display server";
-
-    server = lib.mkOption {
-      type = lib.types.enum [ "xorg" "wayland" ];
-      default = "wayland";
-    };
-
-    drivers = lib.mkOption {
-      type = lib.types.listOf
-        (lib.types.enum [ "nvidia" "nouveau" "modesetting" ]);
-      default = [ ];
-    };
-
-    hidpi = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
-  };
-
-  config = lib.mkIf (cfg.enable && cfg.display.enable) {
+  config = lib.mkIf (cfg.displayServer != "none") {
     services.xserver = {
-      # Enabled even on Wayland configurations, since it's required for the display manager.
       enable = true;
-      videoDrivers = cfg.display.drivers;
+      videoDrivers = cfg.videoDrivers;
       layout = "us";
       desktopManager.xterm.enable = true;
       displayManager.defaultSession =
-        if (cfg.display.server == "wayland") then "sway" else "none+i3";
+        if (cfg.displayServer == "wayland") then "sway" else "none+i3";
 
-      windowManager.i3 = lib.mkIf (cfg.display.server == "xorg") {
+      windowManager.i3 = lib.mkIf (cfg.displayServer == "xorg") {
         enable = true;
         package = pkgs.i3-gaps;
         extraPackages = with pkgs; [ dmenu i3status i3lock i3blocks feh ];
@@ -39,11 +18,11 @@ in {
 
       libinput = {
         enable = true;
-        mouse.accelProfile = lib.mkIf (cfg.hardware.formFactor == "fixed") "flat";
+        mouse.accelProfile = lib.mkIf (cfg.formFactor == "stationary") "flat";
       };
     };
 
-    programs.sway = lib.mkIf (cfg.display.server == "wayland") {
+    programs.sway = lib.mkIf (cfg.displayServer == "wayland") {
       enable = true;
       extraSessionCommands = ''
         export SDL_VIDEODRIVER=wayland
@@ -56,11 +35,7 @@ in {
       wrapperFeatures.gtk = true;
     };
 
-    hardware = {
-      opengl.driSupport32Bit = true;
-      video.hidpi.enable = cfg.display.hidpi;
-    };
-
+    hardware.opengl.driSupport32Bit = true;
     fonts.fonts = with pkgs; [
       (iosevka.override {
         privateBuildPlan = {
@@ -74,8 +49,12 @@ in {
           };
           ligations = {
             inherits = "dlig";
-            disables =
-              [ "brace-bar" "brack-bar" "connected-tilde-as-wave" "plusplus" ];
+            disables = [
+              "brace-bar"
+              "brack-bar"
+              "connected-tilde-as-wave"
+              "plusplus"
+            ];
           };
         };
         set = "custom";

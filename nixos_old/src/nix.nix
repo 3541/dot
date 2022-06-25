@@ -1,23 +1,19 @@
-{ config, lib, pkgs, ... }:
+{ lib, config, ... }:
 let cfg = config.a3;
 in {
-  config = lib.mkIf (cfg.enable) {
+  config = {
     nix = {
-      package = pkgs.nixFlakes;
       autoOptimiseStore = true;
-      settings.trusted-users = [ "@wheel" ];
-
       gc = {
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 30d";
       };
-
       extraOptions = ''
         keep-outputs = true
         keep-derivations = true
-        experimental-features = nix-command flakes
       '';
+      settings.trusted-users = [ "@wheel" ];
     };
 
     system.autoUpgrade = lib.mkIf (cfg.role == "server") {
