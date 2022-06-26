@@ -280,9 +280,9 @@
 
   in {
     xsession.windowManager.i3 =
-      lib.mkIf (cfg.display.server == "xorg") wmConfig;
+      if cfg.display.server == "xorg" then wmConfig else { };
     wayland.windowManager.sway =
-      lib.mkIf (cfg.display.server == "wayland") wmConfig;
+      if cfg.display.server == "wayland" then wmConfig else { };
 
     services.notify-osd.enable = cfg.role == "workstation" && cfg.display.server
       == "xorg";

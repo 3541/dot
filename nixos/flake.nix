@@ -16,6 +16,6 @@
       name = name;
       value = nixpkgs.lib.nixosSystem
         ((import ./machines/${name}.nix args) // { specialArgs = args; });
-    }) [ "opportunity" ]);
+    }) [ "opportunity" "spirit" ]);
   };
 }

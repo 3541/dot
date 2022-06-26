@@ -43,10 +43,11 @@
         # nixpkgs updates.
         boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor
           (pkgs.linuxKernel.kernels.linux_testing_bcachefs.override {
-            kernel = nixpkgs-bcachefs.linuxKernel.kernels.linux_5_17;
+            kernel =
+              nixpkgs-bcachefs.legacyPackages.x86_64-linux.linuxKernel.kernels.linux_5_17;
           }));
 
-        wayland.windowManager.sway.config = {
+        home-manager.users.alex.config.wayland.windowManager.sway.config = {
           output = {
             "eDP-1" = {
               resolution = "3840x2160";
