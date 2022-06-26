@@ -3,7 +3,7 @@ let cfg = config.a3;
 in {
   options.a3.boot = {
     method = lib.mkOption {
-      type = lib.types.enum [ "bios" "efi" ];
+      type = lib.types.enum [ "bios" "efi" "other" ];
       default = "efi";
     };
 
@@ -13,7 +13,7 @@ in {
     };
 
     loader = lib.mkOption {
-      type = lib.types.enum [ "grub" "systemd-boot" ];
+      type = lib.types.enum [ "grub" "systemd-boot" "other" ];
       default = "systemd-boot";
     };
 
