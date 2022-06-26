@@ -3,6 +3,7 @@
   modules = [
     ({ lib, pkgs, ... }: {
       imports = [ a3.nixosModule ./opportunity-hardware.nix ];
+
       config = {
         a3 = {
           enable = true;

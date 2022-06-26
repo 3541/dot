@@ -9,12 +9,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-nzuBZeEzq2ykeG6hPUk6XSq01ooljZUzlGPkO6rRaj4=",
-        "path": "/nix/store/6rggvkv8151ymnsi2v6r0gsyvg7vbzj9-source/nixos/src",
+        "narHash": "sha256-v94qZfKyAKtgH0467Q9yjVJ3BjXtbwXCmiKhjHh6Eu8=",
+        "path": "/nix/store/ibxvyv4x8g15ymri6ibcl7cghd8dgpds-source/nixos/src",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/6rggvkv8151ymnsi2v6r0gsyvg7vbzj9-source/nixos/src",
+        "path": "/nix/store/ibxvyv4x8g15ymri6ibcl7cghd8dgpds-source/nixos/src",
         "type": "path"
       }
     },
@@ -64,12 +64,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-itfd1QSHNbfUC4tILcV5SAQgbEMTRSRPQ+ruxJp32c4=",
-        "path": "/nix/store/m91454iv7q9zfgyf1pvh7v3di3vwsjnp-source/home",
+        "narHash": "sha256-V8X23N/n8YhE4rse4oS/8HQBrxH8bnz/SX7pJdpaZKQ=",
+        "path": "/nix/store/srpxi58nzlz9p205h4my7wimspaclclr-source/home",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/m91454iv7q9zfgyf1pvh7v3di3vwsjnp-source/home",
+        "path": "/nix/store/srpxi58nzlz9p205h4my7wimspaclclr-source/home",
         "type": "path"
       }
     },
@@ -112,6 +112,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1655789751,
+        "narHash": "sha256-DbL2gn7YwkuX10OdlWfZ/A7zEJztwHh9NMeau1JMTdk=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "f9d8dff4e621f2d7f2b84d9e84bc6359715f971c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1656007306,
@@ -122,16 +137,32 @@
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
+        "id": "nixpkgs",
         "ref": "nixos-22.05",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs-bcachefs": {
+      "locked": {
+        "lastModified": 1655056670,
+        "narHash": "sha256-S69P0NJnvd08jq3r2X8bZxZsFGIPEdUL+I7G81KfhU4=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
+        "rev": "efb6eb853e8b1546ad7760a31159bf1a8ea132b3",
         "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "rev": "efb6eb853e8b1546ad7760a31159bf1a8ea132b3",
+        "type": "indirect"
       }
     },
     "root": {
       "inputs": {
         "a3": "a3",
-        "nixpkgs": "nixpkgs"
+        "nixos-hardware": "nixos-hardware",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-bcachefs": "nixpkgs-bcachefs"
       }
     },
     "solarized-xresources": {
