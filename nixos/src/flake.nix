@@ -46,8 +46,9 @@
             ./net.nix
             ./nix.nix
             ./packages.nix
-            ./workstation.nix
+            ./ssh.nix
             ./user.nix
+            ./workstation.nix
           ];
           config = lib.mkIf cfg.enable { system.stateVersion = "22.05"; };
         };
