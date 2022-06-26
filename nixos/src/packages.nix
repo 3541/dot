@@ -10,9 +10,11 @@ in {
       wlr.enable = cfg.display.server == "wayland";
     };
 
-    documentation = lib.mkIf (cfg.role == "workstation") {
+    documentation = if (cfg.role == "workstation") then {
       dev.enable = true;
       man.generateCaches = true;
+    } else {
+      nixos.enable = false;
     };
   };
 }
