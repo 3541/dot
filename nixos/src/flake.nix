@@ -8,59 +8,53 @@
     };
   };
 
-  outputs = { self, nixpkgs, home, ... }:
-    {
-      nixosModules = {
-        system = { config, lib, ... }:
-          let cfg = config.a3;
-          in {
-            options.a3 = {
-              enable = lib.mkEnableOption "Enable preset configuration.";
+  outputs = { self, nixpkgs, home, ... }: {
+    nixosModules = {
+      system = { config, lib, ... }:
+        let cfg = config.a3;
+        in {
+          options.a3 = {
+            enable = lib.mkEnableOption "Enable preset configuration.";
 
-              hostName = lib.mkOption { type = lib.types.str; };
+            hostName = lib.mkOption { type = lib.types.str; };
 
-              role = lib.mkOption {
-                type = lib.types.enum [ "workstation" "server" ];
-                default = "workstation";
-              };
-
-              encryptRoot = lib.mkOption {
-                type = lib.types.bool;
-                default = true;
-              };
-
-              platform = lib.mkOption {
-                type = lib.types.enum [ "nixos" "linux" "macOS" ];
-                default = "nixos";
-              };
-
-              potato = lib.mkOption {
-                type = lib.types.bool;
-                default = false;
-              };
+            role = lib.mkOption {
+              type = lib.types.enum [ "workstation" "server" ];
+              default = "workstation";
             };
 
-            imports = [
-              ./backup.nix
-              ./boot.nix
-              ./build.nix
-              ./display.nix
-              ./fs.nix
-              ./hardware.nix
-              home.nixosModule
-              ./l10n.nix
-              ./net.nix
-              ./nix.nix
-              ./packages.nix
-              ./workstation.nix
-              ./user.nix
-            ];
-            config = lib.mkIf cfg.enable { system.stateVersion = "22.05"; };
+            encryptRoot = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+            };
+
+            platform = lib.mkOption {
+              type = lib.types.enum [ "nixos" "linux" "macOS" ];
+              default = "nixos";
+            };
           };
 
-        default = self.nixosModules.system;
-      };
+          imports = [
+            ./backup.nix
+            ./boot.nix
+            ./build.nix
+            ./display.nix
+            ./fs.nix
+            ./hardware.nix
+            home.nixosModule
+            ./l10n.nix
+            ./net.nix
+            ./nix.nix
+            ./packages.nix
+            ./workstation.nix
+            ./user.nix
+          ];
+          config = lib.mkIf cfg.enable { system.stateVersion = "22.05"; };
+        };
 
-      nixosModule = self.nixosModules.default;
+      default = self.nixosModules.system;
     };
+
+    nixosModule = self.nixosModules.default;
+  };
 }
