@@ -8,7 +8,7 @@ in {
     };
 
     cpu = lib.mkOption {
-      type = lib.types.enum [ "intel" "amd" ];
+      type = lib.types.enum [ "intel" "amd" "arm" ];
       default = "intel";
     };
   };
@@ -17,7 +17,7 @@ in {
     powerManagement.powertop.enable = cfg.hardware.formFactor == "portable";
 
     services = {
-      fwupd.enable = true;
+      fwupd.enable = cfg.hardware.cpu == "intel" || cfg.hardware.cpu == "amd";
       thermald.enable = cfg.hardware.formFactor == "portable"
         && cfg.hardware.cpu == "intel";
     };
