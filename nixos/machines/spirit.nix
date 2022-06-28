@@ -45,10 +45,7 @@
         # bcachefs needs 5.17.14. Builds on 5.17.15 and up appear to be broken. Remove this once
         # nixpkgs updates.
         boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor
-          (pkgs.linuxKernel.kernels.linux_testing_bcachefs.override {
-            kernel =
-              nixpkgs-bcachefs.legacyPackages.x86_64-linux.linuxKernel.kernels.linux_5_17;
-          }));
+          nixpkgs-bcachefs.legacyPackages.x86_64-linux.linuxKernel.kernels.linux_testing_bcachefs);
 
         home-manager.users.alex.config.wayland.windowManager.sway.config = {
           output = {
