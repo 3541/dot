@@ -27,8 +27,11 @@
             enable = true;
 
             ui.fonts = {
-              editor.font = "Berkeley Mono";
               ui.size = 16.0;
+              editor = {
+                font = "Berkeley Mono";
+                size = 15.0;
+              };
             };
           };
         };
