@@ -24,6 +24,7 @@
         export DOTNET_CLI_TELEMETRY_OPTOUT=1
         export ALTERNATE_EDITOR=""
         export EDITOR="emacsclient -c -nw"
+        export PROMPT_COMMAND=''${PROMPT_COMMAND}'printf "\033]0;%s\007" "''${PWD/#$HOME/\~}"'
       '' + cfg.home.shExtra;
     };
 

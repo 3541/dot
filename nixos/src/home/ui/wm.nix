@@ -1,7 +1,7 @@
 { cfg, lib, pkgs, i3blocks-contrib, ... }: {
   config = lib.mkIf (cfg.enable && cfg.home.enable && cfg.display.enable) (let
     mod = "Mod4";
-    term = "${pkgs.sakura}/bin/sakura";
+    term = "${pkgs.alacritty}/bin/alacritty";
 
     lockCommand = if (cfg.display.server == "wayland") then
       "${pkgs.swaylock}/bin/swaylock -f -c 000000"

@@ -101,13 +101,13 @@
                 };
 
                 imports = [
+                  ./alacritty.nix
                   ./cmus.nix
                   ./emacs.nix
                   ./firefox.nix
                   ./gdb.nix
                   ./git.nix
                   ./packages.nix
-                  ./sakura.nix
                   ./sh.nix
                   ./ui
                   ./util
