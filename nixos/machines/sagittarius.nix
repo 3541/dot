@@ -2,7 +2,7 @@
   system = "x86_64-linux";
   modules = [
     ({ lib, pkgs, modulesPath, ... }: {
-      imports = [ a3.nixosModule ./sagittarius-hardware.nix ];
+      imports = [ (modulesPath + "/profiles/minimal.nix") a3.nixosModule ./sagittarius-hardware.nix ];
 
       config = {
         a3 = {
@@ -16,10 +16,13 @@
           boot = {
             loader = "grub";
             method = "bios";
+            device = "/dev/disk/by-id/usb-SMI_USB_DISK-0:0";
           };
         };
 
         services = {
+          fwupd.enable = lib.mkForce false;
+
           samba = {
             enable = true;
             openFirewall = true;
