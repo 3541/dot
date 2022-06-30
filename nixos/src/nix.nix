@@ -23,6 +23,8 @@ in {
     system.autoUpgrade = lib.mkIf (cfg.role == "server") {
       enable = true;
       allowReboot = true;
+      flake = "/home/alex/dot/nixos";
+      flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
     };
 
     nixpkgs.config.allowUnfree = true;
