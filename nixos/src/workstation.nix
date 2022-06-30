@@ -56,10 +56,7 @@ in {
         };
       };
 
-      docker = {
-        enable = true;
-        extraOptions = "--ipv6 --fixed-cidr-v6 fd00::/80";
-      };
+      podman.enable = true;
     };
   };
 }
