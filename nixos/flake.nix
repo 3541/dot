@@ -19,7 +19,7 @@
       name = name;
       value = nixpkgs.lib.nixosSystem
         ((import ./machines/${name}.nix args) // { specialArgs = args; });
-    }) [ "opportunity" "spirit" "charon" ]);
+    }) [ "opportunity" "spirit" "charon" "sagittarius" ]);
 
     packages.x86_64-linux.charonImage =
       self.nixosConfigurations.charon.config.system.build.sdImage;
