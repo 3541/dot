@@ -1,4 +1,4 @@
-{ a3, nixpkgs-setuptools, ... }: {
+{ a3, nixpkgs-unstable, ... }: {
   system = "x86_64-linux";
   modules = [
     ({ lib, pkgs, modulesPath, ... }: {
@@ -16,14 +16,14 @@
               (final: prev: { enableParallelBuilding = false; });
 
             btrfs-progs =
-              nixpkgs-setuptools.legacyPackages.x86_64-linux.btrfs-progs;
+              nixpkgs-unstable.legacyPackages.x86_64-linux.btrfs-progs;
 
             # Can be removed once https://github.com/NixOS/nixpkgs/pull/174612/files is in nixpkgs.
             tailscale =
-              nixpkgs-setuptools.legacyPackages.x86_64-linux.tailscale;
-            minica = nixpkgs-setuptools.legacyPackages.x86_64-linux.minica;
-            lego = nixpkgs-setuptools.legacyPackages.x86_64-linux.lego;
-            fail2ban = nixpkgs-setuptools.legacyPackages.x86_64-linux.fail2ban;
+              nixpkgs-unstable.legacyPackages.x86_64-linux.tailscale;
+            minica = nixpkgs-unstable.legacyPackages.x86_64-linux.minica;
+            lego = nixpkgs-unstable.legacyPackages.x86_64-linux.lego;
+            fail2ban = nixpkgs-unstable.legacyPackages.x86_64-linux.fail2ban;
           };
 
           # https://github.com/NixOS/nixpkgs/issues/154163.

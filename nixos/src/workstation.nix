@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, ... }:
 let cfg = config.a3;
 in {
   config = lib.mkIf (cfg.enable && cfg.role == "workstation") {
@@ -24,18 +24,15 @@ in {
       pcscd.enable = true;
       vnstat.enable = true;
       usbmuxd.enable = true;
+      opensnitch.enable = true;
 
       printing = {
         enable = true;
         drivers = with pkgs; [ hll2390dw-cups epson-escpr2 ];
       };
-
-      # Disabled due to broken iptables command in 22.05.
-      # https://github.com/NixOS/nixpkgs/issues/175684
-      # opensnitchd.enable = true;
     };
 
-    # environment.systemPackages = [ pkgs.opensnitch-ui ];
+    environment.systemPackages = [ pkgs.opensnitch-ui ];
 
     programs = {
       gnupg.agent.enable = true;
@@ -46,6 +43,12 @@ in {
     virtualisation = {
       libvirtd = {
         enable = true;
+
+        # https://github.com/NixOS/nixpkgs/issues/175684
+        package = pkgs.libvirt.override {
+          iptables = nixpkgs-unstable.legacyPackages.x86_64-linux.iptables;
+        };
+
         qemu = {
           swtpm.enable = true;
           # OVMFFull is broken at the moment. https://github.com/NixOS/nixpkgs/issues/164064
