@@ -17,6 +17,7 @@ in {
     powerManagement.powertop.enable = cfg.hardware.formFactor == "portable";
 
     services = {
+      smartd.enable = true;
       fwupd.enable = cfg.hardware.cpu == "intel" || cfg.hardware.cpu == "amd";
       thermald.enable = cfg.hardware.formFactor == "portable"
         && cfg.hardware.cpu == "intel";
