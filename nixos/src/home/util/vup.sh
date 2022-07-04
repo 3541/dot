@@ -19,6 +19,7 @@ v() {
 
 update_vm() (
     vm="$1"
+    user="alex"
 
     mkdir -p ~/.cache/vup
     timestamp_file="$HOME/.cache/vup/$vm"
@@ -30,6 +31,10 @@ update_vm() (
     if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]]; then
         info "$vm" "SKIPPED."
         return
+    fi
+
+    if [[ "$vm" = *"haiku"* ]]; then
+        user="user"
     fi
 
     info "$vm" "Starting..."
@@ -55,16 +60,20 @@ update_vm() (
             ;;
     esac
 
-    while ! ssh alex@"$ip" exit 0 2> /dev/null; do
+    while ! ssh "${user}@${ip}" exit 0 2> /dev/null; do
         sleep 5
     done
     idone "$vm" "Starting..."
     info "$vm" "$ip"
 
     info "$vm" "Updating... "
-    ssh alex@"$ip" "\$SHELL -l -c 'up'" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
-    timeout 3 ssh alex@"$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
-        | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+    ssh "${user}@${ip}" "\$SHELL -l -c 'up'" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
+    if [[ "$vm" = *"haiku" ]]; then
+        ssh "${user}@${ip}" "shutdown" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
+    else
+        timeout 3 ssh "${user}@${ip}" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
+            | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
+        fi
     idone "$vm" "Updating..."
 
     date '+%s' > "$timestamp_file"
