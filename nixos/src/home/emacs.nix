@@ -516,6 +516,9 @@
               (setq frame-background-mode 'dark)
               (mapc 'frame-set-background-mode (frame-list))
               (enable-theme 'solarized)
+              (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+              (when (file-exists-p custom-file)
+                    (load custom-file))
 
               (set-frame-font "${cfg.home.ui.fonts.editor.font}-${
                 toString cfg.home.ui.fonts.editor.size
