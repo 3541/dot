@@ -32,6 +32,7 @@ vm_run() (
     vm="$1"
     command="$2"
     status_file="$3"
+    user="alex"
 
     if [[ -f "$status_file" ]] && grep -q "$command" "$status_file" && \
            grep -q "$vm" "$status_file"; then
@@ -42,6 +43,10 @@ vm_run() (
     if [[ "$vm" = *"guix"* ]]; then
         info "$vm" "SKIPPED."
         return
+    fi
+
+    if [[ "$vm" = *"haiku"* ]]; then
+        user="user"
     fi
 
     info "$vm" "Starting..."
@@ -67,7 +72,7 @@ vm_run() (
             ;;
     esac
 
-    while ! ssh "$ip" exit 0 2> /dev/null; do
+    while ! ssh "${user}@${ip}" exit 0 2> /dev/null; do
         sleep 5
     done
     idone "$vm" "Starting..."
@@ -75,27 +80,30 @@ vm_run() (
 
     info "$vm" "Copying directory... "
     if [[ "$vm" != *"win"* ]]; then
-        tmpdir="$(ssh "$ip" "mktemp -d")"
+        tmpdir="$(ssh "${user}@${ip}" "mktemp -d")"
         tmpdir_rsync="$tmpdir"
     else
         tmpdir="AppData/Local/Temp/$(mktemp -u XXXXXX)"
         ssh "$ip" "bash -c \"mkdir -p $tmpdir\""
     fi
-    rsync -a -e ssh --exclude='/.git' --filter=':- .gitignore' . "$ip":"$tmpdir/"
+    rsync -a -e ssh --exclude='/.git' --filter=':- .gitignore' . "${user}@${ip}":"$tmpdir/"
     if [[ -d "subprojects" ]]; then
-        rsync -a -e ssh subprojects/* "$ip":"$tmpdir/subprojects/"
+        rsync -a -e ssh subprojects/* "${user}@${ip}":"$tmpdir/subprojects/"
     fi
     idone "$vm" "Copying directory... "
 
     info "$vm" "Running command..."
-    run_command "$ip" "cd $tmpdir && \"$command\"" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
+    run_command "${user}@${ip}" "cd $tmpdir && \"$command\"" 2>&1 | \
+        sed "s/^/$(printf $INFO_PREFIX $vm) /"
     idone "$vm" "Running command..."
 
     info "$vm" "Cleaning up..."
-    run_command "$ip" "rm -rf $tmpdir"
+    run_command "${user}@${ip}" "rm -rf $tmpdir"
     idone "$vm" "Cleaning up..."
 
-    if [[ "$vm" != *"win"* ]]; then
+    if [[ "$vm" = *"haiku"* ]]; then
+        ssh "${user}@${ip}" "shutdown" 2>&1 | sed "s/^/$(printf $INFO_PREFIX $vm) /"
+    elif [[ "$vm" != *"win"* ]]; then
         timeout 3 ssh "$ip" "\$SHELL -l -c 'sudo poweroff'" 2>&1 \
             | sed "s/^/$(printf $INFO_PREFIX $vm) /" || true
     else
