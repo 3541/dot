@@ -15,21 +15,21 @@ in {
         }) [
           {
             hostName = "opportunity";
-            system = "x86_64-linux";
+            systems = [ "x86_64-linux" "i686-linux" ];
             maxJobs = 12;
             speedFactor = 2;
             supportedFeatures = [ "kvm" "big-parallel" ];
           }
           {
             hostName = "spirit";
-            system = "x86_64-linux";
+            systems = [ "x86_64-linux" "i686-linux" ];
             maxJobs = 8;
             speedFactor = 1;
             supportedFeatures = [ "kvm" ];
           }
           {
             hostName = "sagittarius";
-            system = "x86_64-linux";
+            systems = [ "x86_64-linux" "i686-linux" ];
             maxJobs = 8;
             speedFactor = 0;
             supportedFeatures = [ "kvm" ];
