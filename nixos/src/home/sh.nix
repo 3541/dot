@@ -28,7 +28,7 @@
       '' + cfg.home.shExtra;
     };
 
-    direnv = {
+    direnv = lib.mkIf (cfg.role == "workstation") {
       enable = true;
       nix-direnv.enable = true;
     };
