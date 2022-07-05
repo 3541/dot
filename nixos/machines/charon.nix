@@ -21,6 +21,7 @@
             btrfs-progs = unstable-pkgs.btrfs-progs;
             # Can be removed once https://github.com/NixOS/nixpkgs/pull/174612/files is in nixpkgs.
             tailscale = unstable-pkgs.tailscale;
+            powerline-go = unstable-pkgs.powerline-go;
 
             openldap = pkgs.openldap.overrideAttrs
               (final: prev: { enableParallelBuilding = false; });
@@ -37,6 +38,7 @@
 
         a3 = {
           enable = true;
+          home.enable = true;
           hostName = "charon";
           encryptRoot = false;
           role = "server";
