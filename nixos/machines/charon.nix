@@ -5,6 +5,7 @@
       imports = [
         a3.nixosModule
         (modulesPath + "/installer/sd-card/sd-image-raspberrypi.nix")
+        (modulesPath + "/profiles/minimal.nix")
       ];
 
       config = let
@@ -14,7 +15,14 @@
           nixpkgs-unstable.legacyPackages.x86_64-linux.pkgsCross.raspberryPi;
       in {
         nixpkgs = {
-          crossSystem = lib.systems.examples.raspberryPi;
+          # Since there's no substitutes available anyway, there's no harm in setting more specific
+          # compiler flags.
+          crossSystem = lib.systems.examples.raspberryPi // {
+            gcc = {
+              cpu = "arm1176jzf-s";
+              fpu = "vfp";
+            };
+          };
 
           config.packageOverrides = pkgs: {
             # https://github.com/NixOS/nixpkgs/commit/2294dace6ae30d095719a6dd8413242ec61ca8e5.
@@ -52,7 +60,6 @@
 
         system.autoUpgrade.enable = lib.mkForce false;
         security.sudo.wheelNeedsPassword = false;
-        services.udisks2.enable = false;
         documentation.info.enable = false;
 
         boot = {
@@ -100,8 +107,53 @@
           '';
         };
 
+        services = {
+          udisks2.enable = false;
+
+          gitweb = {
+            projectroot = repos;
+
+            extraConfig = ''
+              $feature{'pathinfo'}{'default'} = [1];
+              $feature{'timed'}{'default'} = [1];
+            '';
+          };
+
+          nginx = {
+            enable = true;
+            recommendedOptimisation = true;
+            recommendedTlsSettings = true;
+            recommendedGzipSettings = true;
+            recommendedProxySettings = true;
+            virtualHosts."_".kTLS = true;
+
+            gitweb = {
+              enable = true;
+              location = "/git";
+            };
+          };
+        };
+
         environment.systemPackages = with pkgs;
           let
+            repo-mirror-push = pkgs.writeShellScriptBin "repo-mirror-push" ''
+              set -e
+
+              GIT_SSH_COMMAND="ssh -i /persist/id_ed25519 -o IdentitiesOnly=yes" \
+                git push --mirror mirror
+            '';
+            hook-post-update = pkgs.writeShellScriptBin "hook-post-update" ''
+              set -e
+
+              git update-server-info
+              if git cat-file -e HEAD:README.md > /dev/null 2>&1; then
+                git cat-file blog HEAD:README.md | ${pkgs.cmark}/bin/cmark > README.html
+              fi
+
+              if git remote get-url mirror > /dev/null 2>&1; then
+                ${repo-mirror-push}/bin/repo-mirror-push
+              fi
+            '';
             repo-new = pkgs.writeShellScriptBin "repo-new" ''
               set -e
 
@@ -129,15 +181,9 @@
                 #!/bin/sh
                 set -e
 
-                git update-server-info
+                exec hook-post-update
               EOF
               sudo -u git chmod +x "$repo/hooks/post-update"
-            '';
-            repo-mirror-push = pkgs.writeShellScriptBin "repo-mirror-push" ''
-              set -e
-
-              GIT_SSH_COMMAND="ssh -i /persist/id_ed25519 -o IdentitiesOnly=yes" \
-                git push --mirror mirror
             '';
             repo-mirror-init = pkgs.writeShellScriptBin "repo-mirror-init" ''
               set -e
@@ -161,25 +207,8 @@
               if ! git remote get-url mirror > /dev/null 2>&1; then
                 sudo -u git git -C "$repo" remote add mirror "$2"
               fi
-
-              hook="$repo/hooks/post-update"
-              if [ -e "$hook" ] && grep -q repo-mirror-push "$hook"; then
-                echo "Post-update hook already added."
-                exit 1
-              fi
-
-              if [ ! -f "$hook" ]; then
-                echo "Post-update hook not present."
-                exit 1
-              fi
-
-              echo "Updating post-update hook... "
-              cat <<- EOF | sudo -u git tee -a "$hook"
-                echo "Mirroring to \$(git remote get-url mirror)..."
-                "${repo-mirror-push}"/bin/repo-mirror-push
-              EOF
             '';
-          in [ repo-new repo-mirror-push repo-mirror-init ];
+          in [ hook-post-update repo-new repo-mirror-push repo-mirror-init ];
       };
     })
   ];

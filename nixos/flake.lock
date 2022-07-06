@@ -10,11 +10,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-zSCJFKe+ShhTi2MXDye66wrKfwx+1Fec0EN6gq8PpE8=",
-        "path": "/nix/store/ndmqvnbnrgrkz381rhjkyyn8abfkr4if-source/nixos/src",
+        "path": "/nix/store/c2x7hb78la786wf4nm4x3jxd7vq412hq-source/nixos/src",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ndmqvnbnrgrkz381rhjkyyn8abfkr4if-source/nixos/src",
+        "path": "/nix/store/c2x7hb78la786wf4nm4x3jxd7vq412hq-source/nixos/src",
         "type": "path"
       }
     },
