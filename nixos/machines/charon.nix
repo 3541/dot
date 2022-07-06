@@ -147,7 +147,7 @@
 
               git update-server-info
               if git cat-file -e HEAD:README.md > /dev/null 2>&1; then
-                git cat-file blog HEAD:README.md | ${pkgs.cmark}/bin/cmark > README.html
+                git cat-file blob HEAD:README.md | ${pkgs.cmark}/bin/cmark > README.html
               fi
 
               if git remote get-url mirror > /dev/null 2>&1; then
