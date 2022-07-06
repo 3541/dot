@@ -18,41 +18,42 @@ in {
       settings.Firewall = "iptables";
     };
 
-    environment.etc."opensnitchd/system-fw.json".source =
-      lib.mkIf (cfg.role == "workstation")
-      ((pkgs.formats.json { }).generate "system-fw.json" {
-        SystemRules = [
-          {
-            Rule = {
-              Description = "Allow cifs";
-              Table = "mangle";
-              Chain = "OUTPUT";
-              Parameters = "-p tcp --dport 445";
-              Target = "ACCEPT";
-              TargetParameters = "";
-            };
-          }
-          {
-            Rule = {
-              Description = "Allow ICMP";
-              Table = "mangle";
-              Chain = "OUTPUT";
-              Parameters = "-p icmp --icmp-type echo-request";
-              Target = "ACCEPT";
-              TargetParameters = "";
-            };
-          }
-          {
-            Rule = {
-              Description = "Allow ICMPv6";
-              Table = "mangle";
-              Chain = "OUTPUT";
-              Parameters = "-p ipv6-icmp --icmp-type echo-request";
-              Target = "ACCEPT";
-              TargetParameters = "";
-            };
-          }
-        ];
-      });
+    environment.etc = lib.mkIf (cfg.role == "workstation") {
+      "opensnitchd/system-fw.json".source =
+        ((pkgs.formats.json { }).generate "system-fw.json" {
+          SystemRules = [
+            {
+              Rule = {
+                Description = "Allow cifs";
+                Table = "mangle";
+                Chain = "OUTPUT";
+                Parameters = "-p tcp --dport 445";
+                Target = "ACCEPT";
+                TargetParameters = "";
+              };
+            }
+            {
+              Rule = {
+                Description = "Allow ICMP";
+                Table = "mangle";
+                Chain = "OUTPUT";
+                Parameters = "-p icmp --icmp-type echo-request";
+                Target = "ACCEPT";
+                TargetParameters = "";
+              };
+            }
+            {
+              Rule = {
+                Description = "Allow ICMPv6";
+                Table = "mangle";
+                Chain = "OUTPUT";
+                Parameters = "-p ipv6-icmp --icmp-type echo-request";
+                Target = "ACCEPT";
+                TargetParameters = "";
+              };
+            }
+          ];
+        });
+    };
   };
 }
