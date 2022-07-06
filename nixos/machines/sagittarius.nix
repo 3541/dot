@@ -2,7 +2,11 @@
   system = "x86_64-linux";
   modules = [
     ({ lib, pkgs, modulesPath, ... }: {
-      imports = [ (modulesPath + "/profiles/minimal.nix") a3.nixosModule ./sagittarius-hardware.nix ];
+      imports = [
+        (modulesPath + "/profiles/minimal.nix")
+        a3.nixosModule
+        ./sagittarius-hardware.nix
+      ];
 
       config = {
         a3 = {

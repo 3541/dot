@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let cfg = config.a3;
 in {
   config = lib.mkIf cfg.enable {
@@ -11,5 +11,48 @@ in {
       nameservers = [ "192.168.1.1" "1.1.1.1" "100.100.100.100" ];
       search = [ "3541.github.beta.tailscale.net" ];
     };
+
+    services.opensnitch = lib.mkIf (cfg.role == "workstation") {
+      enable = true;
+      # nftables breaks current iptables command, and system rules are not supported.
+      settings.Firewall = "iptables";
+    };
+
+    environment.etc."opensnitchd/system-fw.json".source =
+      lib.mkIf (cfg.role == "workstation")
+      ((pkgs.formats.json { }).generate "system-fw.json" {
+        SystemRules = [
+          {
+            Rule = {
+              Description = "Allow cifs";
+              Table = "mangle";
+              Chain = "OUTPUT";
+              Parameters = "-p tcp --dport 445";
+              Target = "ACCEPT";
+              TargetParameters = "";
+            };
+          }
+          {
+            Rule = {
+              Description = "Allow ICMP";
+              Table = "mangle";
+              Chain = "OUTPUT";
+              Parameters = "-p icmp --icmp-type echo-request";
+              Target = "ACCEPT";
+              TargetParameters = "";
+            };
+          }
+          {
+            Rule = {
+              Description = "Allow ICMPv6";
+              Table = "mangle";
+              Chain = "OUTPUT";
+              Parameters = "-p ipv6-icmp --icmp-type echo-request";
+              Target = "ACCEPT";
+              TargetParameters = "";
+            };
+          }
+        ];
+      });
   };
 }

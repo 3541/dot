@@ -24,7 +24,6 @@ in {
       pcscd.enable = true;
       vnstat.enable = true;
       usbmuxd.enable = true;
-      opensnitch.enable = true;
 
       printing = {
         enable = true;
@@ -44,11 +43,6 @@ in {
       libvirtd = {
         enable = true;
 
-        # https://github.com/NixOS/nixpkgs/issues/175684
-        package = pkgs.libvirt.override {
-          iptables = nixpkgs-unstable.legacyPackages.x86_64-linux.iptables;
-        };
-
         qemu = {
           swtpm.enable = true;
           # OVMFFull is broken at the moment. https://github.com/NixOS/nixpkgs/issues/164064
@@ -59,7 +53,10 @@ in {
         };
       };
 
-      podman.enable = true;
+      podman = {
+        enable = true;
+        dockerCompat = true;
+      };
     };
   };
 }
