@@ -1,4 +1,4 @@
-{ a3, nixpkgs-unstable, ... }: {
+{ a3, nixpkgs, nixpkgs-unstable, ... }: {
   system = "x86_64-linux";
   modules = [
     ({ config, lib, pkgs, modulesPath, ... }: {
@@ -14,6 +14,7 @@
         unstable-pkgs =
           nixpkgs-unstable.legacyPackages.x86_64-linux.pkgsCross.raspberryPi;
       in {
+        # A whole bunch of hacks to fix cross-compilation problems...
         nixpkgs = {
           # Since there's no substitutes available anyway, there's no harm in setting more specific
           # compiler flags.
@@ -31,8 +32,31 @@
             tailscale = unstable-pkgs.tailscale;
             powerline-go = unstable-pkgs.powerline-go;
 
-            openldap = pkgs.openldap.overrideAttrs
-              (final: prev: { enableParallelBuilding = false; });
+            # Cross-compilation of Git with Perl support is broken. Thus, Gitweb does not
+            # cross-compile. For now, use cgit instead.
+            cgit = (pkgs.cgit.override {
+              # Cross-compilation of luajit requires that the build and host platforms have the same
+              # pointer size. This seems unlikely to be fixed upstream, so the only real resolution
+              # is probably to wait for Git+Perl cross-compilation to be fixed in nixpkgs.
+              luajit =
+                nixpkgs.legacyPackages.i686-linux.pkgsCross.raspberryPi.luajit;
+            }).overrideAttrs (old: {
+              # Not sure if this is because of an issue with the cgit package or a fundamental
+              # nixpkgs cross-compilation problem, but the Python filters all come out with the
+              # wrong shebang.
+              postInstall = old.postInstall + ''
+                echo "Fixing Python shebangs for cross..."
+                find "$out/lib/cgit/filters" -type f -perm -0100 -print0 | while read -d "" f; do
+                  shebang=$(grep '#!.*bin/python' "$f" || true)
+                  if [ -z "$shebang" ]; then
+                    continue
+                  fi
+
+                  sed -i "s,''${shebang},#!${pkgs.python3}/bin/python3," "$f"
+                  echo "Replaced \"$shebang\" with \"${pkgs.python3}/bin/python3\"."
+                done
+              '';
+            });
           };
 
           # https://github.com/NixOS/nixpkgs/issues/154163.
@@ -61,6 +85,7 @@
         system.autoUpgrade.enable = lib.mkForce false;
         security.sudo.wheelNeedsPassword = false;
         documentation.info.enable = false;
+        networking.firewall.allowedTCPPorts = [ 80 443 ];
 
         boot = {
           supportedFilesystems = lib.mkForce [ "ext4" ];
@@ -101,35 +126,60 @@
           description = "Launch and authenticate Tailscale.";
           after = [ "tailscaled.service" ];
           wantedBy = [ "multi-user.target" ];
+          unitConfig.ConditionPathExists = "!/tailscale-registered";
           serviceConfig.Type = "oneshot";
           script = ''
             ${pkgs.tailscale}/bin/tailscale up --auth-key file:/persist/tailscale-auth
+            touch /tailscale-registered
           '';
         };
 
         services = {
           udisks2.enable = false;
 
-          gitweb = {
-            projectroot = repos;
+          # gitweb = {
+          #   projectroot = repos;
 
-            extraConfig = ''
-              $feature{'pathinfo'}{'default'} = [1];
-              $feature{'timed'}{'default'} = [1];
-            '';
-          };
+          #   extraConfig = ''
+          #     $feature{'pathinfo'}{'default'} = [1];
+          #     $feature{'timed'}{'default'} = [1];
+          #   '';
+          # };
 
-          nginx = {
+          # nginx = {
+          #   enable = true;
+          #   recommendedOptimisation = true;
+          #   recommendedTlsSettings = true;
+          #   recommendedGzipSettings = true;
+          #   recommendedProxySettings = true;
+          #   virtualHosts."_".kTLS = true;
+
+          #   gitweb = {
+          #     enable = true;
+          #     location = "/git";
+          #   };
+          # };
+
+          lighttpd = {
             enable = true;
-            recommendedOptimisation = true;
-            recommendedTlsSettings = true;
-            recommendedGzipSettings = true;
-            recommendedProxySettings = true;
-            virtualHosts."_".kTLS = true;
 
-            gitweb = {
+            cgit = {
               enable = true;
-              location = "/git";
+              subdir = "";
+
+              # Note: source-filter must be defined before scan-path.
+              configText = ''
+                source-filter=${pkgs.cgit}/lib/cgit/filters/syntax-highlighting.py
+                enable-index-links=1
+                enable-log-filecount=1
+                enable-log-linecount=1
+                enable-git-config=1
+                cache-size=1000
+                root-title=git.3541.website
+                root-desc=
+                readme=README.html
+                scan-path=${repos}
+              '';
             };
           };
         };
@@ -146,6 +196,8 @@
               set -e
 
               git update-server-info
+
+              # cgit can render markdown on request, but it is incredibly slow to do so.
               if git cat-file -e HEAD:README.md > /dev/null 2>&1; then
                 git cat-file blob HEAD:README.md | ${pkgs.cmark}/bin/cmark > README.html
               fi
@@ -175,6 +227,7 @@
 
               sudo -u git mkdir -p "$repo"
               sudo -u git ${pkgs.git}/bin/git init --bare "$repo"
+              sudo -u git ${pkgs.git}/bin/git -C "$repo" config gitweb.owner "3541@3541.website"
 
               echo "Writing post-update hook... "
               cat <<- EOF | sudo -u git tee "$repo/hooks/post-update"
