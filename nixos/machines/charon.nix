@@ -189,6 +189,7 @@
             repo-mirror-push = pkgs.writeShellScriptBin "repo-mirror-push" ''
               set -e
 
+              echo "Pushing to mirror..."
               GIT_SSH_COMMAND="ssh -i /persist/id_ed25519 -o IdentitiesOnly=yes" \
                 git push --mirror mirror
             '';
