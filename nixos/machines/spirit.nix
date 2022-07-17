@@ -38,8 +38,8 @@
 
         services.undervolt = {
           enable = true;
-          coreOffset = -160;
-          uncoreOffset = -160;
+          coreOffset = -150;
+          uncoreOffset = -150;
         };
 
         # bcachefs needs 5.17.14. Builds on 5.17.15 and up appear to be broken. Remove this once
