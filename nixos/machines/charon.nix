@@ -87,6 +87,11 @@
         documentation.info.enable = false;
         networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+        swapDevices = [{
+          device = "/swapfile";
+          size = 2048;
+        }];
+
         boot = {
           supportedFilesystems = lib.mkForce [ "ext4" ];
           initrd.supportedFilesystems = lib.mkForce [ "ext4" ];
