@@ -42,6 +42,13 @@
           uncoreOffset = -150;
         };
 
+        hardware.trackpoint = {
+          enable = true;
+          device = "TPPS/2 Elan TrackPoint";
+          speed = 255;
+          sensitivity = 255;
+        };
+
         # bcachefs needs 5.17.14. Builds on 5.17.15 and up appear to be broken. Remove this once
         # nixpkgs updates.
         boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor
@@ -60,10 +67,6 @@
             "type:touchpad".events = "disabled";
             "type:touch".events = "disabled";
             "type:tablet tool".events = "disabled";
-            "type:pointer" = {
-              pointer_accel = "1.0";
-              accel_profile = "adaptive";
-            };
             "type:keyboard".xkb_options = "ctrl:nocaps";
           };
         };
