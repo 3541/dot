@@ -101,11 +101,13 @@
           ${repos} = {
             device = "/dev/disk/by-label/git";
             fsType = "ext4";
+            options = [ "x-systemd.device-timeout=300" ];
           };
 
           "/persist" = {
             device = "/dev/disk/by-label/persist";
             fsType = "ext4";
+            options = [ "x-systemd.device-timeout=300" ];
           };
         };
 
