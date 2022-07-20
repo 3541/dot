@@ -189,6 +189,11 @@
               '';
             };
           };
+
+          openssh.hostKeys = [{
+            path = "/persist/ssh_host_ed25519";
+            type = "ed25519";
+          }];
         };
 
         environment.systemPackages = with pkgs;
