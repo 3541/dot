@@ -1,4 +1,4 @@
-{ a3, nixos-hardware, nixpkgs-bcachefs, ... }: {
+{ a3, nixos-hardware, ... }: {
   system = "x86_64-linux";
   modules = [
     ({ lib, pkgs, ... }: {
@@ -49,10 +49,32 @@
           sensitivity = 255;
         };
 
-        # bcachefs needs 5.17.14. Builds on 5.17.15 and up appear to be broken. Remove this once
-        # nixpkgs updates.
+        # Something goes wrong when building bcachefs as a patch on top of upstream 5.18. As such,
+        # it is currently marked broken in nixpkgs. Once 5.19 arrives and the bcachefs tree updates,
+        # this may be fixed.
         boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor
-          nixpkgs-bcachefs.legacyPackages.x86_64-linux.linuxKernel.kernels.linux_testing_bcachefs);
+          (pkgs.linuxKernel.kernels.linux_5_18.override
+            (let commit = "8b687170aabd3de7be3ea6b75702d60fbc204abc";
+                 version = "5.18";
+            in {
+              argsOverride = {
+                version = "${version}-bcachefs-${commit}";
+                extraMeta.branch = "master";
+                modDirVersion = "${version}.0";
+
+                src = pkgs.fetchgit {
+                  url = "https://evilpiepirate.org/git/bcachefs.git";
+                  rev = commit;
+                  sha256 = "NE3qTWsFAAWtphQNYztrvhMTilDpsag2osLxyo0fhTE=";
+                };
+              };
+
+              kernelPatches = [{
+                name = "bcachefs-enable";
+                patch = null;
+                extraConfig = "BCACHEFS_FS y";
+              }];
+            })));
 
         home-manager.users.alex.config.wayland.windowManager.sway.config = {
           output = {
