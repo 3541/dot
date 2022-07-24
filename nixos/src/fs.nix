@@ -9,7 +9,7 @@ in {
   config = lib.mkIf cfg.enable {
     boot = {
       tmpOnTmpfs = cfg.fs.tmpOnTmpfs;
-      tmpOnTmpfsSize = lib.optionalString cfg.fs.tmpOnTmpfs "85%";
+      tmpOnTmpfsSize = lib.optionalString cfg.fs.tmpOnTmpfs "95%";
       cleanTmpDir = !cfg.fs.tmpOnTmpfs;
     };
 
