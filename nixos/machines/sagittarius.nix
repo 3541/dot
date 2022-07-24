@@ -14,6 +14,7 @@
           hostName = "sagittarius";
           encryptRoot = false;
           role = "server";
+          minimal = true;
           fs.tmpOnTmpfs = false;
           home.enable = true;
 

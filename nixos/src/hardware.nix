@@ -1,15 +1,23 @@
 { config, lib, ... }:
 let cfg = config.a3;
 in {
-  options.a3.hardware = {
-    formFactor = lib.mkOption {
-      type = lib.types.enum [ "fixed" "portable" ];
-      default = "fixed";
+  options.a3 = {
+    minimal = lib.mkOption {
+      type = lib.types.bool;
+      description = "Using minimal profile.";
+      default = false;
     };
 
-    cpu = lib.mkOption {
-      type = lib.types.enum [ "intel" "amd" "arm" ];
-      default = "intel";
+    hardware = {
+      formFactor = lib.mkOption {
+        type = lib.types.enum [ "fixed" "portable" ];
+        default = "fixed";
+      };
+
+      cpu = lib.mkOption {
+        type = lib.types.enum [ "intel" "amd" "arm" ];
+        default = "intel";
+      };
     };
   };
 
@@ -18,7 +26,7 @@ in {
 
     services = {
       smartd.enable = true;
-      fwupd.enable = cfg.hardware.cpu == "intel" || cfg.hardware.cpu == "amd";
+      fwupd.enable = (cfg.hardware.cpu == "intel" || cfg.hardware.cpu == "amd") && !cfg.minimal;
       thermald.enable = cfg.hardware.formFactor == "portable"
         && cfg.hardware.cpu == "intel";
     };
