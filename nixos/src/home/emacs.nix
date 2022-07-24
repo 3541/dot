@@ -166,7 +166,8 @@
                 (add-hook 'rust-mode-hook 'tree-sitter-hl-mode)
                 (add-hook 'go-mode-hook 'tree-sitter-hl-mode)
                 (add-hook 'swift-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'python-mode-hook 'tree-sitter-hl-mode))
+                (add-hook 'python-mode-hook 'tree-sitter-hl-mode)
+                (add-hook 'sh-mode-hook 'tree-sitter-hl-mode))
 
               (use-package yasnippet
                 :ensure t
