@@ -52,29 +52,24 @@
         # Something goes wrong when building bcachefs as a patch on top of upstream 5.18. As such,
         # it is currently marked broken in nixpkgs. Once 5.19 arrives and the bcachefs tree updates,
         # this may be fixed.
-        boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor
-          (pkgs.linuxKernel.kernels.linux_5_18.override
-            (let commit = "8b687170aabd3de7be3ea6b75702d60fbc204abc";
-                 version = "5.18";
-            in {
-              argsOverride = {
-                version = "${version}-bcachefs-${commit}";
-                extraMeta.branch = "master";
-                modDirVersion = "${version}.0";
+        boot.kernelPackages = lib.mkForce (let
+          commit = "8b687170aabd3de7be3ea6b75702d60fbc204abc";
+          version = "5.18";
+          kernelPackage = { buildLinux, ... }@args:
+            buildLinux (args // {
+              version = "${version}-bcachefs-${commit}";
+              modDirVersion = "${version}.0";
+              extraMeta.branch = "master";
+              extraConfig = "BCACHEFS_FS y";
+              kernelPatches = [];
 
-                src = pkgs.fetchgit {
-                  url = "https://evilpiepirate.org/git/bcachefs.git";
-                  rev = commit;
-                  sha256 = "NE3qTWsFAAWtphQNYztrvhMTilDpsag2osLxyo0fhTE=";
-                };
+              src = pkgs.fetchgit {
+                url = "https://evilpiepirate.org/git/bcachefs.git";
+                rev = commit;
+                sha256 = "NE3qTWsFAAWtphQNYztrvhMTilDpsag2osLxyo0fhTE=";
               };
-
-              kernelPatches = [{
-                name = "bcachefs-enable";
-                patch = null;
-                extraConfig = "BCACHEFS_FS y";
-              }];
-            })));
+            } // (args.argsOverride or { }));
+        in pkgs.linuxPackagesFor (pkgs.callPackage kernelPackage { }));
 
         home-manager.users.alex.config.wayland.windowManager.sway.config = {
           output = {
