@@ -1,4 +1,4 @@
-{ a3, nixpkgs, nixpkgs-unstable, ... }: {
+{ a3, nixpkgs, ... }: {
   system = "x86_64-linux";
   modules = [
     ({ config, lib, pkgs, modulesPath, ... }: {
@@ -11,8 +11,6 @@
       config = let
         cfg = config.a3;
         repos = "/home/git";
-        unstable-pkgs =
-          nixpkgs-unstable.legacyPackages.x86_64-linux.pkgsCross.raspberryPi;
       in {
         # A whole bunch of hacks to fix cross-compilation problems...
         nixpkgs = {
@@ -26,11 +24,6 @@
           };
 
           config.packageOverrides = pkgs: {
-            # https://github.com/NixOS/nixpkgs/commit/2294dace6ae30d095719a6dd8413242ec61ca8e5.
-            btrfs-progs = unstable-pkgs.btrfs-progs;
-            # Can be removed once https://github.com/NixOS/nixpkgs/pull/174612/files is in nixpkgs.
-            tailscale = unstable-pkgs.tailscale;
-            powerline-go = unstable-pkgs.powerline-go;
 
             # Cross-compilation of Git with Perl support is broken. Thus, Gitweb does not
             # cross-compile. For now, use cgit instead.

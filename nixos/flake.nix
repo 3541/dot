@@ -2,9 +2,6 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    # Old nixpkgs with kernel 5.17.14 for bcachefs. See machines/spirit.nix.
-    nixpkgs-bcachefs.url = "nixpkgs/efb6eb853e8b1546ad7760a31159bf1a8ea132b3";
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     a3 = {
       url = "./src";

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs-unstable, ... }:
+{ config, lib, pkgs, ... }:
 let cfg = config.a3;
 in {
   config = lib.mkIf (cfg.enable && cfg.role == "workstation") {
