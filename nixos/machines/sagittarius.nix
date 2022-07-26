@@ -17,6 +17,7 @@
           minimal = true;
           fs.tmpOnTmpfs = false;
           home.enable = true;
+          minimal = true;
 
           boot = {
             loader = "grub";
@@ -26,8 +27,6 @@
         };
 
         services = {
-          fwupd.enable = lib.mkForce false;
-
           samba = {
             enable = true;
             openFirewall = true;
