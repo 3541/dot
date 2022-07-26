@@ -1,4 +1,4 @@
-{ a3, ... }: {
+{ self, a3, ... }: {
   system = "x86_64-linux";
   modules = [
     ({ lib, pkgs, ... }: {
@@ -71,9 +71,27 @@
         };
 
         # Allow unprivileged access to keyboard in firmware flash mode.
-        services.udev.extraRules = ''
-          SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
-        '';
+        services = {
+          xserver.dpi = 96;
+
+          udev.extraRules = ''
+            SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
+          '';
+
+          pixiecore = let
+            netboot =
+              self.nixosConfigurations.netboot-installer.config.system.build;
+          in {
+            enable = true;
+            dhcpNoBind = true;
+            openFirewall = true;
+            port = 62912;
+            statusPort = 62912;
+            kernel = "${netboot.kernel}/bzImage";
+            initrd = "${netboot.netbootRamdisk}/initrd";
+            cmdLine = "init=${netboot.toplevel}/init loglevel=4";
+          };
+        };
 
         networking = {
           interfaces.enp0s25.useDHCP = true;
@@ -104,7 +122,6 @@
         };
 
         swapDevices = [{ device = "/opt/swapfile"; }];
-        services.xserver.dpi = 96;
         programs.steam.enable = true;
       };
     })
