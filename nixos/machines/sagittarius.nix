@@ -17,7 +17,6 @@
           minimal = true;
           fs.tmpOnTmpfs = false;
           home.enable = true;
-          minimal = true;
 
           boot = {
             loader = "grub";
