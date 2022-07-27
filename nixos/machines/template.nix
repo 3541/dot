@@ -11,7 +11,7 @@
       config = {
         a3 = {
           enable = true;
-          hostName = HOSTNAME;
+          hostName = "HOSTNAME";
           encryptRoot = false;
           role = "server";
           minimal = true;

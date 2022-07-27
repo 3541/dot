@@ -17,12 +17,13 @@
           minimal = true;
         };
 
-        services.openssh.permitRootLogin = lib.mkForce "no";
-
         environment.systemPackages = [
           pkgs.git
-          (pkgs.writeShellScriptBin "install" (builtins.readFile ./install.sh))
+          (pkgs.writeShellScriptBin "a3-install" (builtins.readFile ./install.sh))
         ];
+
+        services.openssh.permitRootLogin = lib.mkForce "no";
+        users.motd = "Run a3-install to begin installation.";
       };
     })
   ];
