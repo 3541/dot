@@ -7,9 +7,10 @@
 
       git = {
         enable = true;
+        package = pkgs.gitAndTools.gitFull;
         userName = "Alex O'Brien";
         userEmail = "3541@3541.website";
-        ignores = [ ".DS_Store" ".direnv" ];
+        ignores = [ ".DS_Store" ".direnv" ".envrc" ];
 
         aliases = {
           d = "diff";
@@ -17,23 +18,32 @@
           a = "add";
           c = "commit";
           p = "push";
+          pl = "pull";
           cl = "clone";
           s = "status";
           l = "log";
           r = "rebase";
-          ri = "rebase -i";
         };
 
         extraConfig = {
           submodule.fetchJobs = 8;
-          pull = {
-            rebase = false;
-            ff = "only";
-          };
           log.showSignature = true;
           init.defaultBranch = "trunk";
           merge.renamelimit = 10000;
           rebase.autoSquash = true;
+          format.signOff = true;
+
+          pull = {
+            rebase = false;
+            ff = "only";
+          };
+
+          sendemail = {
+            smtpserver = "smtp.mail.us-west-2.awsapps.com";
+            smtpuser = "3541@3541.website";
+            smtpencryption = "ssl";
+            smtpserverport = 465;
+          };
         };
 
         signing = lib.mkIf (cfg.role == "workstation") {
