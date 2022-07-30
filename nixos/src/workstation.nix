@@ -31,7 +31,7 @@ in {
       };
     };
 
-    environment.systemPackages = [ pkgs.opensnitch-ui ];
+    environment.systemPackages = with pkgs; [ opensnitch-ui aerc pandoc ];
 
     programs = {
       gnupg.agent.enable = true;
