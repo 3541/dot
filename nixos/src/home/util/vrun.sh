@@ -47,6 +47,9 @@ vm_run() (
 
     if [[ "$vm" = *"haiku"* ]]; then
         user="user"
+        info "$vm" "SKIPPED (lockups)."
+        return
+        # Haiku seems to be locking up a lot at the moment. Skip it for now.
     fi
 
     info "$vm" "Starting..."
