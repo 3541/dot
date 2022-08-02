@@ -17,6 +17,7 @@
           minimal = true;
           fs.tmpOnTmpfs = false;
           home.enable = true;
+          build.distributed = true;
 
           boot = {
             loader = "grub";

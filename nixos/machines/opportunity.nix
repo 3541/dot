@@ -9,6 +9,7 @@
           enable = true;
           hostName = "opportunity";
           encryptRoot = true;
+          build.distributed = false;
 
           boot = {
             loader = "grub";

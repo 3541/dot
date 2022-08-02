@@ -1,12 +1,16 @@
 { config, lib, ... }:
 let cfg = config.a3;
 in {
-  options.a3.build.sshKey = lib.mkOption {
-    type = lib.types.str;
-    default = "id_ed25519";
+  options.a3.build = {
+    distributed = lib.mkEnableOption "Enable distributed builds.";
+
+    sshKey = lib.mkOption {
+      type = lib.types.str;
+      default = "id_ed25519";
+    };
   };
 
-  config.nix = lib.mkIf cfg.enable {
+  config.nix = lib.mkIf (cfg.enable && cfg.build.distributed) {
     buildMachines = builtins.filter (m: m.hostName != cfg.hostName)
       (builtins.map (s:
         s // {

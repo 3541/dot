@@ -16,6 +16,7 @@
           build.sshKey = "id_ecdsa";
           hardware.formFactor = "portable";
           backup.enable = true;
+          build.distributed = true;
 
           display = {
             enable = true;
