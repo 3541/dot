@@ -20,13 +20,13 @@
       "charon"
       "sagittarius"
       "netboot-installer"
+      "iso-installer"
       # Add machines here.
     ]);
 
-    packages.x86_64-linux.charonImage =
-      self.nixosConfigurations.charon.config.system.build.sdImage;
-    packages.x86_64-linux.pxeInstallImage =
-      nixpkgs.legacyPackages.x86_64-linux.pkgs.symlinkJoin {
+    packages.x86_64-linux = {
+      charonImage = self.nixosConfigurations.charon.config.system.build.sdImage;
+      pxeInstallImage = nixpkgs.legacyPackages.x86_64-linux.pkgs.symlinkJoin {
         name = "netboot-installer";
         paths =
           with self.nixosConfigurations.netboot-installer.config.system.build; [
@@ -35,5 +35,8 @@
             kernel
           ];
       };
+      cdInstallImage =
+        self.nixosConfigurations.iso-installer.config.system.build.isoImage;
+    };
   };
 }
