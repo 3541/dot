@@ -7,7 +7,7 @@
 
       git = {
         enable = true;
-        package = pkgs.gitAndTools.gitFull;
+        package = if cfg.role == "workstation" then pkgs.gitAndTools.gitFull else pkgs.git;
         userName = "Alex O'Brien";
         userEmail = "3541@3541.website";
         ignores = [ ".DS_Store" ".direnv" ".envrc" ];
