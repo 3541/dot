@@ -3,7 +3,7 @@
     && cfg.display.enable && cfg.role == "workstation") (let
       override = {
         alsaSupport = false;
-        waylandSupport = cfg.display.server == "wayland";
+        waylandSupport = true;
         drmSupport = true;
         privacySupport = true;
       };
