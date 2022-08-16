@@ -7,10 +7,8 @@
       ++ lib.optionals (cfg.role == "workstation" && cfg.platform != "macOS") [
         linuxPackages.cpupower
         signal-desktop
-        slack
         discord
         thunderbird
-        zoom-us
         libreoffice
         virt-manager
       ] ++ lib.optionals cfg.display.enable [
