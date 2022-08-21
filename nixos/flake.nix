@@ -3,13 +3,18 @@
     nixpkgs.url = "nixpkgs/nixos-22.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
+    darwin = {
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     a3 = {
       url = "./src";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, ... }@args: {
+  outputs = { self, nixpkgs, darwin, ... }@args: {
     nixosConfigurations = builtins.listToAttrs (map (name: {
       name = name;
       value = nixpkgs.lib.nixosSystem
@@ -22,6 +27,15 @@
       "netboot-installer"
       "iso-installer"
       # Add machines here.
+    ]);
+
+    darwinConfigurations = builtins.listToAttrs (map (name: {
+      name = name;
+      value = darwin.lib.darwinSystem
+        ((import ./machines/${name}.nix args) // { specialArgs = args; });
+    }) [
+      "sydmacx3bd"
+      # Add macOS machines here.
     ]);
 
     packages.x86_64-linux = {
