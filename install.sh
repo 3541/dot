@@ -17,6 +17,22 @@ if command -v nix &> /dev/null; then
         fi
 
         sudo ln -sf /etc/nixos/flake.nix "$PWD/nixos/flake.nix"
+    elif [ "$(uname)" = "Darwin" ]; then
+        echo "Building nix-darwin installer..."
+        cd $(mktemp -d)
+        nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+
+        echo "Installing nix-darwin..."
+        ./result/bin/darwin-installer
+        rm result
+        cd -
+
+        if [ ! -f "nixos/machines/$(hostname).nix" ]; then
+            echo "Create machines/$(hostname).nix, then exit this shell."
+            bash
+        fi
+
+        darwin-rebuild switch --flake ./nixos
     fi
 else
     if [ ! -e "~/.bashrc.dist" && -e "~/.bashrc" ]; then

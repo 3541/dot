@@ -4,21 +4,17 @@ if command -v nixos-rebuild &> /dev/null; then
         sudo nixos-rebuild switch -L
     else
         sudo nixos-rebuild --upgrade-all switch
+
+        if command -v home-manager &> /dev/null; then
+            nix-channel --update
+            home-manager switch
+        fi
     fi
 elif command -v dnf &> /dev/null; then
     sudo dnf upgrade
-elif [ "$(uname)" = "Darwin" ]; then
-    sudo -i sh -c \
-         'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
-    MACPORTS=/opt/local/bin/port
-    if [ -f "$MACPORTS" ]; then
-        sudo "$MACPORTS" selfupdate && sudo "$MACPORTS" upgrade outdated
-    fi
-fi
-
-if [ ! -e /etc/nixos/flake.nix ]; then
-    nix-channel --update
-    home-manager switch
+elif command -v darwin-rebuild &> /dev/null; then
+    cd ~/dot/nixos && nix flake update && cd -
+    darwin-rebuild switch --flake "$HOME/dot/nixos" -L
 fi
 
 if command -v flatpak &> /dev/null; then

@@ -3,28 +3,42 @@
 
   modules = [
     ({ lib, pkgs, ... }: {
-      imports = [ a3.nixosModule ];
+      imports = [ a3.darwinModule ];
 
       config = {
         a3 = {
           enable = true;
-          hostname = "sydmacx3bd";
-          build.distributed = false;
+          hostName = "sydmacx3bd";
+          platform = "darwin";
           hardware.formFactor = "portable";
 
           home = {
             enable = true;
+            user = "aobrien";
+            directory = "/Users/aobrien";
 
             ui.fonts = {
               ui.size = 16.0;
 
               editor = {
                 font = "Berkeley Mono";
-                size = 15.0;
+                size = 13.0;
               };
             };
           };
         };
+
+        users.users.aobrien = {
+          home = "/Users/aobrien";
+          shell = pkgs.bashInteractive;
+        };
+
+        system.keyboard = {
+          enableKeyMapping = true;
+          remapCapsLockToControl = true;
+        };
+
+        time.timeZone = lib.mkForce "America/Chicago";
       };
     })
   ];

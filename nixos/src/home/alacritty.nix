@@ -1,6 +1,6 @@
 { cfg, lib, pkgs, ... }: {
   config.programs.alacritty = lib.mkIf (cfg.enable && cfg.home.enable
-    && cfg.display.enable && cfg.platform != "macOS") {
+    && cfg.display.enable) {
       enable = true;
 
       settings = {

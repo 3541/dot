@@ -39,6 +39,11 @@
             options.a3.home = {
               enable = lib.mkEnableOption "Enable home-manager.";
 
+              user = lib.mkOption {
+                type = lib.types.str;
+                default = "alex";
+              };
+
               directory = lib.mkOption {
                 type = lib.types.path;
                 default = "/home/alex";
@@ -93,10 +98,10 @@
                 emacs-sensible-defaults = emacs-sensible-defaults;
               };
 
-              users.alex = {
+              users.${cfg.home.user} = {
                 config.home = {
                   stateVersion = "22.05";
-                  username = "alex";
+                  username = cfg.home.user;
                   homeDirectory = cfg.home.directory;
                 };
 
@@ -119,6 +124,97 @@
         default = self.nixosModules.home;
       };
 
+      darwinModules = {
+        home = { config, lib, ... }@args:
+          let cfg = config.a3;
+          in {
+            imports = [ home-manager.darwinModules.home-manager ];
+
+            options.a3.home = {
+              enable = lib.mkEnableOption "Enable home-manager.";
+
+              user = lib.mkOption {
+                type = lib.types.str;
+                default = "alex";
+              };
+
+              directory = lib.mkOption {
+                type = lib.types.path;
+                default = "/Users/alex";
+              };
+
+              shExtra = lib.mkOption {
+                type = lib.types.str;
+                default = "";
+              };
+
+              ui = {
+                windowGaps = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+
+                fonts = {
+                  ui = {
+                    font = lib.mkOption {
+                      type = lib.types.str;
+                      default = "Iosevka";
+                    };
+
+                    size = lib.mkOption {
+                      type = lib.types.float;
+                      default = 14.0;
+                    };
+                  };
+
+                  editor = {
+                    font = lib.mkOption {
+                      type = lib.types.str;
+                      default = "Iosevka Custom";
+                    };
+
+                    size = lib.mkOption {
+                      type = lib.types.float;
+                      default = 14.0;
+                    };
+                  };
+                };
+              };
+            };
+
+            config.home-manager = lib.mkIf (cfg.enable && cfg.home.enable) {
+              useGlobalPkgs = true;
+              extraSpecialArgs = {
+                cfg = cfg;
+                emacs-color-theme-solarized = emacs-color-theme-solarized;
+                emacs-sensible-defaults = emacs-sensible-defaults;
+              };
+
+              users.${cfg.home.user} = {
+                config.home = {
+                  stateVersion = "22.05";
+                  username = cfg.home.user;
+                  homeDirectory = cfg.home.directory;
+                };
+
+                imports = [
+                  ./alacritty.nix
+                  ./cmus.nix
+                  ./emacs.nix
+                  ./gdb.nix
+                  ./git.nix
+                  ./packages.nix
+                  ./sh.nix
+                  ./util
+                ];
+              };
+            };
+          };
+
+        default = self.darwinModules.home;
+      };
+
       nixosModule = self.nixosModules.default;
+      darwinModule = self.darwinModules.default;
     };
 }

@@ -2,12 +2,12 @@
   config.programs = lib.mkIf (cfg.enable && cfg.home.enable) {
     bash = {
       enable = true;
-      enableVteIntegration = cfg.display.enable;
+      enableVteIntegration = cfg.display.enable && cfg.platform != "darwin";
 
       shellAliases = {
         jp = "jq . ";
         cpu-poke =
-          lib.mkIf (cfg.role == "workstation" && cfg.platform != "macOS")
+          lib.mkIf (cfg.role == "workstation" && cfg.platform != "darwin")
           "sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance";
         b = "bazel build //...";
         t = "bazel test //...";

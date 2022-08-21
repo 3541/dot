@@ -6,7 +6,7 @@
         sessionVariables.EDITOR = "emacsclient -c";
       };
 
-      services.emacs = lib.mkIf (cfg.platform != "macOS") {
+      services.emacs = lib.mkIf (cfg.platform != "darwin") {
         enable = true;
         client.enable = true;
       };
@@ -527,7 +527,7 @@
               (add-to-list 'default-frame-alist '(font . "${cfg.home.ui.fonts.editor.font}-${
                 toString cfg.home.ui.fonts.editor.size
               }"))
-          '' + lib.optionalString (cfg.platform == "macOS") ''
+          '' + lib.optionalString (cfg.platform == "darwin") ''
             (add-to-list 'exec-path "~/.nix-profile/bin")
             (add-to-list 'exec-path "/nix/var/nix/profiles/default/bin")
             (add-to-list 'exec-path "/usr/local/bin")

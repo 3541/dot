@@ -2,16 +2,16 @@
   config = lib.mkIf (cfg.enable && cfg.home.enable) {
     home.packages = with pkgs;
       [ bashInteractive tree ripgrep pv ]
-      ++ lib.optional (cfg.platform != "macOS") lm_sensors
+      ++ lib.optional (cfg.platform != "darwin") lm_sensors
       ++ lib.optionals (cfg.role == "workstation") [ man-pages man-pages-posix ]
-      ++ lib.optionals (cfg.role == "workstation" && cfg.platform != "macOS") [
+      ++ lib.optionals (cfg.role == "workstation" && cfg.platform != "darwin") [
         linuxPackages.cpupower
         signal-desktop
         discord
         thunderbird
         libreoffice
         virt-manager
-      ] ++ lib.optionals cfg.display.enable [
+      ] ++ lib.optionals (cfg.display.enable && cfg.platform != "darwin") [
         evince
         pavucontrol
         gnome.gnome-system-monitor
@@ -25,6 +25,6 @@
     };
 
     manual.manpages.enable = cfg.role == "workstation";
-    services.syncthing.enable = cfg.role == "workstation" && cfg.platform != "macOS";
+    services.syncthing.enable = cfg.role == "workstation" && cfg.platform != "darwin";
   };
 }
