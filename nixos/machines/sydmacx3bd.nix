@@ -28,6 +28,8 @@
               if [ ! -e "$HOME/.bin_override/git" ]; then
                   ln -s /usr/bin/git "$HOME/.bin_override/git"
               fi
+
+              export ALTERNATE_EDITOR=vi
             '';
 
             ui.fonts = {
@@ -55,7 +57,11 @@
           home.packages = with pkgs; [ maven ];
 
           programs = {
-            git.signing.signByDefault = lib.mkForce false;
+            git = {
+              userEmail = lib.mkForce "alex.obrien@imc.com";
+              signing.signByDefault = lib.mkForce false;
+              extraConfig.http.emptyAuth = true;
+            };
 
             ssh.extraConfig = ''
               PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
