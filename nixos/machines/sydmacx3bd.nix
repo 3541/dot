@@ -16,6 +16,19 @@
             enable = true;
             user = "aobrien";
             directory = "/Users/aobrien";
+            #            shExtra = "export JAVA_HOME=$(/usr/libexec/java_home –v 17)";
+            shExtra = ''
+              # Generate J Aliases
+              if [ -f ~/generate_j_aliases.sh ]; then
+                  . ~/generate_j_aliases.sh
+              fi
+
+              mkdir -p $HOME/.bin_override
+              export PATH="$HOME/.bin_override:$PATH"
+              if [ ! -e "$HOME/.bin_override/git" ]; then
+                  ln -s /usr/bin/git "$HOME/.bin_override/git"
+              fi
+            '';
 
             ui.fonts = {
               ui.size = 16.0;
@@ -36,6 +49,20 @@
         system.keyboard = {
           enableKeyMapping = true;
           remapCapsLockToControl = true;
+        };
+
+        home-manager.users.aobrien.config = {
+          home.packages = with pkgs; [ maven ];
+
+          programs = {
+            git.signing.signByDefault = lib.mkForce false;
+
+            ssh.extraConfig = ''
+              PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
+              GSSAPIAuthentication yes
+              GSSAPIDelegateCredentials yes
+            '';
+          };
         };
 
         time.timeZone = lib.mkForce "America/Chicago";
