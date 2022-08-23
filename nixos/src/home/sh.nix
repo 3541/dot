@@ -14,6 +14,11 @@
         r = "bazel run //...";
         g = "git";
         s = "stg";
+        m = "mvn";
+        mci = "mvn clean install";
+        mi = "mvn install";
+        mda = "mvn dependency:analyze -Dverbose";
+        mvr = "mvn versions:display-dependency-updates";
       };
 
       initExtra = ''
