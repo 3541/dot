@@ -17,6 +17,7 @@
         m = "mvn";
         mci = "mvn clean install";
         mi = "mvn install";
+        mt = "mvn test";
         mda = "mvn dependency:analyze -Dverbose";
         mvr = "mvn versions:display-dependency-updates";
       };

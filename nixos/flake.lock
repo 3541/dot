@@ -9,12 +9,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-pdyaepGu0n0yRe1thJEt9IGWofJxiJSCJ4wU7QAKsog=",
-        "path": "/nix/store/054czlf91azsjjriaggkm1hacd0kvd95-source/nixos/src",
+        "narHash": "sha256-8ISRwfr/1YjS8ic1JhP0HRX5zq7ZP5nRchtqdAhj1r4=",
+        "path": "/nix/store/cskxcvc93kxmvpp1199906m2n0v1c6q4-source/nixos/src",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/054czlf91azsjjriaggkm1hacd0kvd95-source/nixos/src",
+        "path": "/nix/store/cskxcvc93kxmvpp1199906m2n0v1c6q4-source/nixos/src",
         "type": "path"
       }
     },
@@ -25,11 +25,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1661154924,
-        "narHash": "sha256-zwkShc4VZ9feLeIrWjdm6YkZBoobzXETF5xIIgi++Ec=",
+        "lastModified": 1661329936,
+        "narHash": "sha256-dafFjAcJPo0SdegK3E+SnTI8CNMgV/bBm/6CeDf82f8=",
         "owner": "lnl7",
         "repo": "nix-darwin",
-        "rev": "5af1aa51f63d734284bf6728a21d2c9c31eb7492",
+        "rev": "ef0e7f41cdf8fae1d2390c4df246c90a364ed8d9",
         "type": "github"
       },
       "original": {
@@ -85,12 +85,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-4WS32fKnxcBonkQ/kvGXoBtpDRFRkqRCf19e77D96Wc=",
-        "path": "/nix/store/6qa8dj5kfk6gf0yjv4k9l0x0li1rlgr7-source/home",
+        "narHash": "sha256-oNEPsI9Dmwvwq/LwT3SVJOHzVdgUBvzioH9oAreC67w=",
+        "path": "/nix/store/a3dkhqf7vqjq1vxr85wpcnc88npc6wdi-source/home",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/6qa8dj5kfk6gf0yjv4k9l0x0li1rlgr7-source/home",
+        "path": "/nix/store/a3dkhqf7vqjq1vxr85wpcnc88npc6wdi-source/home",
         "type": "path"
       }
     },
