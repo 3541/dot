@@ -9,9 +9,9 @@
         cpu-poke =
           lib.mkIf (cfg.role == "workstation" && cfg.platform != "darwin")
           "sudo cpupower frequency-set -g powersave && sudo cpupower frequency-set -g performance";
-        b = "bazel build //...";
-        t = "bazel test //...";
-        r = "bazel run //...";
+        b = "bazel build ...";
+        t = "bazel test ...";
+        r = "bazel run ...";
         g = "git";
         s = "stg";
         m = "mvn";
