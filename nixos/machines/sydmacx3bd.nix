@@ -54,8 +54,6 @@
         };
 
         home-manager.users.aobrien.config = {
-          home.packages = with pkgs; [ maven ];
-
           programs = {
             git = {
               userEmail = lib.mkForce "alex.obrien@imc.com";

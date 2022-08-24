@@ -23,6 +23,7 @@
           s = "status";
           l = "log";
           r = "rebase";
+          f = "fetch";
         };
 
         extraConfig = {
