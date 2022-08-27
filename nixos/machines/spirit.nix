@@ -17,6 +17,7 @@
           hardware.formFactor = "portable";
           backup.enable = true;
           build.distributed = false;
+          fs.tmpOnTmpfs = false;
 
           display = {
             enable = true;
