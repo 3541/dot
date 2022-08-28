@@ -411,8 +411,8 @@
             command=date '+%Y-%m-%d %H:%M:%S'
             interval=1
 
-            [time-taipei]
-            command=echo "T: $(TZ=":Asia/Taipei" date '+%T')"
+            [time-melbourne]
+            command=echo "M: $(TZ=":Australia/Melbourne" date '+%T')"
             interval=1
 
             [time-seattle]
