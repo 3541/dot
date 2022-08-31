@@ -66,6 +66,11 @@
               GSSAPIAuthentication yes
               GSSAPIDelegateCredentials yes
             '';
+
+            bash.shellAliases = {
+              sp = "$HOME/src/docker_spinup/spinup";
+              ss = "$HOME/src/docker_spinup/spinup shell";
+            };
           };
         };
 
