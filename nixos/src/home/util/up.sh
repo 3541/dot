@@ -15,6 +15,9 @@ elif command -v dnf &> /dev/null; then
 elif command -v darwin-rebuild &> /dev/null; then
     cd ~/dot/nixos && nix flake update && cd -
     darwin-rebuild switch --flake "$HOME/dot/nixos" -L
+    if [ -s ./result ]; then
+        rm result
+    fi
 fi
 
 if command -v flatpak &> /dev/null; then
