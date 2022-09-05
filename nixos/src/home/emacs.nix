@@ -494,7 +494,7 @@
 
               (setq gdb-many-windows t)
 
-              (setq tab-width 4)
+              (setq-default tab-width 4)
               (setq c-basic-offset 4)
               (setq c-default-style "linux")
               (setq sgml-basic-offset 4)
