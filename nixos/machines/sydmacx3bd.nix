@@ -74,6 +74,18 @@
           };
         };
 
+        homebrew = {
+          enable = true;
+          brews = [ "jdtls" ];
+          casks = [ "firefox" "intellij-idea-ce" "eclipse-java" ];
+
+          onActivation = {
+            autoUpdate = true;
+            upgrade = true;
+            cleanup = "zap";
+          };
+        };
+
         time.timeZone = lib.mkForce "America/Chicago";
       };
     })

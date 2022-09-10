@@ -23,8 +23,3 @@ fi
 if command -v flatpak &> /dev/null; then
     flatpak update
 fi
-
-if command -v brew &> /dev/null; then
-    brew update
-    brew upgrade
-fi
