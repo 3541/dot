@@ -77,7 +77,8 @@
         homebrew = {
           enable = true;
           brews = [ "jdtls" ];
-          casks = [ "firefox" "intellij-idea-ce" "eclipse-java" ];
+          casks = [ "firefox" "intellij-idea-ce" "eclipse-java" "jdk-mission-control" ];
+          taps = [ "homebrew/cask" ];
 
           onActivation = {
             autoUpdate = true;
