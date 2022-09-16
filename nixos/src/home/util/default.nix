@@ -1,1 +1,1 @@
-{ imports = [ ./up.nix ./vrun.nix ./vup.nix ]; }
+{ imports = [ ./nr.nix ./up.nix ./vrun.nix ./vup.nix ]; }
