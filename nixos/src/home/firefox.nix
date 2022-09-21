@@ -11,7 +11,7 @@
       enable = true;
 
       package =
-        pkgs.wrapFirefox (pkgs.firefox-esr-91-unwrapped.override override) {
+        pkgs.wrapFirefox (pkgs.firefox-esr-102-unwrapped.override override) {
           extraPolicies = {
             DisableFirefoxStudies = true;
             DisablePocket = true;
