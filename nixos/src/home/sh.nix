@@ -14,12 +14,13 @@
         r = "bazel run ...";
         g = "git";
         s = "stg";
-        m = "mvn";
-        mci = "mvn clean install";
-        mi = "mvn install";
-        mt = "mvn test";
-        mda = "mvn dependency:analyze -Dverbose";
-        mvr = "mvn versions:display-dependency-updates";
+        m = "mvnd";
+        mci = "mvnd clean install";
+        mi = "mvnd install";
+        mt = "mvnd test";
+        mda = "mvnd dependency:analyze -Dverbose";
+        mvr = "mvnd versions:display-dependency-updates";
+        ds = "ssh devschool";
       };
 
       initExtra = ''
