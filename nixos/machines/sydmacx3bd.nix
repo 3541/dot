@@ -61,24 +61,60 @@
               extraConfig.http.emptyAuth = true;
             };
 
-            ssh.extraConfig = ''
-              PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
-              GSSAPIAuthentication yes
-              GSSAPIDelegateCredentials yes
-            '';
+            ssh = {
+              extraConfig = ''
+                PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
+                GSSAPIAuthentication yes
+                GSSAPIDelegateCredentials yes
+              '';
+
+              matchBlocks = let dsConfig = {
+                hostname = "aobrien-devschool.trading.imc.intra";
+                user = "aobrien";
+                identityFile = "/Users/aobrien/.ssh/devenv_private_key";
+                checkHostIP = false;
+                # compression = true;
+
+                extraOptions.StrictHostKeyChecking = "no";
+              }; in {
+                devschool = dsConfig;
+                "devenv-aobrien.trading.imc.intra" = dsConfig;
+              };
+            };
 
             bash.shellAliases = {
               sp = "$HOME/src/docker_spinup/spinup";
               ss = "$HOME/src/docker_spinup/spinup shell";
             };
           };
+
+          home.packages = [ pkgs.openssh ];
         };
 
         homebrew = {
           enable = true;
-          brews = [ "jdtls" ];
-          casks = [ "firefox" "intellij-idea-ce" "eclipse-java" "jdk-mission-control" ];
-          taps = [ "homebrew/cask" ];
+          brews = [ "jdtls" "mvnd" ];
+          taps = [
+            "homebrew/cask"
+            "mvndaemon/homebrew-mvnd"
+            {
+              name = "imc/core";
+              clone_target = "https://gitlab.trading.imc.intra/all/homebrew-imc";
+            }
+          ];
+          casks = [
+            "firefox"
+            "intellij-idea-ce"
+            "clion"
+            "eclipse-java"
+            "jdk-mission-control"
+            "devenv-launcher"
+            "tigervnc-viewer-imc"
+            "xpra"
+            "wireshark"
+            "jetbrains-gateway"
+            "imc/core/ark"
+          ];
 
           onActivation = {
             autoUpdate = true;
