@@ -1,3 +1,5 @@
 #!/bin/sh
 
-nix run "nixpkgs/nixos-22.05#${1}"
+name="$1"
+shift
+nix run "nixpkgs/nixos-22.05#${name}" -- $@
