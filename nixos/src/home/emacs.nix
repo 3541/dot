@@ -139,6 +139,10 @@
                   'eglot-server-programs
                   '(python-mode . ("~/.local/bin/pyls")))
                 (add-to-list 'eglot-server-programs '(swift-mode . ("sourcekit-lsp")))
+                (add-to-list 'eglot-server-programs
+                  `(java-mode
+                    "/usr/local/bin/jdtls"
+                    "-data" ,(expand-file-name "cache/java-workspace" user-emacs-directory)))
                 (add-hook 'c-mode-hook 'eglot-ensure)
                 (add-hook 'c++-mode-hook 'eglot-ensure)
                 (add-hook 'java-mode-hook 'eglot-ensure)
@@ -491,6 +495,18 @@
 
               (define-key prog-mode-map (kbd "C-c e n") 'flymake-goto-next-error)
               (define-key prog-mode-map (kbd "C-c e p") 'flymake-goto-prev-error)
+              (defun flymake-checkstyle-java-init ()
+                (let* ((tmp (flymake-init-create-temp-buffer-copy 'flymake-create-temp-inplace))
+                       (local (file-relative-name tmp (file-name-directory buffer-file-name))))
+                      (list "checkstyle"
+                        (list "-c"
+                          (concat (file-name-as-directory (projectile-project-root)) "sputnik-rules/checkstyle.xml")
+                          local))))
+              (add-to-list 'flymake-err-line-patterns
+                '("\\(\\w+.java\\):\\([0-9]+\\):[0-9]*[:, ]*\\(.+\\)" 1 2 nil 3))
+              (add-to-list 'flymake-allowed-file-name-masks '("\\.java$"
+                           flymake-checkstyle-java-init))
+              (add-hook 'find-file-hook 'flymake-mode)
 
               (setq gdb-many-windows t)
 
