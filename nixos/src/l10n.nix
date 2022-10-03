@@ -2,7 +2,7 @@
 let cfg = config.a3;
 in {
   config = lib.mkIf cfg.enable {
-    time.timeZone = "Australia/Melbourne";
+    time.timeZone = "Australia/Sydney";
 
     i18n.defaultLocale = "en_US.UTF-8";
     console = {
