@@ -2,9 +2,6 @@
   config.programs.firefox = lib.mkIf (cfg.enable && cfg.home.enable
     && cfg.display.enable && cfg.role == "workstation") (let
       override = {
-        alsaSupport = false;
-        waylandSupport = true;
-        drmSupport = true;
         privacySupport = true;
       };
     in {
