@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, ... }:
 let cfg = config.a3;
 in {
   config = lib.mkIf (cfg.enable) {
@@ -27,6 +27,17 @@ in {
       flags = [ "--update-input" "nixpkgs" "--commit-lock-file" ];
     };
 
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs = {
+      config.allowUnfree = true;
+
+      overlays = [
+        (self: super: {
+          unstable = import nixpkgs-unstable {
+            system = super.system;
+            config.allowUnfree = true;
+          };
+        })
+      ];
+    };
   };
 }

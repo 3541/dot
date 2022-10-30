@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
+    nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     darwin = {
@@ -14,7 +15,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, darwin, ... }@args: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, darwin, ... }@args: {
     nixosConfigurations = builtins.listToAttrs (map (name: {
       name = name;
       value = nixpkgs.lib.nixosSystem
