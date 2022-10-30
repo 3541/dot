@@ -34,7 +34,8 @@
               (require 'package)
 
               (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-              (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+              (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
+              (add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/") t)
               (package-initialize)
 
               (unless (package-installed-p 'use-package)
@@ -274,7 +275,7 @@
                        ("C-c r g" . org-roam-graph)
                        ("C-c r i" . org-roam-node-insert))
                 :config
-                (org-roam-setup))
+                (org-roam-db-autosync-mode))
 
               (use-package org-roam-protocol
                 :ensure org-roam
