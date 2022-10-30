@@ -71,6 +71,10 @@
           };
         };
 
+        # The nVidia driver only got support for 6.0 in 515.76, which isn't in nixpkgs/nixos-22.05
+        # yet.
+        boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
+
         # Allow unprivileged access to keyboard in firmware flash mode.
         services = {
           xserver.dpi = 96;
@@ -97,6 +101,7 @@
         networking = {
           interfaces.enp0s25.useDHCP = true;
           bridges.br0.interfaces = [ "eth0" ];
+          enableIPv6 = false;
           firewall = {
             checkReversePath = lib.mkForce false;
             interfaces.eth0.allowedTCPPorts = [ 80 ];
@@ -106,7 +111,7 @@
         home-manager.users.alex.config = {
           xsession.windowManager.i3.config.startup = [{
             command =
-              "xrandr --output DP-0 --mode 3840x2160 --output DVI-D-0 --mode 1680x1050 --right-of DP-0";
+              "xrandr --output DP-0 --mode 3840x2160 --output DVI-D-0 --mode 1680x1050 --left-of DP-0";
             always = true;
           }];
           xsession.windowManager.i3.config.keybindings."Mod4+Shift+o" =
@@ -114,10 +119,14 @@
 
           home.packages = with pkgs; [
             lutris
-            polymc
+            pkgs.unstable.prismlauncher
             qmk
+            skypeforlinux
             (writeShellScriptBin "me3t" ''
-              WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.base}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
+              WINEPREFIX=/mass/games/me3t/wine ${pkgs.unstable.wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
+            '')
+            (writeShellScriptBin "me3t7" ''
+              WINEPREFIX=/mass/games/me3t/wine ${pkgs.unstable.wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager7.exe
             '')
           ];
         };
