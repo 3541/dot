@@ -242,7 +242,7 @@
             "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
           "XF86AudioNext" =
             "exec ${pkgs.playerctl}/bin/playerctl next && pkill -SIGRTMIN+11 i3blocks";
-          "Mod1+Shift+Space" =
+          "Mod1+Shift+space" =
             "exec ${pkgs.playerctl}/bin/playerctl play-pause && pkill -SIGRTMIN+11 i3blocks";
           "Mod1+Shift+h" =
             "exec ${pkgs.playerctl}/bin/playerctl previous && pkill -SIGRTMIN+11 i3blocks";
