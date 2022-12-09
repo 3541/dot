@@ -32,6 +32,7 @@
           export ALTERNATE_EDITOR=""
           export EDITOR="emacsclient -c -nw"
           export PROMPT_COMMAND=''${PROMPT_COMMAND}'printf "\033]0;%s\007" "''${PWD/#$HOME/\~}"'
+          export CARGO_TARGET_DIR="$HOME/.cache/cargo-target"
         '' + cfg.home.shExtra;
       };
 
