@@ -16,7 +16,7 @@
           build.sshKey = "id_ecdsa";
           hardware.formFactor = "portable";
           backup.enable = true;
-          build.distributed = false;
+          build.distributed = true;
           fs.tmpOnTmpfs = false;
 
           display = {
@@ -57,7 +57,7 @@
               resolution = "3840x2160";
               scale = "1.0";
             };
-            "HDMI-A-1".resolution = "1920x1080";
+            "HDMI-A-1".resolution = "3840x2160";
           };
 
           input = {
@@ -70,6 +70,7 @@
 
         networking.interfaces.enp0s31f6.useDHCP = true;
         networking.interfaces.wlp0s20f3.useDHCP = true;
+        networking.enableIPv6 = false;
         environment.variables.GDK_DPI_SCALE = "1.5";
         services.xserver.dpi = 96;
         programs.steam.enable = true;
