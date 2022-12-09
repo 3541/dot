@@ -137,9 +137,11 @@
 
           "${mod}+Shift+q" = "kill";
           "${mod}+d" =
-            "exec ${pkgs.dmenu}/bin/dmenu_path | ${pkgs.dmenu}/bin/dmenu_run ${dmenuArgs}"
-            + lib.optionalString (cfg.display.server == "wayland")
-            " | xargs swaymsg exec --";
+            "exec ${pkgs.dmenu}/bin/dmenu_path | ${pkgs.dmenu}/bin/dmenu ${dmenuArgs}"
+            + (if cfg.display.server == "wayland" then
+              " | xargs swaymsg exec --"
+            else
+              "| /bin/sh");
           "${mod}+Shift+w" = lib.mkIf (cfg.hardware.formFactor == "portable")
             ("exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu ${dmenuArgs}"
               + lib.optionalString (cfg.display.server == "wayland")
