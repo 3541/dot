@@ -46,10 +46,12 @@ in {
         qemu = {
           swtpm.enable = true;
           # OVMFFull is broken at the moment. https://github.com/NixOS/nixpkgs/issues/164064
-          ovmf.package = pkgs.OVMF.override {
-            secureBoot = true;
-            tpmSupport = true;
-          };
+          ovmf.packages = [
+            (pkgs.OVMF.override {
+              secureBoot = true;
+              tpmSupport = true;
+            }).fd
+          ];
         };
       };
 

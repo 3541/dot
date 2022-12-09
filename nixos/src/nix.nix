@@ -4,8 +4,10 @@ in {
   config = lib.mkIf (cfg.enable) {
     nix = {
       package = pkgs.nixFlakes;
-      autoOptimiseStore = true;
-      settings.trusted-users = [ "@wheel" ];
+      settings = {
+        trusted-users = [ "@wheel" ];
+        auto-optimise-store = true;
+      };
 
       gc = {
         automatic = true;

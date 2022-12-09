@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-22.05";
+    nixpkgs.url = "nixpkgs/nixos-22.11";
 
     home = {
       url = "./home";
@@ -50,7 +50,7 @@
             ./user.nix
             ./workstation.nix
           ];
-          config = lib.mkIf cfg.enable { system.stateVersion = "22.05"; };
+          config = lib.mkIf cfg.enable { system.stateVersion = "22.11"; };
         };
 
       default = self.nixosModules.system;

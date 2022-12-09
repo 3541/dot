@@ -2,4 +2,4 @@
 
 name="$1"
 shift
-nix run "nixpkgs/nixos-22.05#${name}" -- $@
+nix run "nixpkgs/nixos-22.11#${name}" -- $@
