@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let cfg = config.a3;
 in {
   options.a3.user = {
@@ -23,6 +23,7 @@ in {
   config.users.users.alex = lib.mkIf cfg.enable {
     isNormalUser = true;
     initialPassword = "changeme";
+    shell = pkgs.nushell;
 
     extraGroups = [ "wheel" ] ++ lib.optional cfg.display.enable "video"
       ++ lib.optional (cfg.role == "workstation") "libvirtd"
