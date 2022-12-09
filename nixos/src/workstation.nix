@@ -27,7 +27,7 @@ in {
 
       printing = {
         enable = true;
-        drivers = with pkgs; [ hll2390dw-cups epson-escpr2 ];
+        drivers = with pkgs; [ hll2390dw-cups epson-escpr2 gutenprint ];
       };
     };
 
