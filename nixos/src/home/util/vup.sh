@@ -42,7 +42,7 @@ update_vm() (
 
     case "$vm" in
         *gentoo*)
-            ip="10.0.0.6"
+            ip="192.168.0.6"
             ;;
         *macOS*)
             while ! grep -q "macos" <(v net-dhcp-leases default); do
