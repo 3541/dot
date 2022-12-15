@@ -30,6 +30,7 @@
               fi
 
               export ALTERNATE_EDITOR=vi
+              export SPINUP_CONFIG="default_configs/roadrunner_syd.sh"
             '';
 
             ui.fonts = {
@@ -93,7 +94,7 @@
 
         homebrew = {
           enable = true;
-          brews = [ "jdtls" "mvnd" ];
+          brews = [ "jdtls" "mvnd" "imc/core/imc-wireshark-dissectors" "openjdk@11" ];
           taps = [
             "homebrew/cask"
             "mvndaemon/homebrew-mvnd"
@@ -122,8 +123,6 @@
             cleanup = "zap";
           };
         };
-
-        time.timeZone = lib.mkForce "America/Chicago";
       };
     })
   ];
