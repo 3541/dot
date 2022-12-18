@@ -37,65 +37,72 @@
           };
         };
 
-        boot.initrd = {
-          secrets.keyfile = "/etc/secrets/initrd/keyfile";
+        boot = {
+          kernelPackages = pkgs.linuxPackages_latest;
 
-          luks.devices = {
-            boot.keyFile = "/keyfile";
-            hdd0.keyFile = "/keyfile";
+          initrd = {
+            secrets.keyfile = "/etc/secrets/initrd/keyfile";
 
-            root = {
-              allowDiscards = true;
-              keyFile = "/keyfile";
-            };
+            luks.devices = {
+              boot.keyFile = "/keyfile";
+              hdd0.keyFile = "/keyfile";
 
-            aux = {
-              allowDiscards = true;
-              keyFile = "/keyfile";
-            };
+              root = {
+                allowDiscards = true;
+                keyFile = "/keyfile";
+              };
 
-            images = {
-              allowDiscards = true;
-              keyFile = "/keyfile";
-            };
+              aux = {
+                allowDiscards = true;
+                keyFile = "/keyfile";
+              };
 
-            hdd1 = {
-              device = "/dev/disk/by-uuid/eee5b77a-8deb-43d8-a0ec-4cc26046dd45";
-              keyFile = "/keyfile";
-            };
+              images = {
+                allowDiscards = true;
+                keyFile = "/keyfile";
+              };
 
-            hdd2 = {
-              device = "/dev/disk/by-uuid/237e5dd2-c2bf-4571-895a-aa9930a8b6ef";
-              keyFile = "/keyfile";
+              hdd1 = {
+                device =
+                  "/dev/disk/by-uuid/eee5b77a-8deb-43d8-a0ec-4cc26046dd45";
+                keyFile = "/keyfile";
+              };
+
+              hdd2 = {
+                device =
+                  "/dev/disk/by-uuid/237e5dd2-c2bf-4571-895a-aa9930a8b6ef";
+                keyFile = "/keyfile";
+              };
             };
           };
         };
 
-        # The nVidia driver only got support for 6.0 in 515.76, which isn't in nixpkgs/nixos-22.05
-        # yet.
-        boot.kernelPackages = pkgs.unstable.linuxPackages_latest;
-
         # Allow unprivileged access to keyboard in firmware flash mode.
         services = {
-          xserver.dpi = 96;
+          xserver = {
+            dpi = 96;
+            xkbOptions = "ctrl:nocaps";
+          };
 
+          # Keyboard DFU, GMMK Pro and BNMF F62 (respectively).
           udev.extraRules = ''
             SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
+            SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2ff0", TAG+="uaccess"
           '';
 
-          pixiecore = let
-            netboot =
-              self.nixosConfigurations.netboot-installer.config.system.build;
-          in {
-            enable = true;
-            dhcpNoBind = true;
-            openFirewall = true;
-            port = 62912;
-            statusPort = 62912;
-            kernel = "${netboot.kernel}/bzImage";
-            initrd = "${netboot.netbootRamdisk}/initrd";
-            cmdLine = "init=${netboot.toplevel}/init loglevel=4";
-          };
+          # pixiecore = let
+          #   netboot =
+          #     self.nixosConfigurations.netboot-installer.config.system.build;
+          # in {
+          #   enable = true;
+          #   dhcpNoBind = true;
+          #   openFirewall = true;
+          #   port = 62912;
+          #   statusPort = 62912;
+          #   kernel = "${netboot.kernel}/bzImage";
+          #   initrd = "${netboot.netbootRamdisk}/initrd";
+          #   cmdLine = "init=${netboot.toplevel}/init loglevel=4";
+          # };
         };
 
         networking = {
@@ -119,14 +126,14 @@
 
           home.packages = with pkgs; [
             lutris
-            pkgs.unstable.prismlauncher
+            prismlauncher
             qmk
             skypeforlinux
             (writeShellScriptBin "me3t" ''
-              WINEPREFIX=/mass/games/me3t/wine ${pkgs.unstable.wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
+              WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
             '')
             (writeShellScriptBin "me3t7" ''
-              WINEPREFIX=/mass/games/me3t/wine ${pkgs.unstable.wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager7.exe
+              WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager7.exe
             '')
           ];
         };
