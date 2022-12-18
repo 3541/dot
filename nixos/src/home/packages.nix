@@ -1,7 +1,7 @@
 { cfg, lib, pkgs, ... }: {
   config = lib.mkIf (cfg.enable && cfg.home.enable) {
     home.packages = with pkgs;
-      [ bashInteractive tree ripgrep pv ]
+      [ bashInteractive tree ripgrep pv fd ]
       ++ lib.optional (cfg.platform != "darwin") lm_sensors
       ++ lib.optionals (cfg.role == "workstation") [ man-pages man-pages-posix ]
       ++ lib.optionals (cfg.role == "workstation" && cfg.platform != "darwin") [
