@@ -7,7 +7,10 @@
 
       git = {
         enable = true;
-        package = if cfg.role == "workstation" then pkgs.gitAndTools.gitFull else pkgs.git;
+        package = if cfg.role == "workstation" then
+          pkgs.gitAndTools.gitFull
+        else
+          pkgs.git;
         userName = "Alex O'Brien";
         userEmail = "3541@3541.website";
         ignores = [ ".DS_Store" ".direnv" ".envrc" ];
@@ -58,6 +61,39 @@
             features = "side-by-side line-numbers";
             syntax-theme = "Solarized (dark)";
             whitespace-error-style = "22 reverse";
+          };
+        };
+      };
+
+      mercurial = {
+        enable = true;
+        userName = "Alex O'Brien";
+        userEmail = "3541@3541.website";
+        package = pkgs.mercurial.withExtensions (p: with p; [ hg-git hg-evolve ]);
+        ignores = [ ".DS_Store" ".direnv" ".envrc" ];
+
+        aliases = {
+          d = "diff";
+          c = "commit";
+          p = "push";
+          pl = "pull";
+          cl = "clone";
+          s = "status";
+          l = "log";
+        };
+
+        extraConfig = {
+          subrepos = {
+            allowed = true;
+            "git:allowed" = true;
+          };
+
+          extensions = {
+            git = "";
+            hggit = "";
+            evolve = "";
+            topic = "";
+            absorb = "";
           };
         };
       };

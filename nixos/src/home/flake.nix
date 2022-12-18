@@ -111,11 +111,11 @@
                   ./emacs.nix
                   ./firefox.nix
                   ./gdb.nix
-                  ./git.nix
                   ./packages.nix
                   ./sh.nix
                   ./ui
                   ./util
+                  ./vc.nix
                 ];
               };
             };
