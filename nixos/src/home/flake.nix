@@ -54,6 +54,11 @@
                 default = "";
               };
 
+              nuExtra = lib.mkOption {
+                type = lib.types.str;
+                default = "";
+              };
+
               ui = {
                 windowGaps = lib.mkOption {
                   type = lib.types.bool;
@@ -144,6 +149,11 @@
               };
 
               shExtra = lib.mkOption {
+                type = lib.types.str;
+                default = "";
+              };
+
+              nuExtra = lib.mkOption {
                 type = lib.types.str;
                 default = "";
               };

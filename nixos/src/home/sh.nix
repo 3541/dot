@@ -39,6 +39,8 @@
       nushell = {
         enable = true;
         configFile.source = ./config.nu;
+        envFile.source = ./env.nu;
+        extraConfig = cfg.home.nuExtra;
       };
 
       zoxide.enable = true;
