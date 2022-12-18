@@ -27,12 +27,7 @@
           shopt -s globstar
           set -o vi
           export CDPATH="$CDPATH:.:$HOME:$HOME/src"
-          export MY_GPG_KEY=0x1EECFF9EE39ED7AA
-          export DOTNET_CLI_TELEMETRY_OPTOUT=1
-          export ALTERNATE_EDITOR=""
-          export EDITOR="emacsclient -c -nw"
           export PROMPT_COMMAND=''${PROMPT_COMMAND}'printf "\033]0;%s\007" "''${PWD/#$HOME/\~}"'
-          export CARGO_TARGET_DIR="$HOME/.cache/cargo-target"
         '' + cfg.home.shExtra;
       };
 
@@ -43,7 +38,6 @@
 
       nushell = {
         enable = true;
-
         configFile.source = ./config.nu;
       };
 
@@ -102,9 +96,17 @@
       };
     };
 
-    home.file.zoxideConfig = {
-      source = ./zoxide.nu;
-      target = ".config/zoxide/zoxide.nu";
+    home = {
+      sessionVariables = {
+        MY_GPG_KEY = "0x1EECFF9EE39ED7AA";
+        CARGO_TARGET_DIR = "$HOME/.cache/cargo/target";
+        DOTNET_CLI_TELEMETRY_OPTOUT = 1;
+      };
+
+      file.zoxideConfig = {
+        source = ./zoxide.nu;
+        target = ".config/zoxide/zoxide.nu";
+      };
     };
   };
 }

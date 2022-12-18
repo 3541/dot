@@ -394,7 +394,16 @@ let-env config = {
   }
 }
 
+def cpu-poke [] {
+    sudo cpupower frequency-set -g powersave
+    sudo cpupower frequency-set -g performance
+}
+
 alias g = git
 alias s = stg
+alias jp = jq .
+alias b = bazel build //...
+alias t = bazel test //...
+alias r = bazel run //...
 
 source ~/.config/zoxide/zoxide.nu
