@@ -28,6 +28,8 @@ in {
     extraGroups = [ "wheel" ] ++ lib.optional cfg.display.enable "video"
       ++ lib.optional (cfg.role == "workstation") "libvirtd"
       ++ lib.optional (cfg.role == "workstation") "docker"
+      ++ lib.optional (cfg.role == "workstation") "scanner"
+      ++ lib.optional (cfg.role == "workstation") "lp"
       ++ lib.optional (cfg.hardware.formFactor == "portable") "networkmanager"
       ++ cfg.user.groups;
 
