@@ -4,13 +4,20 @@ in {
   config = lib.mkIf (cfg.enable && cfg.role == "workstation") {
     sound.enable = true;
 
-    hardware.pulseaudio = {
-      enable = true;
-      support32Bit = true;
-      extraConfig = ''
-        load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0\ digital_gain_control=1" source_name=echoCancel_source sink_name=echoCancel_sink
-        set-default-source echoCancel_source
-      '';
+    hardware = {
+      sane = {
+        enable = true;
+        extraBackends = with pkgs; [ sane-airscan epkowa utsushi ];
+      };
+
+      pulseaudio = {
+        enable = true;
+        support32Bit = true;
+        extraConfig = ''
+          load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0\ digital_gain_control=1" source_name=echoCancel_source sink_name=echoCancel_sink
+          set-default-source echoCancel_source
+        '';
+      };
     };
 
     security.pam.loginLimits = [{
@@ -25,13 +32,18 @@ in {
       vnstat.enable = true;
       usbmuxd.enable = true;
 
+      avahi = {
+        enable = true;
+        nssmdns = true;
+      };
+
       printing = {
         enable = true;
         drivers = with pkgs; [ hll2390dw-cups epson-escpr2 gutenprint ];
       };
     };
 
-    environment.systemPackages = with pkgs; [ opensnitch-ui aerc pandoc ];
+    environment.systemPackages = with pkgs; [ opensnitch-ui guestfs-tools ];
 
     programs = {
       gnupg.agent.enable = true;
@@ -45,6 +57,7 @@ in {
 
         qemu = {
           swtpm.enable = true;
+
           # OVMFFull is broken at the moment. https://github.com/NixOS/nixpkgs/issues/164064
           ovmf.packages = [
             (pkgs.OVMF.override {
