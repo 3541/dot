@@ -95,6 +95,7 @@
         extraConfig = ''
           set -g mouse on
         '';
+        escapeTime = 0;
       };
     };
 
