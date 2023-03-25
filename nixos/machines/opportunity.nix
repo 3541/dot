@@ -38,7 +38,7 @@
         };
 
         boot = {
-          kernelPackages = pkgs.linuxPackages_latest;
+          kernelPackages = pkgs.linuxPackages_6_1;
 
           initrd = {
             secrets.keyfile = "/etc/secrets/initrd/keyfile";
@@ -127,7 +127,6 @@
           home.packages = with pkgs; [
             lutris
             prismlauncher
-            qmk
             skypeforlinux
             (writeShellScriptBin "me3t" ''
               WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
