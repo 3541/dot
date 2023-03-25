@@ -18,7 +18,6 @@
             directory = "/Users/aobrien";
             #            shExtra = "export JAVA_HOME=$(/usr/libexec/java_home –v 17)";
             shExtra = ''
-              # Generate J Aliases
               if [ -f ~/generate_j_aliases.sh ]; then
                   . ~/generate_j_aliases.sh
               fi
@@ -29,8 +28,32 @@
                   ln -s /usr/bin/git "$HOME/.bin_override/git"
               fi
 
-              export ALTERNATE_EDITOR=vi
               export SPINUP_CONFIG="default_configs/roadrunner_syd.sh"
+              export ALTERNATE_EDITOR=vi
+
+              if command -v nu 2>&1 > /dev/null; then
+                  exec nu
+              fi
+            '';
+
+            nuExtra = ''
+              open ~/.j_aliases | lines |
+                  where -b { |l| $l | str starts-with "alias" } |
+                  each { |l| $l | parse "alias {name}='j to {value}'" | get value | first } |
+                  uniq |
+                  save ~/.j_completions_nu
+
+              module completions {
+                  def "nu-complete j" [] {
+                      open ~/.j_completions_nu | lines
+                  }
+
+                  export extern "j" [
+                      value: string@"nu-complete j"
+                  ]
+              }
+
+              use completions *
             '';
 
             ui.fonts = {
@@ -38,7 +61,7 @@
 
               editor = {
                 font = "Berkeley Mono";
-                size = 13.0;
+                size = 15.0;
               };
             };
           };
@@ -46,12 +69,21 @@
 
         users.users.aobrien = {
           home = "/Users/aobrien";
-          shell = pkgs.bashInteractive;
+          shell = pkgs.nushell;
         };
 
         system.keyboard = {
           enableKeyMapping = true;
           remapCapsLockToControl = true;
+        };
+
+        services = {
+          kwm = { enable = false; };
+
+          khd = {
+            enable = false;
+            i3Keybindings = true;
+          };
         };
 
         home-manager.users.aobrien.config = {
@@ -69,17 +101,21 @@
                 GSSAPIDelegateCredentials yes
               '';
 
-              matchBlocks = let dsConfig = {
-                hostname = "aobrien-devschool.trading.imc.intra";
-                user = "aobrien";
-                identityFile = "/Users/aobrien/.ssh/devenv_private_key";
-                checkHostIP = false;
-                # compression = true;
-
-                extraOptions.StrictHostKeyChecking = "no";
-              }; in {
-                devschool = dsConfig;
-                "devenv-aobrien.trading.imc.intra" = dsConfig;
+              matchBlocks = let
+                devenv = {
+                  hostname = "devenv-aobrien.trading.imc.intra";
+                  user = "aobrien";
+                };
+              in {
+                container = {
+                  hostname = "sytes173";
+                  user = "aobrien";
+                  port = 7743;
+                  identityFile =
+                    "/Users/aobrien/src/docker_spinup/docker/developer_centos7/docker_spinup.private_key.pkcs8.pem";
+                };
+                devenv-aobrien = devenv;
+                "devenv-aobrien.trading.imc-intra" = devenv;
               };
             };
 
@@ -89,18 +125,20 @@
             };
           };
 
-          home.packages = [ pkgs.openssh ];
+          home.packages = with pkgs; [ openssh ];
         };
 
         homebrew = {
           enable = true;
-          brews = [ "jdtls" "mvnd" "imc/core/imc-wireshark-dissectors" "openjdk@11" ];
+          brews =
+            [ "jdtls" "mvnd" "imc/core/imc-wireshark-dissectors" "openjdk@11" ];
           taps = [
             "homebrew/cask"
             "mvndaemon/homebrew-mvnd"
             {
               name = "imc/core";
-              clone_target = "https://gitlab.trading.imc.intra/all/homebrew-imc";
+              clone_target =
+                "https://gitlab.trading.imc.intra/all/homebrew-imc";
             }
           ];
           casks = [
