@@ -409,5 +409,9 @@ alias jp = jq .
 alias b = bazel build //...
 alias t = bazel test //...
 alias r = bazel run //...
+alias mc = mvnd compile -DskipTests
+alias mci = mvnd clean install -DskipTests
+alias sp = bash $"($env.HOME)/src/docker_spinup/spinup"
+alias ss = bash $"($env.HOME)/src/docker_spinup/spinup" shell
 
 source ~/.config/zoxide/zoxide.nu
