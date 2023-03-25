@@ -212,10 +212,10 @@
                   ./cmus.nix
                   ./emacs.nix
                   ./gdb.nix
-                  ./git.nix
                   ./packages.nix
                   ./sh.nix
                   ./util
+                  ./vc.nix
                 ];
               };
             };
