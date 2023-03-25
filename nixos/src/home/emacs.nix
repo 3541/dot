@@ -35,7 +35,7 @@
 
               (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
               (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
-              (add-to-list 'package-archives '("melpa" . "https://stable.melpa.org/packages/") t)
+              (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
               (package-initialize)
 
               (unless (package-installed-p 'use-package)
@@ -77,11 +77,11 @@
               (use-package helm
                 :ensure t
                 :demand t
-                :preface (require 'helm-config)
                 :bind
                 (("M-x" . helm-M-x)
                  ("C-c f" . helm-find-files))
                 :config
+                (require 'helm-autoloads)
                 (helm-mode 1))
 
               (require 'tramp)
@@ -133,6 +133,7 @@
                 :bind
                 (("C-c e r" . eglot-rename))
                 (("C-c e a" . eglot-code-actions))
+                (("C-c e f" . eglot-format))
                 :config
                 (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
                 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
@@ -143,6 +144,7 @@
                 (add-to-list 'eglot-server-programs
                   `(java-mode
                     "/usr/local/bin/jdtls"
+                    "-configuration" ,(expand-file-name "cache/language-server/java/jdtls/config_linux" user-emacs-directory)
                     "-data" ,(expand-file-name "cache/java-workspace" user-emacs-directory)))
                 (add-hook 'c-mode-hook 'eglot-ensure)
                 (add-hook 'c++-mode-hook 'eglot-ensure)
@@ -153,11 +155,8 @@
                 (add-hook 'python-mode-hook 'eglot-ensure)
                 (add-hook 'haskell-mode-hook 'eglot-ensure)
                 (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
-                (defun eglot-format-buffer-on-save ()
-                  (if (and (project-current) (eglot-managed-p))
-                    (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)
-                  (remove-hook 'before-save-hook #'eglot-format-buffer 'local)))
-                (add-hook 'eglot-managed-mode-hook #'eglot-format-buffer-on-save))
+                (setq-default eglot-workspace-configuration
+                              `((:java (:format (:settings (:url ,(expand-file-name "jdtls-formatting.xml" user-emacs-directory))))))))
 
               (use-package tree-sitter-langs
                 :ensure t)
