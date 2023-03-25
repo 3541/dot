@@ -399,6 +399,10 @@ def cpu-poke [] {
     sudo cpupower frequency-set -g performance
 }
 
+def nd [target: string] {
+    nix develop $".#($target)" --command nu
+}
+
 alias g = git
 alias s = stg
 alias jp = jq .
