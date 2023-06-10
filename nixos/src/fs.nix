@@ -7,10 +7,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    boot = {
-      tmpOnTmpfs = cfg.fs.tmpOnTmpfs;
-      tmpOnTmpfsSize = lib.optionalString cfg.fs.tmpOnTmpfs "95%";
-      cleanTmpDir = !cfg.fs.tmpOnTmpfs;
+    boot.tmp = {
+      useTmpfs = cfg.fs.tmpOnTmpfs;
+      tmpfsSize = lib.optionalString cfg.fs.tmpOnTmpfs "95%";
+      cleanOnBoot = !cfg.fs.tmpOnTmpfs;
     };
 
     fileSystems."/mnt/net_share" = lib.mkIf (cfg.role == "workstation") {

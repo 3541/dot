@@ -10,8 +10,8 @@ in {
     };
 
     drivers = lib.mkOption {
-      type = lib.types.listOf
-        (lib.types.enum [ "nvidia" "nouveau" "modesetting" ]);
+      type =
+        lib.types.listOf (lib.types.enum [ "nvidia" "nouveau" "modesetting" ]);
       default = [ ];
     };
 
@@ -39,7 +39,8 @@ in {
 
       libinput = {
         enable = true;
-        mouse.accelProfile = lib.mkIf (cfg.hardware.formFactor == "fixed") "flat";
+        mouse.accelProfile =
+          lib.mkIf (cfg.hardware.formFactor == "fixed") "flat";
       };
     };
 
@@ -56,34 +57,46 @@ in {
       wrapperFeatures.gtk = true;
     };
 
-    hardware = {
-      opengl.driSupport32Bit = true;
-      video.hidpi.enable = cfg.display.hidpi;
-    };
+    hardware.opengl.driSupport32Bit = true;
 
-    fonts.fonts = with pkgs; [
-      (iosevka.override {
-        privateBuildPlan = {
-          family = "Iosevka Custom";
-          spacing = "normal";
-          serifs = "slab";
-          no-cv-ss = true;
-          variants.design = {
-            percent = "dots";
-            lig-ltgteq = "slanted";
-          };
-          ligations = {
-            inherits = "dlig";
-            disables =
-              [ "brace-bar" "brack-bar" "connected-tilde-as-wave" "plusplus" ];
-          };
+    fonts = {
+      fontconfig = lib.mkIf cfg.display.hidpi {
+        antialias = true;
+
+        subpixel = {
+          rgba = "none";
+          lcdfilter = "none";
         };
-        set = "custom";
-      })
-      vistafonts
-      font-awesome
-      font-awesome_4
-      nerdfonts
-    ];
+      };
+
+      fonts = with pkgs; [
+        (iosevka.override {
+          privateBuildPlan = {
+            family = "Iosevka Custom";
+            spacing = "normal";
+            serifs = "slab";
+            no-cv-ss = true;
+            variants.design = {
+              percent = "dots";
+              lig-ltgteq = "slanted";
+            };
+            ligations = {
+              inherits = "dlig";
+              disables = [
+                "brace-bar"
+                "brack-bar"
+                "connected-tilde-as-wave"
+                "plusplus"
+              ];
+            };
+          };
+          set = "custom";
+        })
+        vistafonts
+        font-awesome
+        font-awesome_4
+        nerdfonts
+      ];
+    };
   };
 }

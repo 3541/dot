@@ -392,6 +392,10 @@ let-env config = {
       "
     }]
   }
+  cursor_shape: {
+    vi_insert: line
+    vi_normal: underscore
+  }
 }
 
 def cpu-poke [] {

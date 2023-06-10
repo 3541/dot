@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-22.11";
+    nixpkgs.url = "nixpkgs/nixos-23.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -105,7 +105,7 @@
 
               users.${cfg.home.user} = {
                 config.home = {
-                  stateVersion = "22.11";
+                  stateVersion = "23.05";
                   username = cfg.home.user;
                   homeDirectory = cfg.home.directory;
                 };
@@ -202,7 +202,7 @@
 
               users.${cfg.home.user} = {
                 config.home = {
-                  stateVersion = "22.11";
+                  stateVersion = "23.05";
                   username = cfg.home.user;
                   homeDirectory = cfg.home.directory;
                 };

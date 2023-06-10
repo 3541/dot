@@ -33,13 +33,12 @@
             ui = {
               windowGaps = true;
               fonts.editor.font = "Berkeley Mono";
+              fonts.ui.font = "Berkeley Mono";
             };
           };
         };
 
         boot = {
-          kernelPackages = pkgs.linuxPackages_6_1;
-
           initrd = {
             secrets.keyfile = "/etc/secrets/initrd/keyfile";
 
@@ -77,7 +76,6 @@
           };
         };
 
-        # Allow unprivileged access to keyboard in firmware flash mode.
         services = {
           xserver = {
             dpi = 96;

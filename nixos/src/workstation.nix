@@ -7,7 +7,15 @@ in {
     hardware = {
       sane = {
         enable = true;
-        extraBackends = with pkgs; [ sane-airscan epkowa utsushi ];
+        extraBackends = with pkgs;
+          [
+            # imagescan fails to build at the moment - "SANE installation violates versioning
+            # portability constraints".
+
+            # sane-airscan
+            # utsushi
+            epkowa
+          ];
       };
 
       pulseaudio = {

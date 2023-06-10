@@ -34,7 +34,6 @@ in {
         enable = true;
         device =
           if (cfg.boot.method == "efi") then "nodev" else cfg.boot.device;
-        version = 2;
         efiSupport = cfg.boot.method == "efi";
         enableCryptodisk = cfg.encryptRoot;
       };
