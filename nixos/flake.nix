@@ -27,6 +27,7 @@
       "sagittarius"
       "netboot-installer"
       "iso-installer"
+      "lxc-template"
       # Add machines here.
     ]);
 

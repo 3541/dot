@@ -2,6 +2,11 @@
 let cfg = config.a3;
 in {
   options.a3.boot = {
+    enable = lib.mkOption {
+      default = true;
+      type = lib.types.bool;
+    };
+
     method = lib.mkOption {
       type = lib.types.enum [ "bios" "efi" "other" ];
       default = "efi";
@@ -23,7 +28,7 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && cfg.boot.enable) {
     boot.loader.efi = lib.mkIf (cfg.boot.method == "efi") {
       canTouchEfiVariables = true;
       efiSysMountPoint = cfg.boot.esp;
