@@ -3,6 +3,7 @@
     && cfg.display.enable && cfg.role == "workstation") (let
       override = {
         privacySupport = true;
+        pgoSupport = false;
       };
     in {
       enable = true;
