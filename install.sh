@@ -16,7 +16,7 @@ if command -v nix &> /dev/null; then
             cp /etc/nixos/hardware-configuration.nix nixos/machines/$(hostname)-hardware.nix
         fi
 
-        sudo ln -sf /etc/nixos/flake.nix "$PWD/nixos/flake.nix"
+        sudo ln -sf "$PWD/nixos/flake.nix" /etc/nixos/flake.nix
     elif [ "$(uname)" = "Darwin" ]; then
         echo "Building nix-darwin installer..."
         cd $(mktemp -d)
