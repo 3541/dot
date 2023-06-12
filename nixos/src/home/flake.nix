@@ -26,10 +26,15 @@
       url = "github:hrs/sensible-defaults.el";
       flake = false;
     };
+
+    firefox = {
+      url = "path:../firefox";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, home-manager, solarized-xresources, i3blocks-contrib
-    , emacs-color-theme-solarized, emacs-sensible-defaults, ... }: {
+    , emacs-color-theme-solarized, emacs-sensible-defaults, firefox, ... }: {
       nixosModules = {
         home = { config, lib, ... }@args:
           let cfg = config.a3;
@@ -101,6 +106,7 @@
                 i3blocks-contrib = i3blocks-contrib;
                 emacs-color-theme-solarized = emacs-color-theme-solarized;
                 emacs-sensible-defaults = emacs-sensible-defaults;
+                firefox = firefox;
               };
 
               users.${cfg.home.user} = {

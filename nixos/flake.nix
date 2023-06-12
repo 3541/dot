@@ -10,7 +10,7 @@
     };
 
     a3 = {
-      url = "./src";
+      url = "path:src";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

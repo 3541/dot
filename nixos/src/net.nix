@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, firefox, ... }:
 let cfg = config.a3;
 in {
   config = lib.mkIf cfg.enable {
@@ -8,7 +8,7 @@ in {
       hostName = cfg.hostName;
       networkmanager.enable = cfg.hardware.formFactor == "portable";
       firewall.checkReversePath = "loose";
-      nameservers = [ "1.1.1.1" "100.100.100.100" ];
+      nameservers = [ "192.168.0.1" "100.100.100.100" ];
       search = [ "3541.github.beta.tailscale.net" ];
     };
 
@@ -16,6 +16,45 @@ in {
       enable = true;
       # nftables breaks current iptables command, and system rules are not supported.
       settings.Firewall = "iptables";
+
+      rules = let
+        allowBinary = name: path: {
+          inherit name;
+          enabled = true;
+          action = "allow";
+          duration = "always";
+          operator = {
+            type = "simple";
+            operand = "process.path";
+            data = "${lib.getBin pkgs.${name}}/${path}";
+          };
+        };
+
+        allowPackage = name: allowBinary name "bin/${name}";
+      in {
+        thunderbird = allowPackage "thunderbird";
+        nsncd = allowPackage "nsncd";
+        nix = allowPackage "nix";
+        systemd-timesyncd =
+          allowBinary "systemd" "lib/systemd/systemd-timesyncd";
+        syncthing = allowPackage "syncthing";
+        tailscale = allowBinary "tailscale" "bin/.tailscaled-wrapped";
+        ssh = allowBinary "openssh" "bin/ssh";
+
+        firefox = {
+          name = "firefox";
+          enabled = true;
+          action = "allow";
+          duration = "always";
+          operator = {
+            type = "simple";
+            operand = "process.path";
+            data = "${
+                lib.getBin firefox.packages.${cfg.system}.firefox
+              }/lib/firefox/firefox";
+          };
+        };
+      };
     };
 
     environment.etc = lib.mkIf (cfg.role == "workstation") {

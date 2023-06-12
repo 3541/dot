@@ -3,12 +3,21 @@
     nixpkgs.url = "nixpkgs/nixos-23.05";
 
     home = {
-      url = "./home";
+      url = "path:home";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        firefox.follows = "firefox";
+      };
+    };
+
+    firefox = {
+      url = "path:firefox";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home, ... }: {
+  outputs = { self, nixpkgs, home, firefox, ... }: {
     nixosModules = {
       system = { config, lib, ... }:
         let cfg = config.a3;
@@ -32,6 +41,11 @@
               type = lib.types.enum [ "nixos" "linux" "darwin" ];
               default = "nixos";
             };
+
+            system = lib.mkOption {
+              type = lib.types.enum [ "x86_64-linux" ];
+              default = "x86_64-linux";
+            };
           };
 
           imports = [
@@ -50,7 +64,12 @@
             ./user.nix
             ./workstation.nix
           ];
-          config = lib.mkIf cfg.enable { system.stateVersion = "23.05"; };
+          config = lib.mkIf cfg.enable {
+            system.stateVersion = "23.05";
+
+            # I'm sure this will be fine.
+            _module.args.firefox = firefox;
+          };
         };
 
       default = self.nixosModules.system;
