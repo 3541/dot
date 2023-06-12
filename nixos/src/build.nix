@@ -31,13 +31,6 @@ in {
             speedFactor = 1;
             supportedFeatures = [ "kvm" ];
           }
-          {
-            hostName = "sagittarius";
-            systems = [ "x86_64-linux" "i686-linux" ];
-            maxJobs = 8;
-            speedFactor = 0;
-            supportedFeatures = [ "kvm" ];
-          }
         ]);
 
     distributedBuilds = true;
