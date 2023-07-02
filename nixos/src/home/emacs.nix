@@ -81,7 +81,6 @@
                 (("M-x" . helm-M-x)
                  ("C-c f" . helm-find-files))
                 :config
-                (require 'helm-autoloads)
                 (helm-mode 1))
 
               (require 'tramp)
@@ -107,7 +106,7 @@
                 (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'projectile-find-file)
                 (setq projectile-completion-system 'helm)
                 (setq projectile-switch-project-action 'projectile-dired)
-                (setq projectile-require-project-root nil)
+                (setq projectile-require-project-root t)
                 (setq projectile-enable-caching t)
                 (add-to-list 'project-find-functions 'my-projectile-project-find-function)
                 (projectile-mode))
@@ -134,12 +133,10 @@
                 (("C-c e r" . eglot-rename))
                 (("C-c e a" . eglot-code-actions))
                 (("C-c e f" . eglot-format))
+                (("C-c e x" . eglot-code-action-extract))
                 :config
                 (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
                 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-                (add-to-list
-                  'eglot-server-programs
-                  '(python-mode . ("~/.local/bin/pyls")))
                 (add-to-list 'eglot-server-programs '(swift-mode . ("sourcekit-lsp")))
                 (add-to-list 'eglot-server-programs
                   `(java-mode
@@ -156,7 +153,9 @@
                 (add-hook 'haskell-mode-hook 'eglot-ensure)
                 (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
                 (setq-default eglot-workspace-configuration
-                              `((:java (:format (:settings (:url ,(expand-file-name "jdtls-formatting.xml" user-emacs-directory))))))))
+                              '((:python (analysis . ((autoSearchPaths . t)
+                                                      (useLibraryCodeForTypes . t)
+                                                      (diagnosticMode . "workspace")))))))
 
               (use-package tree-sitter-langs
                 :ensure t)
@@ -335,7 +334,9 @@
                 (setq reftex-cite-format "\\parencite[]{%l}"))
 
               (use-package dtrt-indent
-                :ensure t)
+                :ensure t
+                :config
+                (dtrt-indent-global-mode t))
 
               (use-package diff-hl
                 :ensure t
@@ -447,6 +448,45 @@
               (use-package protobuf-mode
                 :ensure t)
 
+              (use-package rainbow-delimiters
+                :ensure t
+                :config
+                (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+              (use-package yapfify
+                :ensure t
+                :bind
+                (("C-c y" . yapfify-region)))
+
+              (use-package jinja2-mode
+                :ensure t)
+
+              (use-package stgit
+                :ensure t)
+
+              (use-package magit-stgit
+                :ensure t)
+
+              (use-package markdown-mode
+                :ensure t
+                :config
+                (setq markdown-command '("${pkgs.pandoc}/bin/pandoc" "--from=markdown" "--to=html5")))
+
+              (use-package activity-watch-mode
+                :ensure t
+                :config
+                (global-activity-watch-mode))
+
+              (use-package ein
+                :ensure t)
+
+              (use-package python-black
+                :ensure t
+                :bind
+                (("C-c b" . python-black-buffer))
+                :config
+                (setq python-black-extra-args '("--line-length=120")))
+
               (load-file "~/.emacs.d/sensible-defaults.el")
 
               (sensible-defaults/use-all-settings)
@@ -482,8 +522,8 @@
 
               (setq-default indent-tabs-mode nil)
 
-              (setq-default display-line-numbers t)
-              (setq display-line-numbers-type t)
+              (setq-default display-line-numbers 'relative)
+              (setq display-line-numbers-type 'relative)
               (global-display-line-numbers-mode)
 
               (add-to-list 'auto-mode-alist '("\\.pro\\'" . prolog-mode))
@@ -498,6 +538,8 @@
 
               (define-key prog-mode-map (kbd "C-c e n") 'flymake-goto-next-error)
               (define-key prog-mode-map (kbd "C-c e p") 'flymake-goto-prev-error)
+              (define-key prog-mode-map (kbd "C-c o") 'ff-get-other-file)
+              (define-key prog-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
               (defun flymake-checkstyle-java-init ()
                 (let* ((tmp (flymake-init-create-temp-buffer-copy 'flymake-create-temp-inplace))
                        (local (file-relative-name tmp (file-name-directory buffer-file-name))))
