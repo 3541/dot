@@ -1,6 +1,8 @@
 { cfg, lib, pkgs, ... }: {
   config = lib.mkIf (cfg.enable && cfg.home.enable) {
     programs = {
+      zoxide.enable = true;
+
       bash = {
         enable = true;
         enableVteIntegration = cfg.display.enable && cfg.platform != "darwin";
@@ -42,8 +44,6 @@
         envFile.source = ./env.nu;
         extraConfig = cfg.home.nuExtra;
       };
-
-      zoxide.enable = true;
 
       fzf = {
         enable = true;
@@ -92,10 +92,11 @@
         clock24 = true;
         newSession = true;
         keyMode = "vi";
-        extraConfig = ''
-          set -g mouse on
-        '';
         escapeTime = 0;
+        shell = "${pkgs.nushell}/bin/nu";
+        terminal = "screen-256color";
+        extraConfig = "setw -g mouse on";
+        historyLimit = 50000;
       };
     };
 
