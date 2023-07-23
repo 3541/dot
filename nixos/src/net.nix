@@ -31,8 +31,9 @@ in {
         };
 
         allowPackage = name: allowBinary name "bin/${name}";
+        allowWrappedPackage = name: allowBinary name "bin/.${name}-wrapped";
       in {
-        thunderbird = allowPackage "thunderbird";
+        thunderbird = allowBinary "thunderbird" "lib/thunderbird/thunderbird";
         nsncd = allowPackage "nsncd";
         nix = allowPackage "nix";
         systemd-timesyncd =
@@ -40,6 +41,13 @@ in {
         syncthing = allowPackage "syncthing";
         tailscale = allowBinary "tailscale" "bin/.tailscaled-wrapped";
         ssh = allowBinary "openssh" "bin/ssh";
+        avahi = allowBinary "avahi" "bin/avahi-daemon";
+        dnsmasq = allowPackage "dnsmasq";
+        dhcpcd = allowPackage "dhcpcd";
+        signal = allowBinary "signal-desktop" "lib/Signal/signal-desktop";
+        flatpak = allowWrappedPackage "flatpak";
+        cifs = allowBinary "cifs-utils" "bin/mount.cifs";
+        discord = allowBinary "discord" "opt/Discord/.Discord-wrapped";
 
         firefox = {
           name = "firefox";
