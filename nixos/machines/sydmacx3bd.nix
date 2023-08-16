@@ -38,7 +38,7 @@
 
             nuExtra = ''
               open ~/.j_aliases | lines |
-                  where -b { |l| $l | str starts-with "alias" } |
+                  filter { |l| $l | str starts-with "alias" } |
                   each { |l| $l | parse "alias {name}='j to {value}'" | get value | first } |
                   uniq |
                   save ~/.j_completions_nu

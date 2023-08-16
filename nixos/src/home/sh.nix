@@ -4,7 +4,7 @@
       zoxide.enable = true;
 
       bash = {
-        enable = true;
+        enable = cfg.home.enableBash;
         enableVteIntegration = cfg.display.enable && cfg.platform != "darwin";
 
         shellAliases = {

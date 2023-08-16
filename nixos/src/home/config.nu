@@ -205,7 +205,7 @@ let-env config = {
     case_sensitive: false
     quick: true
     partial: true
-    algorithm: "fuzzy"
+    algorithm: "prefix"
     external: {
       enable: true
       max_results: 100
@@ -435,11 +435,11 @@ def nd [target: string] {
 }
 
 alias g = git
+alias gs = git status
+alias gd = git diff
+alias gds = git diff --staged
 alias s = stg
 alias jp = jq .
-alias b = bazel build //...
-alias t = bazel test //...
-alias r = bazel run //...
 alias mc = mvnd compile -DskipTests
 alias mci = mvnd clean install -DskipTests
 alias sp = bash $"($env.HOME)/src/docker_spinup/spinup"

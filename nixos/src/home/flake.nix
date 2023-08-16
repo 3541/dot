@@ -34,7 +34,7 @@
   };
 
   outputs = { self, home-manager, solarized-xresources, i3blocks-contrib
-    , emacs-color-theme-solarized, emacs-sensible-defaults, firefox, ... }: {
+    , emacs-color-theme-solarized, emacs-sensible-defaults, firefox, nixpkgs, ... }: {
       nixosModules = {
         home = { config, lib, ... }@args:
           let cfg = config.a3;
@@ -229,6 +229,92 @@
 
         default = self.darwinModules.home;
       };
+
+      homeConfigurations.aobrien-syte =
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          extraSpecialArgs = {
+            emacs-color-theme-solarized = emacs-color-theme-solarized;
+            emacs-sensible-defaults = emacs-sensible-defaults;
+            solarized-xresources = solarized-xresources;
+            i3blocks-contrib = i3blocks-contrib;
+
+            cfg = {
+              enable = true;
+              role = "workstation";
+              platform = "linux";
+              display.enable = false;
+
+              home = {
+                enable = true;
+                enableBash = false;
+                shExtra = "";
+                nuExtra = "";
+
+                ui.fonts.editor = {
+                  font = "Berkeley Mono";
+                  size = 14.0;
+                };
+              };
+            };
+          };
+
+          modules = [
+            ({ config, pkgs, ... }@args: {
+              config.home = {
+                stateVersion = "23.05";
+                username = "aobrien";
+                homeDirectory = "/home";
+
+                file = {
+                  clangd = {
+                    target = ".config/clangd/config.yaml";
+                    text = ''
+                      Diagnostics:
+                        UnusedIncludes: Strict
+                        MissingIncludes: Strict
+                    '';
+                  };
+
+                  bashrc = {
+                    target = ".bashrc.user";
+                    text = ''
+                      export LC_ALL=C.UTF-8
+                      . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+                      if [[ -z "$NU_NESTED" ]]; then
+                        export NU_NESTED=0
+                      fi
+                      if command -v nu > /dev/null && [[ $- == *i* ]] && [[ "$NU_NESTED" -lt 1 ]]; then
+                        ((++NU_NESTED))
+                        exec nu
+                      fi
+                    '';
+                  };
+                };
+
+                packages = with pkgs; [
+                  pyright
+                  yapf
+                  cargo-flamegraph
+                  black
+                  black-macchiato
+                  (python3.withPackages (p: with p; [ gssapi ]))
+                  kubectx
+                ];
+              };
+
+              imports = [
+                ./emacs.nix
+                ./gdb.nix
+                ./packages.nix
+                ./sh.nix
+                ./util
+                ./vc.nix
+              ];
+            })
+          ];
+        };
 
       nixosModule = self.nixosModules.default;
       darwinModule = self.darwinModules.default;

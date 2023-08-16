@@ -33,6 +33,11 @@ if command -v nix &> /dev/null; then
         fi
 
         darwin-rebuild switch --flake ./nixos
+    elif [ "$(uname)" = Linux ]; then
+        echo "Building home-manager configuration..."
+        nix build --no-link -L "./nixos/src/home#homeConfigurations.$(hostname).activationPackage"
+        echo "Activating home-manager configuration..."
+	nix run "./nixos/src/home#homeConfigurations.$(hostname).activationPackage"
     fi
 else
     if [ ! -e "~/.bashrc.dist" && -e "~/.bashrc" ]; then
