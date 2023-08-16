@@ -16,7 +16,6 @@
             enable = true;
             user = "aobrien";
             directory = "/Users/aobrien";
-            #            shExtra = "export JAVA_HOME=$(/usr/libexec/java_home –v 17)";
             shExtra = ''
               if [ -f ~/generate_j_aliases.sh ]; then
                   . ~/generate_j_aliases.sh
@@ -27,11 +26,33 @@
               if [ ! -e "$HOME/.bin_override/git" ]; then
                   ln -s /usr/bin/git "$HOME/.bin_override/git"
               fi
+              if [ ! -e "$HOME/.bin_override/bash" ] && [ -e "$HOME/.nix-profile/bin/bash" ]; then
+                  ln -s "$HOME/.nix-profile/bin/bash" "$HOME/.bin_override/bash"
+              fi
 
               export SPINUP_CONFIG="default_configs/roadrunner_syd.sh"
               export ALTERNATE_EDITOR=vi
 
-              if command -v nu 2>&1 > /dev/null; then
+              # >>> conda initialize >>>
+              # !! Contents within this block are managed by 'conda init' !!
+              __conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+              if [ $? -eq 0 ]; then
+                  eval "$__conda_setup"
+              else
+              if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+                  . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+              else
+                  export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
+              fi
+              fi
+              unset __conda_setup
+              # <<< conda initialize <<<
+
+              if [[ -z "$NU_NESTED" ]]; then
+                export NU_NESTED=0
+              fi
+              if command -v nu 2>&1 > /dev/null && [[ "$NU_NESTED" -lt 2 ]]; then
+                  ((++NU_NESTED))
                   exec nu
               fi
             '';
@@ -41,7 +62,7 @@
                   filter { |l| $l | str starts-with "alias" } |
                   each { |l| $l | parse "alias {name}='j to {value}'" | get value | first } |
                   uniq |
-                  save ~/.j_completions_nu
+                  save -f ~/.j_completions_nu
 
               module completions {
                   def "nu-complete j" [] {
@@ -105,6 +126,7 @@
                 devenv = {
                   hostname = "devenv-aobrien.trading.imc.intra";
                   user = "aobrien";
+                  identityFile = "/Users/aobrien/.ssh/id_ed25519";
                 };
               in {
                 container = {
@@ -125,13 +147,21 @@
             };
           };
 
-          home.packages = with pkgs; [ openssh ];
+          home.packages = with pkgs; [ openssh bashInteractive pyright ];
         };
 
         homebrew = {
           enable = true;
-          brews =
-            [ "jdtls" "mvnd" "imc/core/imc-wireshark-dissectors" "openjdk@11" ];
+          brews = [
+            "jdtls"
+            "mvnd"
+            "imc/core/imc-wireshark-dissectors"
+            "openjdk@11"
+            "ca-certificates-imc"
+            "wireshark"
+            "gcc@7"
+            "gnu-sed"
+          ];
           taps = [
             "homebrew/cask"
             "mvndaemon/homebrew-mvnd"
@@ -143,16 +173,18 @@
           ];
           casks = [
             "firefox"
-            "intellij-idea-ce"
+            "intellij-idea"
             "clion"
             "eclipse-java"
             "jdk-mission-control"
             "devenv-launcher"
-            "tigervnc-viewer-imc"
             "xpra"
-            "wireshark"
             "jetbrains-gateway"
             "imc/core/ark"
+            "microsoft-remote-desktop"
+            "miniconda"
+            "tigervnc-viewer"
+            "pycharm"
           ];
 
           onActivation = {
