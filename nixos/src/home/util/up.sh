@@ -12,9 +12,9 @@ if command -v nixos-rebuild &> /dev/null; then
     fi
 elif command -v dnf &> /dev/null; then
     sudo dnf upgrade
-elif command -v darwin-rebuild &> /dev/null; then
+elif [ "$(uname)" = "Darwin" ]; then
     cd ~/dot/nixos && nix flake update && cd -
-    darwin-rebuild switch --flake "$HOME/dot/nixos" -L
+    nix run nix-darwin -- switch --flake "$HOME/dot/nixos" -L
     if [ -s ./result ]; then
         rm result
     fi
