@@ -11,7 +11,7 @@ in {
 
     drivers = lib.mkOption {
       type =
-        lib.types.listOf (lib.types.enum [ "nvidia" "nouveau" "modesetting" ]);
+        lib.types.listOf (lib.types.enum [ "amdgpu" "nvidia" "nouveau" "modesetting" ]);
       default = [ ];
     };
 
