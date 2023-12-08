@@ -28,7 +28,7 @@ update_vm() (
         return
     fi
 
-    if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]]; then
+    if [[ "$vm" = *"win"* ]] || [[ "$vm" = *"guix"* ]] || [[ "$vm" = *"-clone" ]]; then
         info "$vm" "SKIPPED."
         return
     fi

@@ -21,10 +21,20 @@ run_command() (
     ip="$1"
     command="$2"
 
-    if ssh "$ip" uname &> /dev/null; then
-        ssh "$ip" "$command"
+    if ! ssh "$ip" uname &> /dev/null || [[ "$(ssh "$ip" uname)" = "MSYS"* ]]; then
+        invocation="bash -c \"$command\""
     else
-        ssh "$ip" "bash -c \"$command\""
+        invocation="bash -lc \"$command\""
+    fi
+
+    if [[ -n "${DEBUG-}" ]]; then
+        info "DEBUG" "Running: $invocation"
+    fi
+
+    ssh "$ip" "$invocation"
+
+    if [[ -n "${DEBUG-}" ]]; then
+        idone "DEBUG" "Running: $invocation"
     fi
 )
 
@@ -40,7 +50,7 @@ vm_run() (
         return
     fi
 
-    if [[ "$vm" = *"guix"* ]]; then
+    if [[ "$vm" = *"guix"* ]] || [[ "$vm" = *"-clone" ]]; then
         info "$vm" "SKIPPED."
         return
     fi
@@ -89,7 +99,7 @@ vm_run() (
         tmpdir="AppData/Local/Temp/$(mktemp -u XXXXXX)"
         ssh "$ip" "bash -c \"mkdir -p $tmpdir\""
     fi
-    rsync -a -e ssh --exclude='/.git' --filter=':- .gitignore' . "${user}@${ip}":"$tmpdir/"
+    rsync -a -e ssh --exclude='/.git' --filter=':- .gitignore' --no-links . "${user}@${ip}":"$tmpdir/"
     if [[ -d "subprojects" ]]; then
         rsync -a -e ssh subprojects/* "${user}@${ip}":"$tmpdir/subprojects/"
     fi
