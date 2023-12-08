@@ -38,6 +38,21 @@
               (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
               (package-initialize)
 
+              (defvar bootstrap-version)
+              (let ((bootstrap-file
+                     (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+                    (bootstrap-version 6))
+               (unless (file-exists-p bootstrap-file)
+                 (with-current-buffer
+                   (url-retrieve-synchronously
+                    "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+                    'silent 'inhibit-cookies)
+                   (goto-char (point-max))
+                   (eval-print-last-sexp)))
+               (load bootstrap-file nil 'nomessage))
+
+              (straight-use-package 'use-package)
+
               (unless (package-installed-p 'use-package)
                 (package-refresh-contents)
                 (package-install 'use-package))
@@ -91,6 +106,10 @@
                 (setq company-idle-delay 0.0)
                 (setq company-minimum-prefix-length 1)
                 (global-company-mode))
+
+              (use-package company-box
+                :ensure t
+                :hook (company-mode . company-box-mode))
 
               (defun my-projectile-project-find-function (dir)
                 (let ((root (projectile-project-root dir)))
@@ -402,7 +421,9 @@
                 (global-set-key (kbd "C-S-l") 'buf-move-right))
 
               (use-package cmake-mode
-                :ensure t)
+                :ensure t
+                :config
+                (setq cmake-tab-width 4))
 
               (use-package meson-mode
                 :ensure t)
@@ -487,6 +508,47 @@
                 :config
                 (setq python-black-extra-args '("--line-length=120")))
 
+              (use-package copilot
+                :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+                :ensure t
+                :config
+                (setq copilot-node-executable "${pkgs.nodejs}/bin/node")
+                (add-hook 'prog-mode-hook 'copilot-mode))
+
+              (use-package tuareg
+                :ensure t)
+
+              (use-package dune
+                :ensure t)
+
+              (use-package merlin
+                :ensure t
+                :config
+                (add-hook 'tuareg-mode-hook #'merlin-mode)
+                (add-hook 'merlin-mode-hook #'company-mode)
+                (setq merlin-error-after-save nil))
+
+              (use-package merlin-eldoc
+                :ensure t
+                :hook ((tuareg-mode) . merlin-eldoc-setup))
+
+              (use-package flycheck-ocaml
+                :ensure t
+                :config
+                (flycheck-ocaml-setup))
+
+              (use-package utop
+                :ensure t
+                :config
+                (add-hook 'tuareg-mode-hook #'utop-minor-mode))
+
+              (use-package ocamlformat
+                :ensure t
+                :config
+                (add-hook 'tuareg-mode-hook
+              	    (lambda ()
+              	      (add-hook 'before-save-hook 'ocamlformat-before-save))))
+
               (load-file "~/.emacs.d/sensible-defaults.el")
 
               (sensible-defaults/use-all-settings)
@@ -527,6 +589,7 @@
               (global-display-line-numbers-mode)
 
               (add-to-list 'auto-mode-alist '("\\.pro\\'" . prolog-mode))
+              (add-to-list 'auto-mode-alist '("\\.ccm\\'" . c++-mode))
 
               (global-set-key
                (kbd "C-c d")
@@ -536,10 +599,17 @@
                   (if (window-dedicated-p (selected-window))
                       nil t))))
 
+              (defun my-tab ()
+                (interactive)
+                (or (copilot-accept-completion)
+                    (company-complete)
+                    (indent-for-tab-command)))
+
               (define-key prog-mode-map (kbd "C-c e n") 'flymake-goto-next-error)
               (define-key prog-mode-map (kbd "C-c e p") 'flymake-goto-prev-error)
               (define-key prog-mode-map (kbd "C-c o") 'ff-get-other-file)
               (define-key prog-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+              (define-key prog-mode-map (kbd "<tab>") #'my-tab)
               (defun flymake-checkstyle-java-init ()
                 (let* ((tmp (flymake-init-create-temp-buffer-copy 'flymake-create-temp-inplace))
                        (local (file-relative-name tmp (file-name-directory buffer-file-name))))
@@ -551,6 +621,9 @@
                 '("\\(\\w+.java\\):\\([0-9]+\\):[0-9]*[:, ]*\\(.+\\)" 1 2 nil 3))
               (add-to-list 'flymake-allowed-file-name-masks '("\\.java$"
                            flymake-checkstyle-java-init))
+              (setq-default ff-other-file-alist '(("\\.cc\\'" (".hh" ".ccm"))
+                                                  ("\\.hh\\'" (".cc"))
+                                                  ("\\.ccm\\'" (".cc"))))
               (add-hook 'find-file-hook 'flymake-mode)
 
               (setq gdb-many-windows t)
