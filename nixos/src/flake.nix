@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.05";
+    nixpkgs.url = "nixpkgs/nixos-23.11";
 
     home = {
-      url = "path:home";
+      url = "path:./home";
 
       inputs = {
         nixpkgs.follows = "nixpkgs";
@@ -12,7 +12,7 @@
     };
 
     firefox = {
-      url = "path:firefox";
+      url = "path:./firefox";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -65,7 +65,7 @@
             ./workstation.nix
           ];
           config = lib.mkIf cfg.enable {
-            system.stateVersion = "23.05";
+            system.stateVersion = "23.11";
 
             # I'm sure this will be fine.
             _module.args.firefox = firefox;

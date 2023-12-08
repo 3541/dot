@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.05";
+    nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
@@ -10,7 +10,7 @@
     };
 
     a3 = {
-      url = "path:src";
+      url = "path:./src";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -47,11 +47,11 @@ in {
 
       printing = {
         enable = true;
-        drivers = with pkgs; [ hll2390dw-cups epson-escpr2 gutenprint ];
+        drivers = with pkgs; [ hll2390dw-cups epson-escpr2 epson-escpr gutenprint ];
       };
     };
 
-    environment.systemPackages = with pkgs; [ opensnitch-ui guestfs-tools ];
+    environment.systemPackages = with pkgs; [ opensnitch-ui guestfs-tools virtiofsd ];
 
     programs = {
       gnupg.agent.enable = true;
@@ -76,10 +76,7 @@ in {
         };
       };
 
-      podman = {
-        enable = true;
-        dockerCompat = true;
-      };
+      docker.enable = true;
     };
   };
 }

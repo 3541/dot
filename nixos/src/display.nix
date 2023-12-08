@@ -69,29 +69,7 @@ in {
         };
       };
 
-      fonts = with pkgs; [
-        (iosevka.override {
-          privateBuildPlan = {
-            family = "Iosevka Custom";
-            spacing = "normal";
-            serifs = "slab";
-            no-cv-ss = true;
-            variants.design = {
-              percent = "dots";
-              lig-ltgteq = "slanted";
-            };
-            ligations = {
-              inherits = "dlig";
-              disables = [
-                "brace-bar"
-                "brack-bar"
-                "connected-tilde-as-wave"
-                "plusplus"
-              ];
-            };
-          };
-          set = "custom";
-        })
+      packages = with pkgs; [
         vistafonts
         font-awesome
         font-awesome_4

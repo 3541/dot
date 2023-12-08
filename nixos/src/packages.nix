@@ -8,6 +8,7 @@ in {
       enable = true;
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
       wlr.enable = cfg.display.server == "wayland";
+      config.common.default = if (cfg.display.server == "wayland") then "wlr" else "gtk";
     };
 
     documentation = if (cfg.role == "workstation") then {

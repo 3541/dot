@@ -177,7 +177,7 @@ let default_theme = {
 }
 
 # The default config record. This is where much of your global configuration is setup.
-let-env config = {
+$env.config = {
   show_banner: false
   color_config: $default_theme
   use_grid_icons: true
@@ -193,9 +193,6 @@ let-env config = {
   }
   rm: {
     always_trash: false
-  }
-  cd: {
-    abbreviations: true
   }
   filesize: {
     metric: false
@@ -411,12 +408,12 @@ let-env config = {
     }
   ]
   hooks: {
-    pre_prompt: [{
-      code: "
-        let direnv = (direnv export json | from json)
-        let direnv = if ($direnv | length) == 1 { $direnv } else { {} }
-        $direnv | load-env
-      "
+    pre_prompt: [{ ||
+      if (which direnv | is-empty) {
+        return
+      }
+
+      direnv export json | from json | default {} | load-env
     }]
   }
   cursor_shape: {

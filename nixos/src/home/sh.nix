@@ -1,10 +1,11 @@
 { cfg, lib, pkgs, ... }: {
   config = lib.mkIf (cfg.enable && cfg.home.enable) {
     programs = {
+      ssh.enable = true;
       zoxide.enable = true;
 
       bash = {
-        enable = cfg.home.enableBash;
+        enable = true;
         enableVteIntegration = cfg.display.enable && cfg.platform != "darwin";
 
         shellAliases = {
@@ -34,7 +35,7 @@
       };
 
       direnv = lib.mkIf (cfg.role == "workstation") {
-        enable = true;
+        #enable = true;
         nix-direnv.enable = true;
       };
 
