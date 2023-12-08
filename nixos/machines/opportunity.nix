@@ -11,11 +11,6 @@
           encryptRoot = true;
           build.distributed = false;
 
-          boot = {
-            loader = "grub";
-            esp = "/boot/efi";
-          };
-
           backup = {
             enable = true;
             repo = "marx";
@@ -23,8 +18,9 @@
 
           display = {
             enable = true;
+            hidpi = true;
             server = "xorg";
-            drivers = [ "nvidia" ];
+            drivers = [ "modesetting" ];
           };
 
           home = {
@@ -38,43 +34,7 @@
           };
         };
 
-        boot = {
-          initrd = {
-            secrets.keyfile = "/etc/secrets/initrd/keyfile";
-
-            luks.devices = {
-              boot.keyFile = "/keyfile";
-              hdd0.keyFile = "/keyfile";
-
-              root = {
-                allowDiscards = true;
-                keyFile = "/keyfile";
-              };
-
-              aux = {
-                allowDiscards = true;
-                keyFile = "/keyfile";
-              };
-
-              images = {
-                allowDiscards = true;
-                keyFile = "/keyfile";
-              };
-
-              hdd1 = {
-                device =
-                  "/dev/disk/by-uuid/eee5b77a-8deb-43d8-a0ec-4cc26046dd45";
-                keyFile = "/keyfile";
-              };
-
-              hdd2 = {
-                device =
-                  "/dev/disk/by-uuid/237e5dd2-c2bf-4571-895a-aa9930a8b6ef";
-                keyFile = "/keyfile";
-              };
-            };
-          };
-        };
+        boot.initrd.kernelModules = [ "amdgpu" ];
 
         services = {
           xserver = {
@@ -107,20 +67,33 @@
           interfaces.enp0s25.useDHCP = true;
           bridges.br0.interfaces = [ "eth0" ];
           enableIPv6 = false;
+
           firewall = {
             checkReversePath = lib.mkForce false;
             interfaces.eth0.allowedTCPPorts = [ 80 ];
           };
+
+          extraHosts = ''
+            192.168.0.123 mercury mercury.local
+          '';
         };
 
         home-manager.users.alex.config = {
           xsession.windowManager.i3.config.startup = [{
             command =
-              "xrandr --output DP-0 --mode 3840x2160 --output DVI-D-0 --mode 1680x1050 --left-of DP-0";
+              "xrandr --output DP-2 --mode 3840x2160 --output HDMI-1 --mode 1680x1050 --left-of DP-2";
             always = true;
           }];
           xsession.windowManager.i3.config.keybindings."Mod4+Shift+o" =
-            "exec xrandr --output DVI-D-0 --off";
+            "exec xrandr --output HDMI-1 --off";
+          # wayland.windowManager.sway.config = {
+          #   input."type:keyboard".xkb_options = "ctrl:nocaps";
+
+          #   output = {
+          #     "HDMI-A-1".pos = "0 700";
+          #     "DP-2".pos = "1680 0";
+          #   };
+          # };
 
           home.packages = with pkgs; [
             lutris
@@ -128,6 +101,16 @@
             skypeforlinux
             dolphin-emu
             nixos-generators
+            gamescope
+            direnv
+            (mathematica.override {
+              source = pkgs.requireFile {
+                name = "Mathematica_13.2.1_BNDL_LINUX.sh";
+                hashMode = "recursive";
+                sha256 = "070ybhgskk3fw8c6fgqs4lq9252ds6585cqdd5as94hj55vjibmq";
+                message = "Missing Mathematica installer.";
+              };
+            })
             (writeShellScriptBin "me3t" ''
               WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
             '')
@@ -135,6 +118,11 @@
               WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager7.exe
             '')
           ];
+
+          programs.ssh.matchBlocks = {
+            "*".identityFile = "~/.ssh/id_ed25519_sk_rk";
+            "192.168.122.*".identityFile = "~/.ssh/id_ed25519";
+          };
         };
 
         swapDevices = [{ device = "/opt/swapfile"; }];
