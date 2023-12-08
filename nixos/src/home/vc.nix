@@ -1,6 +1,6 @@
 { cfg, lib, pkgs, ... }: {
   config = lib.mkIf (cfg.enable && cfg.home.enable) {
-    home.packages = lib.optional (cfg.role == "workstation") pkgs.stgit;
+    home.packages = lib.optionals (cfg.role == "workstation") (with pkgs; [ stgit sapling ]);
 
     programs = {
       gh.enable = cfg.role == "workstation";
