@@ -52,6 +52,7 @@
                (load bootstrap-file nil 'nomessage))
 
               (straight-use-package 'use-package)
+              (add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
 
               (unless (package-installed-p 'use-package)
                 (package-refresh-contents)
@@ -105,6 +106,7 @@
                 :config
                 (setq company-idle-delay 0.0)
                 (setq company-minimum-prefix-length 1)
+                (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend company-preview-frontend))
                 (global-company-mode))
 
               (use-package company-box
@@ -120,9 +122,9 @@
                 :after evil
                 :config
                 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-                (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
-                (evil-define-key 'motion ag-mode-map (kbd "C-p") 'projectile-find-file)
-                (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'projectile-find-file)
+                ;;(define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
+                ;;(evil-define-key 'motion ag-mode-map (kbd "C-p") 'projectile-find-file)
+                ;;(evil-define-key 'motion rspec-mode-map (kbd "C-p") 'projectile-find-file)
                 (setq projectile-completion-system 'helm)
                 (setq projectile-switch-project-action 'projectile-dired)
                 (setq projectile-require-project-root t)
@@ -548,6 +550,54 @@
                 (add-hook 'tuareg-mode-hook
               	    (lambda ()
               	      (add-hook 'before-save-hook 'ocamlformat-before-save))))
+              (use-package fzf
+                :ensure t
+                :after evil
+                :bind
+                (("C-p" . fzf-projectile))
+                :config
+                (define-key evil-normal-state-map (kbd "C-p") 'fzf-projectile)
+                (evil-define-key 'motion ag-mode-map (kbd "C-p") 'fzf-projectile)
+                (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'fzf-projectile))
+
+              (add-to-list 'load-path "~/.emacs.d/codeium.el")
+              (use-package codeium
+                :init
+                (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+                :config
+                (setq use-dialog-box nil)
+                (setq codeium-mode-line-enable
+                      (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
+                (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
+                (setq codeium-api-enabled
+                  (lambda (api)
+                          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
+                (add-hook 'prog-mode-hook #'(lambda () (add-to-list 'completion-at-point-functions #'codeium-completion-at-point))))
+
+              (use-package rg
+                :ensure t
+                :config
+                (rg-enable-menu))
+
+              (defun switch-themes (sun-event &optional first-run)
+                "Switch themes on sunrise and sunset."
+                (if first-run				; set theme on initialization
+                    (cond ((memq sun-event '(sunrise midday))
+                    	     (solarized-update-background-mode 'light))
+                          ((memq sun-event '(sunset midnight))
+                           (solarized-update-background-mode 'dark)))
+                    (cond ((eq sun-event 'sunrise)
+                    	     (solarized-update-background-mode 'light))
+                          ((eq sun-event 'sunset)
+                           (solarized-update-background-mode 'dark)))))
+
+              (use-package rase
+                :ensure t
+                :config
+                (load-theme 'solarized t)
+                (enable-theme 'solarized)
+                (add-hook 'rase-functions 'switch-themes)
+                (rase-start t))
 
               (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -646,15 +696,16 @@
               (c-add-style "my-cc" cc-style)
               (add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
 
-              (add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
-              (load-theme 'solarized t)
-              (setq frame-background-mode 'dark)
+
               (mapc 'frame-set-background-mode (frame-list))
-              (enable-theme 'solarized)
               (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
               (when (file-exists-p custom-file)
                     (load custom-file))
               (xterm-mouse-mode)
+
+              (setq calendar-location-name "Sydney, NSW")
+              (setq calendar-latitude 33.87)
+              (setq calendar-longitude 151.21)
 
               (set-frame-font "${cfg.home.ui.fonts.editor.font}-${
                 toString cfg.home.ui.fonts.editor.size
