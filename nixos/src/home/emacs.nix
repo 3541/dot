@@ -495,10 +495,10 @@
                 :config
                 (setq markdown-command '("${pkgs.pandoc}/bin/pandoc" "--from=markdown" "--to=html5")))
 
-              (use-package activity-watch-mode
-                :ensure t
-                :config
-                (global-activity-watch-mode))
+              ;;(use-package activity-watch-mode
+              ;;  :ensure t
+              ;;  :config
+              ;;  (global-activity-watch-mode))
 
               (use-package ein
                 :ensure t)
