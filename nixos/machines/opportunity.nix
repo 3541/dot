@@ -66,7 +66,7 @@
         networking = {
           interfaces.enp0s25.useDHCP = true;
           bridges.br0.interfaces = [ "eth0" ];
-          enableIPv6 = false;
+          enableIPv6 = true;
 
           firewall = {
             checkReversePath = lib.mkForce false;
@@ -112,10 +112,10 @@
               };
             })
             (writeShellScriptBin "me3t" ''
-              WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager.exe
+              WINEPREFIX=/opt/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /opt/games/me3t/ME3TweaksModManager.exe
             '')
             (writeShellScriptBin "me3t7" ''
-              WINEPREFIX=/mass/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /mass/games/me3t/ME3TweaksModManager7.exe
+              WINEPREFIX=/opt/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /opt/games/me3t/ME3TweaksModManager7.exe
             '')
           ];
 
