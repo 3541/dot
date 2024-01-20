@@ -47,11 +47,21 @@ in {
 
       printing = {
         enable = true;
-        drivers = with pkgs; [ hll2390dw-cups epson-escpr2 epson-escpr gutenprint ];
+        drivers = with pkgs; [
+          hll2390dw-cups
+          epson-escpr2
+          epson-escpr
+          gutenprint
+        ];
       };
     };
 
-    environment.systemPackages = with pkgs; [ opensnitch-ui guestfs-tools virtiofsd ];
+    environment.systemPackages = with pkgs; [
+      opensnitch-ui
+      guestfs-tools
+      virtiofsd
+      nix-output-monitor
+    ];
 
     programs = {
       gnupg.agent.enable = true;

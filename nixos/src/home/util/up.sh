@@ -1,7 +1,12 @@
 if command -v nixos-rebuild &> /dev/null; then
     if [ -e /etc/nixos/flake.nix ]; then
         cd ~/dot/nixos && nix flake update && cd -
-        sudo nixos-rebuild switch -L
+
+        if command -v nom &> /dev/null; then
+            sudo nixos-rebuild switch -L |& nom
+        else
+            sudo nixos-rebuild switch -L
+        fi
     else
         sudo nixos-rebuild --upgrade-all switch
 
