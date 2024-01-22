@@ -75,7 +75,7 @@
           };
         };
 
-        environment.systemPackages = [ pkgs.direnv ];
+        environment.systemPackages = with pkgs; [ direnv nix-output-monitor ];
 
         users.users.aobrien = {
           home = "/Users/aobrien";
