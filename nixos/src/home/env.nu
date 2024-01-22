@@ -4,7 +4,7 @@ def create_left_prompt [] {
     let path_segment = if (is-admin) {
         $"(ansi red_bold)($env.PWD)"
     } else {
-        $"(ansi green_bold)($env.PWD)"
+        $"(ansi green_bold)($env.PWD | str replace $"($env.HOME)" '~')"
     }
 
     $path_segment
