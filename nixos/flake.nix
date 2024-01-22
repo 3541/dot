@@ -37,6 +37,7 @@
         ((import ./machines/${name}.nix args) // { specialArgs = args; });
     }) [
       "sydmacx3bd"
+      "sydmacxhdj"
       # Add macOS machines here.
     ]);
 
