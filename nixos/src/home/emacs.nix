@@ -560,19 +560,19 @@
                 (evil-define-key 'motion ag-mode-map (kbd "C-p") 'fzf-projectile)
                 (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'fzf-projectile))
 
-              (add-to-list 'load-path "~/.emacs.d/codeium.el")
-              (use-package codeium
-                :init
-                (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
-                :config
-                (setq use-dialog-box nil)
-                (setq codeium-mode-line-enable
-                      (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
-                (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
-                (setq codeium-api-enabled
-                  (lambda (api)
-                          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
-                (add-hook 'prog-mode-hook #'(lambda () (add-to-list 'completion-at-point-functions #'codeium-completion-at-point))))
+;;              (add-to-list 'load-path "~/.emacs.d/codeium.el")
+;;              (use-package codeium
+;;                :init
+;;                (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+;;                :config
+;;                (setq use-dialog-box nil)
+;;                (setq codeium-mode-line-enable
+;;                      (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
+;;                (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
+;;                (setq codeium-api-enabled
+;;                  (lambda (api)
+;;                          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
+;;                (add-hook 'prog-mode-hook #'(lambda () (add-to-list 'completion-at-point-functions #'codeium-completion-at-point))))
 
               (use-package rg
                 :ensure t
