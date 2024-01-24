@@ -27,7 +27,7 @@ in {
     services = {
       smartd.enable = true;
       fwupd.enable = (cfg.hardware.cpu == "intel" || cfg.hardware.cpu == "amd") && !cfg.minimal;
-      thermald.enable = cfg.hardware.formFactor == "portable"
+      thermald.enable = cfg.hardware.formFactor == "portable" && cfg.hardware.cpu == "intel"
         && cfg.hardware.cpu == "intel";
     };
 

@@ -3,9 +3,9 @@ if command -v nixos-rebuild &> /dev/null; then
         cd ~/dot/nixos && nix flake update && cd -
 
         if command -v nom &> /dev/null; then
-            sudo nixos-rebuild switch -L |& nom
+            sudo nixos-rebuild switch -L --impure |& nom
         else
-            sudo nixos-rebuild switch -L
+            sudo nixos-rebuild switch -L --impure
         fi
     else
         sudo nixos-rebuild --upgrade-all switch

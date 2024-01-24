@@ -57,7 +57,7 @@ in {
       wrapperFeatures.gtk = true;
     };
 
-    hardware.opengl.driSupport32Bit = true;
+    hardware.opengl.driSupport32Bit = cfg.system == "x86_64-linux";
 
     fonts = {
       fontconfig = lib.mkIf cfg.display.hidpi {

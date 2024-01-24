@@ -13,9 +13,14 @@
       url = "path:./src";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    apple = {
+      url = "github:tpwrules/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, darwin, ... }@args: {
+  outputs = { self, nixpkgs, darwin, ... }@args: {
     nixosConfigurations = builtins.listToAttrs (map (name: {
       name = name;
       value = nixpkgs.lib.nixosSystem
@@ -28,6 +33,7 @@
       "netboot-installer"
       "iso-installer"
       "lxc-template"
+      "curiosity"
       # Add machines here.
     ]);
 

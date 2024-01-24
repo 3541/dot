@@ -8,15 +8,16 @@
         && cfg.platform != "darwin") [
           linuxPackages.cpupower
           signal-desktop
-          discord
           thunderbird
           libreoffice
           virt-manager
-        ] ++ lib.optionals (cfg.display.enable && cfg.platform != "darwin") [
-          evince
-          pavucontrol
-          gnome.gnome-system-monitor
-        ] ++ lib.optional (cfg.display.enable && cfg.display.server == "xorg")
+        ] ++ lib.optional (cfg.role == "workstation" && cfg.display.enable
+          && cfg.system == "x86_64-linux") discord
+      ++ lib.optionals (cfg.display.enable && cfg.platform != "darwin") [
+        evince
+        pavucontrol
+        gnome.gnome-system-monitor
+      ] ++ lib.optional (cfg.display.enable && cfg.display.server == "xorg")
       scrot;
 
     programs = {

@@ -26,11 +26,16 @@ in {
       type = lib.types.path;
       default = "/boot";
     };
+
+    canTouchEfiVariables = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   config = lib.mkIf (cfg.enable && cfg.boot.enable) {
     boot.loader.efi = lib.mkIf (cfg.boot.method == "efi") {
-      canTouchEfiVariables = true;
+      canTouchEfiVariables = cfg.boot.canTouchEfiVariables;
       efiSysMountPoint = cfg.boot.esp;
     };
 
