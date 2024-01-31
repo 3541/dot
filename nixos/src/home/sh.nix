@@ -95,7 +95,7 @@
         keyMode = "vi";
         escapeTime = 0;
         shell = "${pkgs.nushell}/bin/nu";
-        terminal = "screen-256color";
+        terminal = "tmux-direct";
         extraConfig = "setw -g mouse on";
         historyLimit = 50000;
       };
