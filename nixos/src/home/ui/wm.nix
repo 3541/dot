@@ -417,8 +417,8 @@
             command=echo "E: $(TZ=":America/New_York" date '+%T')"
             interval=1
 
-            [time-seattle]
-            command=echo "S: $(TZ=":America/Vancouver" date '+%T')"
+            [time-pacific]
+            command=echo "P: $(TZ=":America/Vancouver" date '+%T')"
             interval=1
           '';
           target = ".config/i3blocks/config";
