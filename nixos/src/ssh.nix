@@ -2,15 +2,17 @@
 let cfg = config.a3;
 in {
   config = lib.mkIf cfg.enable {
-    services.openssh = {
-      enable = true;
+    services = {
+      sshguard.enable = true;
 
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
+      openssh = {
+        enable = true;
+
+        settings = {
+          PermitRootLogin = "no";
+          PasswordAuthentication = false;
+        };
       };
     };
-
-    services.sshguard.enable = true;
   };
 }
