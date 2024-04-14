@@ -13,7 +13,9 @@
 
       programs.emacs = {
         enable = true;
-        extraPackages = (epkgs: (with epkgs; [ emacsql-sqlite ]));
+        extraPackages = (epkgs:
+          (with epkgs; [ emacsql-sqlite treesit-grammars.with-all-grammars ]));
+        package = pkgs.emacs29;
       };
 
       home.file = {
@@ -52,7 +54,7 @@
                (load bootstrap-file nil 'nomessage))
 
               (straight-use-package 'use-package)
-              (add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
+              ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
 
               (unless (package-installed-p 'use-package)
                 (package-refresh-contents)
@@ -89,6 +91,11 @@
                 :config
                 (evil-collection-init
                   '(cmake-mode company dired eglot flymake helm magit)))
+
+              (use-package evil-surround
+                :ensure t
+                :config
+                (global-evil-surround-mode 1))
 
               (use-package helm
                 :ensure t
@@ -147,51 +154,40 @@
 
               (add-hook 'project-find-functions #'find-go-module)
 
-              (use-package eglot
-                :ensure t
-                :demand t
-                :bind
-                (("C-c e r" . eglot-rename))
-                (("C-c e a" . eglot-code-actions))
-                (("C-c e f" . eglot-format))
-                (("C-c e x" . eglot-code-action-extract))
-                :config
-                (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
-                (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-                (add-to-list 'eglot-server-programs '(swift-mode . ("sourcekit-lsp")))
-                (add-to-list 'eglot-server-programs
-                  `(java-mode
-                    "/usr/local/bin/jdtls"
-                    "-configuration" ,(expand-file-name "cache/language-server/java/jdtls/config_linux" user-emacs-directory)
-                    "-data" ,(expand-file-name "cache/java-workspace" user-emacs-directory)))
-                (add-hook 'c-mode-hook 'eglot-ensure)
-                (add-hook 'c++-mode-hook 'eglot-ensure)
-                (add-hook 'java-mode-hook 'eglot-ensure)
-                (add-hook 'rust-mode-hook 'eglot-ensure)
-                (add-hook 'go-mode-hook 'eglot-ensure)
-                (add-hook 'swift-mode-hook 'eglot-ensure)
-                (add-hook 'python-mode-hook 'eglot-ensure)
-                (add-hook 'haskell-mode-hook 'eglot-ensure)
-                (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
-                (setq-default eglot-workspace-configuration
+              (require 'bind-key)
+              (bind-key "C-c e a" 'eglot-code-actions)
+              (bind-key "C-c e f" 'eglot-format)
+              (bind-key "C-c e x" 'eglot-code-action-extract)
+              (bind-key "C-c e r" 'eglot-rename)
+
+              (add-hook 'c-ts-mode-hook 'eglot-ensure)
+              (add-hook 'c++-ts-mode-hook 'eglot-ensure)
+              (add-hook 'java-ts-mode-hook 'eglot-ensure)
+              (add-hook 'rust-ts-mode-hook 'eglot-ensure)
+              (add-hook 'go-ts-mode-hook 'eglot-ensure)
+              (add-hook 'swift-ts-mode-hook 'eglot-ensure)
+              (add-hook 'python-ts-mode-hook 'eglot-ensure)
+              (add-hook 'haskell-ts-mode-hook 'eglot-ensure)
+              (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+              (setq-default eglot-workspace-configuration
                               '((:python (analysis . ((autoSearchPaths . t)
                                                       (useLibraryCodeForTypes . t)
-                                                      (diagnosticMode . "workspace")))))))
+                                                      (diagnosticMode . "workspace"))))))
 
-              (use-package tree-sitter-langs
-                :ensure t)
-              (use-package tree-sitter
-                :ensure t
-                :after tree-sitter-langs
-                :config
-                (add-hook 'c-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'c++-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'java-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'rust-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'go-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'swift-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'python-mode-hook 'tree-sitter-hl-mode)
-                (add-hook 'sh-mode-hook 'tree-sitter-hl-mode))
+              ;;(use-package tree-sitter-langs
+              ;;  :ensure t)
+              ;;(use-package tree-sitter
+              ;;  :ensure t
+              ;;  :after tree-sitter-langs
+              ;;  :config
+              ;;  (add-hook 'c-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'c++-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'java-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'rust-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'go-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'swift-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'python-mode-hook 'tree-sitter-hl-mode)
+              ;;  (add-hook 'sh-mode-hook 'tree-sitter-hl-mode))
 
               (use-package yasnippet
                 :ensure t
@@ -212,14 +208,14 @@
               (use-package tide
                 :ensure t)
 
-              (use-package typescript-mode
-                :ensure t
-                :config
-                (add-hook 'typescript-mode-hook (lambda ()
-                                                  (tide-setup)
-                                                  (flycheck-mode)))
-                (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
-                (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode)))
+              ;;(use-package typescript-mode
+              ;;  :ensure t
+              ;;  :config
+              ;;  (add-hook 'typescript-mode-hook (lambda ()
+              ;;                                    (tide-setup)
+              ;;                                    (flycheck-mode)))
+              ;;  (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+              ;;  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode)))
 
               (use-package org
                 :ensure t
@@ -508,14 +504,14 @@
                 :bind
                 (("C-c b" . python-black-buffer))
                 :config
-                (setq python-black-extra-args '("--line-length=120")))
+                (setq python-black-extra-args '("--line-length=100")))
 
-              (use-package copilot
-                :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-                :ensure t
-                :config
-                (setq copilot-node-executable "${pkgs.nodejs}/bin/node")
-                (add-hook 'prog-mode-hook 'copilot-mode))
+              ;;(use-package copilot
+              ;;  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+              ;;  :ensure t
+              ;;  :config
+              ;;  (setq copilot-node-executable "${pkgs.nodejs}/bin/node")
+              ;;  (add-hook 'prog-mode-hook 'copilot-mode))
 
               (use-package tuareg
                 :ensure t)
@@ -583,21 +579,32 @@
                 "Switch themes on sunrise and sunset."
                 (if first-run				; set theme on initialization
                     (cond ((memq sun-event '(sunrise midday))
-                    	     (solarized-update-background-mode 'light))
+                    	     (load-theme 'solarized-light t))
                           ((memq sun-event '(sunset midnight))
-                           (solarized-update-background-mode 'dark)))
+                           (load-theme 'solarized-dark t)))
                     (cond ((eq sun-event 'sunrise)
-                    	     (solarized-update-background-mode 'light))
+                    	     (load-theme 'solarized-light t))
                           ((eq sun-event 'sunset)
-                           (solarized-update-background-mode 'dark)))))
+                           (load-theme 'solarized-dark t)))))
 
               (use-package rase
                 :ensure t
+                :after solarized-theme
                 :config
-                (load-theme 'solarized t)
-                (enable-theme 'solarized)
                 (add-hook 'rase-functions 'switch-themes)
+                (setq calendar-location-name "Sydney, NSW")
+                (setq calendar-latitude 33.87)
+                (setq calendar-longitude 151.21)
                 (rase-start t))
+
+              (use-package windresize
+                :ensure t
+                :bind (("C-c w" . windresize)
+                       :map windresize-map
+                       ("h" . windresize-left)
+                       ("j" . windresize-down)
+                       ("k" . windresize-up)
+                       ("l" . windresize-right)))
 
               (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -649,17 +656,17 @@
                   (if (window-dedicated-p (selected-window))
                       nil t))))
 
-              (defun my-tab ()
-                (interactive)
-                (or (copilot-accept-completion)
-                    (company-complete)
-                    (indent-for-tab-command)))
+              ;;(defun my-tab ()
+              ;;  (interactive)
+              ;;  (or (copilot-accept-completion)
+              ;;      (company-complete)
+              ;;      (indent-for-tab-command)))
 
               (define-key prog-mode-map (kbd "C-c e n") 'flymake-goto-next-error)
               (define-key prog-mode-map (kbd "C-c e p") 'flymake-goto-prev-error)
               (define-key prog-mode-map (kbd "C-c o") 'ff-get-other-file)
               (define-key prog-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
-              (define-key prog-mode-map (kbd "<tab>") #'my-tab)
+              ;;(define-key prog-mode-map (kbd "<tab>") #'my-tab)
               (defun flymake-checkstyle-java-init ()
                 (let* ((tmp (flymake-init-create-temp-buffer-copy 'flymake-create-temp-inplace))
                        (local (file-relative-name tmp (file-name-directory buffer-file-name))))
@@ -696,16 +703,31 @@
               (c-add-style "my-cc" cc-style)
               (add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
 
-
               (mapc 'frame-set-background-mode (frame-list))
               (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
               (when (file-exists-p custom-file)
                     (load custom-file))
               (xterm-mouse-mode)
 
-              (setq calendar-location-name "Sydney, NSW")
-              (setq calendar-latitude 33.87)
-              (setq calendar-longitude 151.21)
+              (setq major-mode-remap-alist
+               '((c-mode . c-ts-mode)
+                 (c++-mode . c++-ts-mode)
+                 (c-or-c++-mode . c-or-c++-ts-mode)
+                 (rust-mode . rust-ts-mode)
+                 (json-mode . json-ts-mode)
+                 (python-mode . python-ts-mode)
+                 (yaml-mode . yaml-ts-mode)
+                 (bash-mode . bash-ts-mode)
+                 (go-mode . go-ts-mode)
+                 (haskell-mode . haskell-ts-mode)
+                 (java-mode . java-ts-mode)))
+
+              ;;(setq treesit-font-lock-level 4)
+              (use-package solarized-theme
+                :ensure t
+                :config
+                (setq solarized-use-more-italic t)
+                (load-theme 'solarized-dark t))
 
               (set-frame-font "${cfg.home.ui.fonts.editor.font}-${
                 toString cfg.home.ui.fonts.editor.size
