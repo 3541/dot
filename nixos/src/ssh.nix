@@ -2,6 +2,8 @@
 let cfg = config.a3;
 in {
   config = lib.mkIf cfg.enable {
+    programs.mosh.enable = true;
+
     services = {
       sshguard.enable = true;
 
