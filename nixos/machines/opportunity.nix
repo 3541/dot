@@ -28,13 +28,20 @@
 
             ui = {
               windowGaps = true;
-              fonts.editor.font = "Berkeley Mono";
               fonts.ui.font = "Berkeley Mono";
+
+              fonts.editor = {
+                font = "Berkeley Mono";
+                size = 12.0;
+              };
             };
           };
         };
 
-        boot.initrd.kernelModules = [ "amdgpu" ];
+        boot = {
+          initrd.kernelModules = [ "amdgpu" ];
+          supportedFilesystems = [ "ntfs" ];
+        };
 
         services = {
           xserver = {
@@ -46,6 +53,7 @@
           udev.extraRules = ''
             SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
             SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2ff0", TAG+="uaccess"
+            SUBSYSTEM=="block", ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs3"
           '';
 
           # pixiecore = let
@@ -111,6 +119,7 @@
                 message = "Missing Mathematica installer.";
               };
             })
+            wineWowPackages.staging
             (writeShellScriptBin "me3t" ''
               WINEPREFIX=/opt/games/me3t/wine ${wineWowPackages.staging}/bin/wine64 /opt/games/me3t/ME3TweaksModManager.exe
             '')
