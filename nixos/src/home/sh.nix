@@ -96,8 +96,12 @@
         escapeTime = 0;
         shell = "${pkgs.nushell}/bin/nu";
         terminal = "tmux-direct";
-        extraConfig = "setw -g mouse on";
         historyLimit = 50000;
+
+        extraConfig = ''
+          setw -g mouse on
+          set -as terminal-features ",alacritty*:RGB"
+        '';
       };
     };
 
