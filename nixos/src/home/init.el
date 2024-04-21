@@ -6,21 +6,19 @@
 (package-initialize)
 
 (require 'use-package-ensure)
+(setq use-package-always-ensure t)
 
 (use-package auto-package-update
-  :ensure t
   :config
   (setq auto-package-update-delete-old-versions t)
   (auto-package-update-at-time "20:00"))
 
 (use-package undo-tree
-  :ensure t
   :config
   (global-undo-tree-mode)
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-keybinding nil)
   :config
@@ -34,18 +32,15 @@
 
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init
     '(cmake-mode company dired eglot flymake helm magit)))
 
 (use-package evil-surround
-  :ensure t
   :config
   (global-evil-surround-mode 1))
 
 (use-package helm
-  :ensure t
   :demand t
   :bind
   (("M-x" . helm-M-x)
@@ -56,7 +51,6 @@
 (require 'tramp)
 
 (use-package company
-  :ensure t
   :config
   (setq company-idle-delay 0.0)
   (setq company-minimum-prefix-length 1)
@@ -64,7 +58,6 @@
   (global-company-mode))
 
 (use-package company-box
-  :ensure t
   :hook (company-mode . company-box-mode))
 
 (defun my-projectile-project-find-function (dir)
@@ -72,7 +65,6 @@
     (and root (cons 'transient root))))
 
 (use-package projectile
-  :ensure t
   :after evil
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -87,7 +79,6 @@
   (projectile-mode))
 
 (use-package helm-projectile
-  :ensure t
   :after projectile helm
   :config
   (helm-projectile-on))
@@ -124,8 +115,7 @@
 ;;(use-package tree-sitter-langs
 ;;  :ensure t)
 ;;(use-package tree-sitter
-;;  :ensure t
-;;  :after tree-sitter-langs
+;;;;  :after tree-sitter-langs
 ;;  :config
 ;;  (add-hook 'c-mode-hook 'tree-sitter-hl-mode)
 ;;  (add-hook 'c++-mode-hook 'tree-sitter-hl-mode)
@@ -137,7 +127,6 @@
 ;;  (add-hook 'sh-mode-hook 'tree-sitter-hl-mode))
 
 (use-package yasnippet
-  :ensure t
   :hook
   (rust-mode . yas-minor-mode)
   :config
@@ -156,8 +145,7 @@
   :ensure t)
 
 ;;(use-package typescript-mode
-;;  :ensure t
-;;  :config
+;;;;  :config
 ;;  (add-hook 'typescript-mode-hook (lambda ()
 ;;                                    (tide-setup)
 ;;                                    (flycheck-mode)))
@@ -165,7 +153,6 @@
 ;;  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-mode)))
 
 (use-package org
-  :ensure t
   :config
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -196,7 +183,6 @@
   (org-reload))
 
 (use-package org-drill
-  :ensure t
   :after org
   :config
   (setq org-drill-scope 'directory)
@@ -204,7 +190,6 @@
   (setq org-drill-adjust-intervals-for-early-and-late-repetitions-p t))
 
 (use-package evil-org
-  :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
@@ -215,7 +200,6 @@
   (evil-org-agenda-set-keys))
 
 (use-package org-bullets
-  :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook
@@ -226,7 +210,6 @@
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)
-  :ensure t
   :demand t
   :custom
   (org-roam-directory "~/org/roam")
@@ -244,7 +227,6 @@
   :after org-roam)
 
 (use-package org-pdftools
-  :ensure t
   :after org
   :config
   (setq org-pdftools-root-dir "~/org/roam/doc")
@@ -257,7 +239,6 @@
     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
 
 (use-package org-download
-  :ensure t
   :after org
   :bind
   (:map org-mode-map
@@ -267,7 +248,6 @@
   (setq org-download-screenshot-method "scrot -s %s"))
 
 (use-package pdf-tools
-  :ensure t
   :mode ("\\.pdf\\'" . pdf-tools-install)
   :defer t
   :config
@@ -298,18 +278,15 @@
   (setq reftex-cite-format "\\parencite[]{%l}"))
 
 (use-package dtrt-indent
-  :ensure t
   :config
   (dtrt-indent-global-mode t))
 
 (use-package diff-hl
-  :ensure t
   :config
   (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
   (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
 (use-package magit
-  :ensure t
   :bind
   ("C-x g" . magit-status)
   :config
@@ -318,12 +295,10 @@
   (add-hook 'with-editor-mode-hook 'evil-insert-state))
 
 (use-package subword
-  :ensure t
   :config
   (global-subword-mode 1))
 
 (use-package paredit
-  :ensure t
   :config
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'lisp-mode-hook 'paredit-mode)
@@ -334,7 +309,6 @@
   :ensure t)
 
 (use-package flyspell
-  :ensure t
   :config
   (setq ispell-list-command "--list")
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -342,23 +316,19 @@
   (add-hook 'git-commit-mode-hook 'flyspell-mode))
 
 (use-package dired-hide-dotfiles
-  :ensure t
   :config
   (dired-hide-dotfiles-mode)
   (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 
 (use-package async
-  :ensure t
   :config
   (dired-async-mode 1))
 
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode))
 
 (use-package buffer-move
-  :ensure t
   :config
   (global-set-key (kbd "C-S-h") 'buf-move-left)
   (global-set-key (kbd "C-S-j") 'buf-move-down)
@@ -366,7 +336,6 @@
   (global-set-key (kbd "C-S-l") 'buf-move-right))
 
 (use-package cmake-mode
-  :ensure t
   :config
   (setq cmake-tab-width 4))
 
@@ -377,7 +346,6 @@
   :ensure t)
 
 (use-package ess
-  :ensure t
   :init (require 'ess-site))
 
 (use-package yaml-mode
@@ -387,16 +355,13 @@
   :ensure t)
 
 (use-package sql-indent
-  :ensure t
   :config
   (add-hook 'sql-mode-hook 'sqlind-minor-mode))
 
 (use-package nix-mode
-  :ensure t
   :mode "\\.nix\\'")
 
 (use-package direnv
-  :ensure t
   :config
   (add-hook 'prog-mode-hook 'direnv-mode))
 
@@ -407,7 +372,6 @@
   :ensure t)
 
 (use-package nasm-mode
-  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode)))
 
@@ -415,12 +379,10 @@
   :ensure t)
 
 (use-package rainbow-delimiters
-  :ensure t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package yapfify
-  :ensure t
   :bind
   (("C-c y" . yapfify-region)))
 
@@ -434,20 +396,17 @@
   :ensure t)
 
 (use-package markdown-mode
-  :ensure t
   :config
   (setq markdown-command '("@pandoc@" "--from=markdown" "--to=html5")))
 
 ;;(use-package activity-watch-mode
-;;  :ensure t
-;;  :config
+;;;;  :config
 ;;  (global-activity-watch-mode))
 
 (use-package ein
   :ensure t)
 
 (use-package python-black
-  :ensure t
   :bind
   (("C-c b" . python-black-buffer))
   :config
@@ -455,8 +414,7 @@
 
 ;;(use-package copilot
 ;;  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-;;  :ensure t
-;;  :config
+;;;;  :config
 ;;  (setq copilot-node-executable "${pkgs.nodejs}/bin/node")
 ;;  (add-hook 'prog-mode-hook 'copilot-mode))
 
@@ -467,61 +425,54 @@
   :ensure t)
 
 (use-package merlin
-  :ensure t
   :config
   (add-hook 'tuareg-mode-hook #'merlin-mode)
   (add-hook 'merlin-mode-hook #'company-mode)
   (setq merlin-error-after-save nil))
 
 (use-package merlin-eldoc
-  :ensure t
   :hook ((tuareg-mode) . merlin-eldoc-setup))
 
 (use-package flycheck-ocaml
-  :ensure t
   :config
   (flycheck-ocaml-setup))
 
 (use-package utop
-  :ensure t
   :config
   (add-hook 'tuareg-mode-hook #'utop-minor-mode))
 
 (use-package ocamlformat
-  :ensure t
   :config
   (add-hook 'tuareg-mode-hook
 	    (lambda ()
 	      (add-hook 'before-save-hook 'ocamlformat-before-save))))
 (use-package fzf
-  :ensure t
   :after evil
   :bind
   (("C-p" . fzf-projectile))
   :config
   (define-key evil-normal-state-map (kbd "C-p") 'fzf-projectile)
-  (evil-define-key 'motion ag-mode-map (kbd "C-p") 'fzf-projectile)
-  (evil-define-key 'motion rspec-mode-map (kbd "C-p") 'fzf-projectile))
+  (evil-define-key 'normal ag-mode-map (kbd "C-p") 'fzf-projectile)
+  (evil-define-key 'normal dired-mode-map (kbd "C-p") 'fzf-projectile)
+  (evil-define-key 'normal rspec-mode-map (kbd "C-p") 'fzf-projectile))
 
-(use-package rg
-  :ensure t
-  :config
-  (rg-enable-menu))
+(use-package helm-rg
+  :bind
+  ("C-c g" . helm-rg))
 
 (defun switch-themes (sun-event &optional first-run)
   "Switch themes on sunrise and sunset."
-  (if first-run				; set theme on initialization
+  (if first-run                         ; set theme on initialization
       (cond ((memq sun-event '(sunrise midday))
       	     (load-theme 'solarized-light t))
             ((memq sun-event '(sunset midnight))
              (load-theme 'solarized-dark t)))
-      (cond ((eq sun-event 'sunrise)
-      	     (load-theme 'solarized-light t))
-            ((eq sun-event 'sunset)
-             (load-theme 'solarized-dark t)))))
+    (cond ((eq sun-event 'sunrise)
+      	   (load-theme 'solarized-light t))
+          ((eq sun-event 'sunset)
+           (load-theme 'solarized-dark t)))))
 
 (use-package rase
-  :ensure t
   :after solarized-theme
   :config
   (add-hook 'rase-functions 'switch-themes)
@@ -531,13 +482,46 @@
   (rase-start t))
 
 (use-package windresize
-  :ensure t
   :bind (("C-c w" . windresize)
          :map windresize-map
          ("h" . windresize-left)
          ("j" . windresize-down)
          ("k" . windresize-up)
          ("l" . windresize-right)))
+
+(use-package vterm
+  :config
+  (add-hook 'vterm-mode-hook
+  		(lambda ()
+  		(setq-local evil-insert-state-cursor 'box)
+  		(evil-insert-state)))
+  (define-key vterm-mode-map [return]                      #'vterm-send-return)
+  (setq vterm-keymap-exceptions nil)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+  (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+  (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
+  (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-vterm-next)
+  (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev)
+  (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+  (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+  (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -557,6 +541,7 @@
 (setq scroll-step 1)
 (setq scroll-margin 1)
 (setq scroll-conservatively 100)
+(pixel-scroll-precision-mode 1)
 
 (global-hl-line-mode)
 
@@ -640,6 +625,7 @@
 (c-add-style "my-cc" cc-style)
 (add-hook 'c++-mode-hook #'(lambda () (c-set-style "my-cc")))
 
+(setq frame-inhibit-implied-resize t)
 (mapc 'frame-set-background-mode (frame-list))
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -661,7 +647,6 @@
 
 ;; (setq treesit-font-lock-level 4)
 (use-package solarized-theme
-  :ensure t
   :config
   (setq solarized-use-more-italic t)
   (load-theme 'solarized-dark t))

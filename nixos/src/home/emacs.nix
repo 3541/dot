@@ -14,7 +14,11 @@
       programs.emacs = {
         enable = true;
         extraPackages = (epkgs:
-          (with epkgs; [ emacsql-sqlite treesit-grammars.with-all-grammars ]));
+          (with epkgs; [
+            emacsql-sqlite
+            treesit-grammars.with-all-grammars
+            vterm
+          ]));
         package = pkgs.emacs29;
       };
 
