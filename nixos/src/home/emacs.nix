@@ -1,4 +1,4 @@
-{ cfg, lib, pkgs, emacs-color-theme-solarized, emacs-sensible-defaults, ... }: {
+{ cfg, lib, pkgs, emacs-sensible-defaults, ... }: {
   config =
     lib.mkIf (cfg.enable && cfg.home.enable && cfg.role == "workstation") {
       home = {
@@ -19,12 +19,6 @@
       };
 
       home.file = {
-        theme = {
-          source = emacs-color-theme-solarized;
-          target = ".emacs.d/emacs-color-theme-solarized";
-          recursive = true;
-        };
-
         sensibleDefaults = {
           source = emacs-sensible-defaults + "/sensible-defaults.el";
           target = ".emacs.d/sensible-defaults.el";

@@ -5,25 +5,7 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
- (unless (file-exists-p bootstrap-file)
-   (with-current-buffer
-     (url-retrieve-synchronously
-      "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-      'silent 'inhibit-cookies)
-     (goto-char (point-max))
-     (eval-print-last-sexp)))
- (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
-;;(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(require 'use-package-ensure)
 
 (use-package auto-package-update
   :ensure t
@@ -631,6 +613,10 @@
              flymake-checkstyle-java-init))
 (setq-default ff-other-file-alist '(("\\.cc\\'" (".hh" ".ccm"))
                                     ("\\.hh\\'" (".cc"))
+                                    ("\\.hpp\\'" (".cpp"))
+                                    ("\\.cpp\\'" (".hpp"))
+                                    ("\\.c\\'" (".h"))
+                                    ("\\.h\\'" (".c"))
                                     ("\\.ccm\\'" (".cc"))))
 (add-hook 'find-file-hook 'flymake-mode)
 
@@ -673,7 +659,7 @@
    (haskell-mode . haskell-ts-mode)
    (java-mode . java-ts-mode)))
 
-;;(setq treesit-font-lock-level 4)
+;; (setq treesit-font-lock-level 4)
 (use-package solarized-theme
   :ensure t
   :config
