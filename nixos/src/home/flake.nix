@@ -17,11 +17,6 @@
       flake = false;
     };
 
-    emacs-color-theme-solarized = {
-      url = "github:sellout/emacs-color-theme-solarized";
-      flake = false;
-    };
-
     emacs-sensible-defaults = {
       url = "github:hrs/sensible-defaults.el";
       flake = false;
@@ -34,7 +29,7 @@
   };
 
   outputs = { self, home-manager, solarized-xresources, i3blocks-contrib
-    , emacs-color-theme-solarized, emacs-sensible-defaults, firefox, nixpkgs, ... }: {
+    , emacs-sensible-defaults, firefox, nixpkgs, ... }: {
       nixosModules = {
         home = { config, lib, ... }@args:
           let cfg = config.a3;
@@ -104,7 +99,6 @@
                 cfg = cfg;
                 solarized-xresources = solarized-xresources;
                 i3blocks-contrib = i3blocks-contrib;
-                emacs-color-theme-solarized = emacs-color-theme-solarized;
                 emacs-sensible-defaults = emacs-sensible-defaults;
                 firefox = firefox;
               };
@@ -202,7 +196,6 @@
               useGlobalPkgs = true;
               extraSpecialArgs = {
                 cfg = cfg;
-                emacs-color-theme-solarized = emacs-color-theme-solarized;
                 emacs-sensible-defaults = emacs-sensible-defaults;
               };
 
@@ -235,7 +228,6 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           extraSpecialArgs = {
-            emacs-color-theme-solarized = emacs-color-theme-solarized;
             emacs-sensible-defaults = emacs-sensible-defaults;
             solarized-xresources = solarized-xresources;
             i3blocks-contrib = i3blocks-contrib;

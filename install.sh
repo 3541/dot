@@ -53,9 +53,4 @@ else
         ln -s "$PWD/nix/.config/nixpkgs/src/programs/emacs-sensible-defaults.nix" \
            "~/.emacs.d/sensible-defaults.el"
     fi
-
-    if [ ! -d "~/.emacs.d/emacs-color-theme-solarized" ]; then
-        git clone https://github.com/sellout/emacs-color-theme-solarized.git \
-            "~/.emacs.d/emacs-color-theme-solarized"
-    fi
 fi
