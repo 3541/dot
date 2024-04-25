@@ -116,6 +116,7 @@
                   ./emacs.nix
                   ./firefox.nix
                   ./gdb.nix
+                  ./helix.nix
                   ./packages.nix
                   ./sh.nix
                   ./ui
