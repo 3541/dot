@@ -1,7 +1,8 @@
-{ cfg, lib, ... }: {
+{ cfg, lib, pkgsUnstable, ... }: {
   config.programs.helix =
     lib.mkIf (cfg.enable && cfg.home.enable && cfg.role == "workstation") {
       enable = true;
+      package = pkgsUnstable.helix;
 
       settings = {
         theme = "solarized_dark";
@@ -12,10 +13,9 @@
           scrolloff = 3;
           cursorline = true;
           true-color = true;
-          #undercurl = true;
           bufferline = "multiple";
           color-modes = true;
-          #popup-border = "all";
+          popup-border = "all";
           lsp.display-inlay-hints = true;
 
           auto-pairs = {
@@ -34,6 +34,7 @@
           "A-." = "goto_definition";
           "A-," = "jump_backward";
           "A->" = "jump_forward";
+          "A-m" = "remove_primary_selection";
         };
       };
 

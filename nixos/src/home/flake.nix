@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
@@ -29,7 +30,7 @@
   };
 
   outputs = { self, home-manager, solarized-xresources, i3blocks-contrib
-    , emacs-sensible-defaults, firefox, nixpkgs, ... }: {
+    , emacs-sensible-defaults, firefox, nixpkgs, nixpkgs-unstable, ... }: {
       nixosModules = {
         home = { config, lib, ... }@args:
           let cfg = config.a3;
@@ -101,6 +102,7 @@
                 i3blocks-contrib = i3blocks-contrib;
                 emacs-sensible-defaults = emacs-sensible-defaults;
                 firefox = firefox;
+                pkgsUnstable = nixpkgs-unstable.legacyPackages.${cfg.system};
               };
 
               users.${cfg.home.user} = {
