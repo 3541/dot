@@ -18,27 +18,123 @@
   (global-undo-tree-mode)
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 
-(use-package evil
-  :init
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode t)
-  (define-key evil-motion-state-map (kbd "C-h") 'evil-window-left)
-  (define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
-  (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
-  (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
-  (setq x-select-enable-clipboard nil)
-  (evil-set-undo-system 'undo-tree))
+;; (use-package evil
+;;   :init
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (evil-mode t)
+;;   (define-key evil-motion-state-map (kbd "C-h") 'evil-window-left)
+;;   (define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
+;;   (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
+;;   (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
+;;   (setq x-select-enable-clipboard nil)
+;;   (evil-set-undo-system 'undo-tree))
 
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init
-    '(cmake-mode company dired eglot flymake helm magit)))
+;; (use-package evil-collection
+;;   :after evil
+;;   :config
+;;   (evil-collection-init
+;;     '(cmake-mode company dired eglot flymake helm magit)))
 
-(use-package evil-surround
+;; (use-package evil-surround
+;;   :config
+;;   (global-evil-surround-mode 1))
+
+(global-set-key (kbd "C-h") 'windmove-left)
+(global-set-key (kbd "C-j") 'windmove-down)
+(global-set-key (kbd "C-k") 'windmove-up)
+(global-set-key (kbd "C-l") 'windmove-right)
+
+(defun meow-setup ()
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-motion-overwrite-define-key
+   '("j" . meow-next)
+   '("k" . meow-prev)
+   '("<escape>" . ignore))
+  (meow-leader-define-key
+   ;; SPC j/k will run the original command in MOTION state.
+   '("j" . "H-j")
+   '("k" . "H-k")
+   ;; Use SPC (0-9) for digit arguments.
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("/" . meow-keypad-describe-key)
+   '("?" . meow-cheatsheet))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("9" . meow-expand-9)
+   '("8" . meow-expand-8)
+   '("7" . meow-expand-7)
+   '("6" . meow-expand-6)
+   '("5" . meow-expand-5)
+   '("4" . meow-expand-4)
+   '("3" . meow-expand-3)
+   '("2" . meow-expand-2)
+   '("1" . meow-expand-1)
+   '("-" . negative-argument)
+   '(";" . meow-reverse)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("[" . meow-beginning-of-thing)
+   '("]" . meow-end-of-thing)
+   '("a" . meow-append)
+   '("A" . meow-open-below)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("d" . meow-delete)
+   '("D" . meow-backward-delete)
+   '("e" . meow-next-word)
+   '("E" . meow-next-symbol)
+   '("f" . meow-find)
+   '("g" . meow-cancel-selection)
+   '("G" . meow-grab)
+   '("h" . meow-left)
+   '("H" . meow-left-expand)
+   '("i" . meow-insert)
+   '("I" . meow-open-above)
+   '("j" . meow-next)
+   '("J" . meow-next-expand)
+   '("k" . meow-prev)
+   '("K" . meow-prev-expand)
+   '("l" . meow-right)
+   '("L" . meow-right-expand)
+   '("m" . meow-join)
+   '("n" . meow-search)
+   '("o" . meow-block)
+   '("O" . meow-to-block)
+   '("p" . meow-yank)
+   '("q" . meow-quit)
+   '("Q" . meow-goto-line)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("s" . meow-kill)
+   '("t" . meow-till)
+   '("u" . meow-undo)
+   '("U" . meow-undo-in-selection)
+   '("v" . meow-visit)
+   '("w" . meow-mark-word)
+   '("W" . meow-mark-symbol)
+   '("x" . meow-line)
+   '("X" . meow-goto-line)
+   '("y" . meow-save)
+   '("Y" . meow-sync-grab)
+   '("z" . meow-pop-selection)
+   '("'" . repeat)
+   '("<escape>" . ignore)))
+
+(use-package meow
   :config
-  (global-evil-surround-mode 1))
+  (meow-setup)
+  (meow-global-mode 1))
 
 (use-package helm
   :demand t
@@ -65,7 +161,7 @@
     (and root (cons 'transient root))))
 
 (use-package projectile
-  :after evil
+  ;;:after evil
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   ;;(define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
@@ -106,7 +202,7 @@
 (add-hook 'swift-ts-mode-hook 'eglot-ensure)
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 (add-hook 'haskell-ts-mode-hook 'eglot-ensure)
-(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+(global-set-key (kbd "M-.") 'xref-find-definitions)
 (setq-default eglot-workspace-configuration
                 '((:python (analysis . ((autoSearchPaths . t)
                                         (useLibraryCodeForTypes . t)
@@ -189,15 +285,15 @@
   (setq org-drill-add-random-noise-to-intervals-p t)
   (setq org-drill-adjust-intervals-for-early-and-late-repetitions-p t))
 
-(use-package evil-org
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-	    (lambda ()
-	      (evil-org-set-key-theme)))
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+;; (use-package evil-org
+;;   :after org
+;;   :config
+;;   (add-hook 'org-mode-hook 'evil-org-mode)
+;;   (add-hook 'evil-org-mode-hook
+;; 	    (lambda ()
+;; 	      (evil-org-set-key-theme)))
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
 
 (use-package org-bullets
   :after org
@@ -251,7 +347,8 @@
   :mode ("\\.pdf\\'" . pdf-tools-install)
   :defer t
   :config
-  (evil-set-initial-state 'pdf-view-mode 'normal))
+  ;; (evil-set-initial-state 'pdf-view-mode 'normal)
+  )
 
 (use-package org-noter
   :ensure t)
@@ -292,7 +389,8 @@
   :config
   (use-package with-editor
     :ensure t)
-  (add-hook 'with-editor-mode-hook 'evil-insert-state))
+  ;; (add-hook 'with-editor-mode-hook 'evil-insert-state)
+  )
 
 (use-package subword
   :config
@@ -447,14 +545,15 @@
 	    (lambda ()
 	      (add-hook 'before-save-hook 'ocamlformat-before-save))))
 (use-package fzf
-  :after evil
+;;  :after evil
   :bind
   (("C-p" . fzf-projectile))
-  :config
-  (define-key evil-normal-state-map (kbd "C-p") 'fzf-projectile)
-  (evil-define-key 'normal ag-mode-map (kbd "C-p") 'fzf-projectile)
-  (evil-define-key 'normal dired-mode-map (kbd "C-p") 'fzf-projectile)
-  (evil-define-key 'normal rspec-mode-map (kbd "C-p") 'fzf-projectile))
+  ;; :config
+  ;; (define-key evil-normal-state-map (kbd "C-p") 'fzf-projectile)
+  ;; (evil-define-key 'normal ag-mode-map (kbd "C-p") 'fzf-projectile)
+  ;; (evil-define-key 'normal dired-mode-map (kbd "C-p") 'fzf-projectile)
+  ;; (evil-define-key 'normal rspec-mode-map (kbd "C-p") 'fzf-projectile)
+  )
 
 (use-package helm-rg
   :bind
@@ -489,39 +588,39 @@
          ("k" . windresize-up)
          ("l" . windresize-right)))
 
-(use-package vterm
-  :config
-  (add-hook 'vterm-mode-hook
-  		(lambda ()
-  		(setq-local evil-insert-state-cursor 'box)
-  		(evil-insert-state)))
-  (define-key vterm-mode-map [return]                      #'vterm-send-return)
-  (setq vterm-keymap-exceptions nil)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
-  (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
-  (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
-  (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-vterm-next)
-  (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev)
-  (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
-  (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
-  (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
+;; (use-package vterm
+;;   :config
+;;   (add-hook 'vterm-mode-hook
+;;   		(lambda ()
+;;   		(setq-local evil-insert-state-cursor 'box)
+;;   		(evil-insert-state)))
+;;   (define-key vterm-mode-map [return]                      #'vterm-send-return)
+;;   (setq vterm-keymap-exceptions nil)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-e")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-f")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-a")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-v")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-b")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-w")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-u")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-n")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-m")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-p")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-j")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-k")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-r")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-t")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-g")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-c")      #'vterm--self-insert)
+;;   (evil-define-key 'insert vterm-mode-map (kbd "C-SPC")    #'vterm--self-insert)
+;;   (evil-define-key 'normal vterm-mode-map (kbd "C-d")      #'vterm--self-insert)
+;;   (evil-define-key 'normal vterm-mode-map (kbd ",c")       #'multi-vterm)
+;;   (evil-define-key 'normal vterm-mode-map (kbd ",n")       #'multi-vterm-next)
+;;   (evil-define-key 'normal vterm-mode-map (kbd ",p")       #'multi-vterm-prev)
+;;   (evil-define-key 'normal vterm-mode-map (kbd "i")        #'evil-insert-resume)
+;;   (evil-define-key 'normal vterm-mode-map (kbd "o")        #'evil-insert-resume)
+;;   (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
 
 (load-file "~/.emacs.d/sensible-defaults.el")
 
@@ -554,8 +653,8 @@
 
 (setq dired-recursive-deletes 'top)
 
-(evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
-(evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
+;;(evil-define-key 'normal dired-mode-map (kbd "j") 'dired-next-line)
+;;(evil-define-key 'normal dired-mode-map (kbd "k") 'dired-previous-line)
 
 (setq-default indent-tabs-mode nil)
 
