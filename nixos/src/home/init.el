@@ -44,6 +44,7 @@
 (global-set-key (kbd "C-j") 'windmove-down)
 (global-set-key (kbd "C-k") 'windmove-up)
 (global-set-key (kbd "C-l") 'windmove-right)
+(global-set-key (kbd "C-z") 'recenter-top-bottom)
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -134,7 +135,8 @@
 (use-package meow
   :config
   (meow-setup)
-  (meow-global-mode 1))
+  (meow-global-mode 1)
+  (setq meow--kbd-backward-line "<up>"))
 
 (use-package helm
   :demand t
