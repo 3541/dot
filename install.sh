@@ -9,7 +9,7 @@ else
     cd $(dirname $(readlink -f "$0"))
 fi
 
-if command -v nix &> /dev/null; then
+if command -v nix > /dev/null 2>&1; then
     if [ -f /etc/NIXOS ]; then
         if [ ! -f nixos/machines/$(hostname)-hardware.nix ] &&
                [ -f /etc/nixos/hardware-configuration.nix ]; then
@@ -40,17 +40,10 @@ if command -v nix &> /dev/null; then
 	nix run "./nixos/src/home#homeConfigurations.$(hostname).activationPackage"
     fi
 else
-    if [ ! -e "~/.bashrc.dist" && -e "~/.bashrc" ]; then
-        mv "~/.bashrc" "~/.bashrc.dist"
-    fi
-
-    for d in bash i3 emacs git; do
-        echo "$d"
-        stow "$d"
+    ./scripts/boot-$(uname).sh
+    ./scripts/deps-$(uname).sh stow
+    for dir in home/*; do
+        pkg="$(echo $dir | cut -d'/' -f2)"
+        stow --dotfiles --dir home --target "$HOME" "$pkg"
     done
-
-    if [ ! -e "~/.emacs.d/sensible-defaults.el" ]; then
-        ln -s "$PWD/nix/.config/nixpkgs/src/programs/emacs-sensible-defaults.nix" \
-           "~/.emacs.d/sensible-defaults.el"
-    fi
 fi

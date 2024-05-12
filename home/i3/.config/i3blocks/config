@@ -1,0 +1,108 @@
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=${i3b-contrib}/libexec/i3blocks/$BLOCK_NAME
+separator_block_width=15
+markup=none
+
+[mediaplayer]
+command=echo $(${pkgs.playerctl}/bin/playerctl metadata album) - $(${pkgs.playerctl}/bin/playerctl metadata title)
+interval=5
+signal=11
+
+# Volume indicator
+#
+# The first parameter sets the step (and units to display)
+# The second parameter overrides the mixer selection
+# See the script for details.
+[volume]
+#label=VOL
+label=♪ 
+instance=Master
+#instance=PCM
+interval=once
+signal=10
+
+# Memory usage
+#
+# The type defaults to "mem" if the instance is not specified.
+[memory]
+label=MEM 
+separator=false
+interval=30
+
+[memory]
+label=SWAP 
+instance=swap
+interval=30
+
+[disk]
+label=ROOT 
+interval=30
+instance=/
+
+# Network interface monitoring
+#
+# If the instance is not specified, use the interface used for default route.
+# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+[iface]
+#instance=wlan0
+color=#00FF00
+interval=10
+#separator=false
+
+${lib.optionalString (cfg.hardware.formFactor == "portable") ''
+[battery2]
+interval=30
+markup=pango
+''}
+
+#[bandwidth]
+#instance=eth0
+#interval=5
+
+# CPU usage
+#
+# The script may be called with -w and -c switches to specify thresholds,
+# see the script for details.
+[cpu_usage]
+label=CPU 
+interval=10
+#min_width=CPU: 100.00%
+#separator=false
+
+[load_average]
+interval=10
+
+[cpufreq]
+command=awk '/MHz/ { t += $4; n++ } END { print t / n }' /proc/cpuinfo
+interval=5
+
+# Temperature
+#
+# Support multiple chips, though lm-sensors.
+# The script may be called with -w and -c switches to specify thresholds,
+# see the script for details.
+[temperature-cpu]
+command=${i3b-contrib}/libexec/i3blocks/temperature --chip coretemp-isa-0000 -w 60 -c 80
+label=CORE 
+interval=10
+
+#[weather]
+#command=curl -sS 'https://wttr.in/McKinnon?format=%c+%t+%h'
+#interval=1800
+
+# Date Time
+#
+[time]
+command=date '+%Y-%m-%d %H:%M:%S'
+interval=1
+
+[time-east]
+command=echo "E: $(TZ=":America/New_York" date '+%T')"
+interval=1
+
+[time-pacific]
+command=echo "P: $(TZ=":America/Vancouver" date '+%T')"
+interval=1
