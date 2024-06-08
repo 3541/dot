@@ -41,7 +41,7 @@ if command -v nix > /dev/null 2>&1; then
     fi
 else
     ./scripts/boot-$(uname).sh
-    ./scripts/deps-$(uname).sh stow
+    ./scripts/deps-$(uname).sh alacritty nushell stow
     for dir in home/*; do
         pkg="$(echo $dir | cut -d'/' -f2)"
         stow --dotfiles --dir home --target "$HOME" "$pkg"
