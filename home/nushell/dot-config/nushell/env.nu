@@ -65,3 +65,4 @@ $env.NINJA_STATUS = "[%f/%t (%r)] "
 $env.CVSROOT = "anoncvs@anoncvs.au.openbsd.org:/cvs"
 $env.EDITOR = "hx"
 $env.GPG_KEY = "0x1EECFF9EE39ED7AA"
+$env.HOMEBREW_NO_ENV_HINTS = 1
