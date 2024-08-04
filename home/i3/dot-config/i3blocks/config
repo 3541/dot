@@ -7,7 +7,7 @@ separator_block_width=15
 markup=none
 
 [mediaplayer]
-command=echo $(${pkgs.playerctl}/bin/playerctl metadata album) - $(${pkgs.playerctl}/bin/playerctl metadata title)
+command=echo $(playerctl metadata album) - $(playerctl metadata title)
 interval=5
 signal=11
 
@@ -52,12 +52,6 @@ color=#00FF00
 interval=10
 #separator=false
 
-${lib.optionalString (cfg.hardware.formFactor == "portable") ''
-[battery2]
-interval=30
-markup=pango
-''}
-
 #[bandwidth]
 #instance=eth0
 #interval=5
@@ -85,7 +79,7 @@ interval=5
 # The script may be called with -w and -c switches to specify thresholds,
 # see the script for details.
 [temperature-cpu]
-command=${i3b-contrib}/libexec/i3blocks/temperature --chip coretemp-isa-0000 -w 60 -c 80
+command=/usr/libexec/i3blocks/temperature --chip coretemp-isa-0000 -w 60 -c 80
 label=CORE 
 interval=10
 
