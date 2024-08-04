@@ -1,5 +1,15 @@
 # Nushell Config File
 
+let fish_completer = {|spans|
+    fish --command $'complete "--do-complete=($spans | str join " ")"'
+      | $"value(char tab)description(char newline)" + $in
+      | from tsv --flexible --no-infer
+}
+
+let zoxide_completer = {|spans|
+    $spans | skip 1 | zoxide query -l ...$in | lines | where {|x| $x != $env.PWD}
+}
+
 let completer = {|spans|
     let expanded_alias = (scope aliases | where name == $spans.0 | get -i 0 | get -i expansion)
 
@@ -8,9 +18,10 @@ let completer = {|spans|
         $spans | skip 1 | prepend ($expanded_alias | split row " " | take 1)
     } else { $spans })
 
-    fish --command $'complete "--do-complete=($spans | str join " ")"'
-      | $"value(char tab)description(char newline)" + $in
-      | from tsv --flexible --no-infer
+    match $spans.0 {
+        __zoxide_z | __zoxide_zi => $zoxide_completer
+        _ => $fish_completer
+    } | do $in $spans
 }
 
 # for more information on themes see
