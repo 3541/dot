@@ -85,6 +85,8 @@ bindsym XF86AudioPrev exec playerctl previous && pkill -SIGRTMIN+11 i3blocks
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +1% && pkill -SIGRTMIN+10 i3blocks
 bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
 bindsym XF86MonBrightnessUp exec brightnessctl s 5%+
+bindsym Mod4+Shift+o exec swaymsg output HDMI-A-1 disable && swaymsg output DP-2 pos 0 0
+bindsym Mod4+Shift+p exec swaymsg output HDMI-A-1 enable && swaymsg output DP-2 pos 1680 0
 
 mode "resize" {
   bindsym Down resize grow height 10 px or 10 ppt
