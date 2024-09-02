@@ -47,7 +47,7 @@ bindsym Mod4+Shift+Down move down
 bindsym Mod4+Shift+Left move left
 bindsym Mod4+Shift+Right move right
 bindsym Mod4+Shift+Up move up
-#bindsym Mod4+Shift+c exec "i3lock -f -c 000000 && systemctl suspend"
+bindsym Mod4+Shift+c exec "swaylock -f -c 000000 && loginctl suspend"
 bindsym Mod4+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 bindsym Mod4+Shift+h move left
 bindsym Mod4+Shift+j move down
@@ -56,7 +56,7 @@ bindsym Mod4+Shift+l move right
 bindsym Mod4+Shift+m move workspace to output right
 bindsym Mod4+Shift+q kill
 bindsym Mod4+Shift+r reload
-bindsym Mod4+Shift+s exec scrot -s
+bindsym Mod4+Shift+s exec grim -g "$(slurp)"
 bindsym Mod4+Shift+space floating toggle
 bindsym Mod4+Shift+x exec swaylock -f -c 000000
 bindsym Mod4+Up focus up
@@ -121,6 +121,7 @@ smart_gaps on
 hide_edge_borders smart
 default_border pixel 0
 
+for_window [shell=".*"] title_format "%title :: %shell"
 output * bg ~/pictures/wallpaper/current.* fill
 output HDMI-A-1 pos 0 700
 output DP-2 pos 1680 0
