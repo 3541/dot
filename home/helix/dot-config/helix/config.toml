@@ -5,9 +5,10 @@ bufferline = "multiple"
 color-modes = true
 cursorline = true
 line-number = "relative"
-#popup-border = "all"
+popup-border = "all"
 scrolloff = 3
-# true-color = true
+rainbow-brackets = true
+true-color = true
 
 [editor.auto-pairs]
 "\"" = "\""
