@@ -1,5 +1,5 @@
 [colors.bright]
-black = "0x002b36"
+black = "0x194834"
 blue = "0x839496"
 cyan = "0x93a1a1"
 green = "0x586e75"
@@ -33,3 +33,6 @@ size = 13.0
 
 [font.normal]
 family = "Berkeley Mono"
+
+[window]
+option_as_alt = "Both"
