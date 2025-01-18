@@ -81,7 +81,7 @@ let default_theme = {
 $env.config = {
   show_banner: false
   color_config: $default_theme
-  footer_mode: "25" # always, never, number_of_rows, auto
+  footer_mode: 25 # always, never, number_of_rows, auto
   float_precision: 2
   buffer_editor: "hx" # command that will be used to edit the current line buffer with ctr+e
   use_ansi_coloring: true
