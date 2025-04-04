@@ -48,3 +48,9 @@ gpgsign = true
 format = ssh
 [gpg "ssh"]
 allowedSignersFile = /home/alex/.config/git/allowed_signers
+
+[diff]
+algorithm = "histogram"
+
+[stgit "alias"]
+s = series -d
