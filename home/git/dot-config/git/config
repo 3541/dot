@@ -27,6 +27,7 @@ defaultBranch = "trunk"
 
 [log]
 showSignature = true
+date = "local"
 
 [pull]
 ff = "only"
