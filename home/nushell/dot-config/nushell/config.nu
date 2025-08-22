@@ -11,7 +11,7 @@ let zoxide_completer = {|spans|
 }
 
 let completer = {|spans|
-    let expanded_alias = (scope aliases | where name == $spans.0 | get -i 0 | get -i expansion)
+    let expanded_alias = (scope aliases | where name == $spans.0 | get -o 0 | get -o expansion)
 
     let spans = (if $expanded_alias != null  {
         # put the first word of the expanded alias first in the span
@@ -122,8 +122,7 @@ $env.config = {
     always_trash: false
   }
   filesize: {
-    metric: false
-    format: "auto"
+    unit: "binary"
   }
   completions: {
     case_sensitive: false
