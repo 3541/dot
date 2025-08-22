@@ -368,5 +368,6 @@ alias mc = mvnd install -DskipTests
 alias mci = mvnd clean install -DskipTests
 alias sp = bash $"($env.HOME)/src/docker_spinup/spinup"
 alias ss = bash $"($env.HOME)/src/docker_spinup/spinup" shell
+alias claude = bash -c $"($env.HOME)/.claude/local/claude"
 
 source ~/.config/zoxide/zoxide.nu

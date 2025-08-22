@@ -59,7 +59,7 @@ $env.NU_PLUGIN_DIRS = [
 ]
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
-$env.PATH = ($env.PATH | split row (char esep) | append $"($env.HOME)/.cargo/bin" | append "/opt/homebrew/bin")
+$env.PATH = ($env.PATH | split row (char esep) | append $"($env.HOME)/.cargo/bin" | append "/opt/homebrew/bin" | append "/usr/local/bin" | prepend "/opt/homebrew/opt/llvm/bin")
 
 $env.NINJA_STATUS = "[%f/%t (%r)] "
 $env.CVSROOT = "anoncvs@anoncvs.au.openbsd.org:/cvs"
