@@ -15,16 +15,6 @@
 (define (open-init-scm)
   (helix.open (helix.static.get-init-scm-path)))
 
-; (define (editor-get-doc-if-exists doc-id)
-;   (if (editor-doc-exists? doc-id) (editor->get-document doc-id) #f))
-
-; (define (current-path)
-;   (let* ([focus (editor-focus)]
-;          [focus-doc-id (editor->doc-id focus)]
-;          [document (editor-get-doc-if-exists focus-doc-id)])
-
-;     (if document (Document-path document) #f)))
-
 (define (current-path)
   (let* ([focus (editor-focus)]
          [focus-doc-id (editor->doc-id focus)])

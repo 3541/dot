@@ -366,8 +366,12 @@ alias s = stg
 alias jp = jq .
 alias mc = mvnd install -DskipTests
 alias mci = mvnd clean install -DskipTests
-alias sp = bash $"($env.HOME)/src/docker_spinup/spinup"
-alias ss = bash $"($env.HOME)/src/docker_spinup/spinup" shell
 alias claude = bash -c $"($env.HOME)/.claude/local/claude"
+
+# Work around unhinged path-expansion behavior.
+# https://github.com/nushell/nushell/issues/13381
+def --wrapped bazel [...rest] {
+  ^bazel ...$rest
+}
 
 source ~/.config/zoxide/zoxide.nu
