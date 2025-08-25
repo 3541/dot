@@ -17,7 +17,9 @@
   imports = [
     ./env.nix
     ./gui
+    ./home/options.nix
     ./nix.nix
     ./packages.nix
+    ./user.nix
   ];
 }

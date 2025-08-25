@@ -84,7 +84,7 @@
             system.os = "darwin";
             nixpkgs-flake = "nixpkgs/nixpkgs-25.05-darwin";
 
-            shell.nuExtra = [
+            home.shell.nuExtra = [
               ''
                 export-env {
                   if "__NIX_DARWIN_SET_ENVIRONMENT_DONE" not-in $env {
@@ -94,6 +94,36 @@
                 }
               ''
             ];
+          };
+        };
+
+      homeConfiguration =
+        { config, package-inputs, ... }:
+        let
+          cfg = config.a3;
+        in
+        {
+          imports = [ home-manager.darwinModules.home-manager ];
+
+          users.users.${cfg.user.name} = {
+            name = cfg.user.name;
+            home = cfg.user.home;
+          };
+
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+
+            extraSpecialArgs = {
+              cfg = config.a3;
+              package-inputs = package-inputs;
+            };
+
+            users.${cfg.user.name} = {
+              home.stateVersion = "25.05";
+              imports = [ ../../nix/home ];
+            };
+
           };
         };
 
@@ -115,10 +145,7 @@
             configuration
             (import ../../machines/${name}.nix)
             (import ../../nix)
-            (import ../../nix/home {
-              state-version = "25.05";
-              home-manager = home-manager.darwinModules.home-manager;
-            })
+            homeConfiguration
           ];
         };
       };

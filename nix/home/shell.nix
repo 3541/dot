@@ -5,7 +5,7 @@
       enable = true;
       configFile.source = ../../home/nushell/dot-config/nushell/config.nu;
       envFile.source = ../../home/nushell/dot-config/nushell/env.nu;
-      extraConfig = builtins.concatStringsSep "\n" cfg.shell.nuExtra;
+      extraConfig = builtins.concatStringsSep "\n" cfg.home.shell.nuExtra;
     };
 
     zoxide = {
