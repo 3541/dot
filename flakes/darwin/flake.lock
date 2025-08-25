@@ -47,6 +47,22 @@
         "type": "github"
       }
     },
+    "emacs-sensible-defaults": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1652976211,
+        "narHash": "sha256-MiW8Jxy9Wv9txfYx9Y+QbUjlUSeNtGVNX7KNeN39cKY=",
+        "owner": "hrs",
+        "repo": "sensible-defaults.el",
+        "rev": "82f45b3f06ae76e45756e5b89b4be9d5e479105f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hrs",
+        "repo": "sensible-defaults.el",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -271,6 +287,7 @@
       "inputs": {
         "bash-env-json": "bash-env-json",
         "bash-env-nushell": "bash-env-nushell",
+        "emacs-sensible-defaults": "emacs-sensible-defaults",
         "helix": "helix",
         "home-manager": "home-manager",
         "lix": "lix",

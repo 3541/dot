@@ -66,6 +66,7 @@ in
 
         imports = [
           ./alacritty.nix
+          ./emacs
           ./helix.nix
           ./packages.nix
           ./shell.nix

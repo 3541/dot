@@ -38,6 +38,10 @@
       url = "github:ryanccn/morlana";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-sensible-defaults = {
+      url = "github:hrs/sensible-defaults.el";
+      flake = false;
+    };
   };
 
   outputs =
@@ -102,6 +106,7 @@
             package-inputs = {
               helix = inputs.helix.packages.${system}.helix;
               helix-cogs = inputs.helix.packages.${system}.helix-cogs;
+              emacs-sensible-defaults = inputs.emacs-sensible-defaults;
             };
           };
 
