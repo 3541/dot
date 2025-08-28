@@ -6,9 +6,10 @@ in
   options.a3.nixpkgs-flake = lib.mkOption {
     type = lib.types.str;
   };
-  
+
   config.nix = {
     optimise.automatic = true;
+    package = pkgs.lix;
 
     settings = {
       experimental-features = "nix-command flakes";
