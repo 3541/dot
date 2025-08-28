@@ -1,5 +1,4 @@
 {
-  cfg,
   package-inputs,
   pkgs,
   ...
@@ -8,6 +7,7 @@
   programs.helix = {
     enable = true;
     package = package-inputs.helix;
+    defaultEditor = true;
 
     settings = {
       theme = "solarized_light";

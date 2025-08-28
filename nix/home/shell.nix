@@ -1,4 +1,5 @@
-{ cfg, lib, ... }:
+{ config, lib, ... }:
+let cfg = config.a3; in
 {
   config.programs = {
     nushell = {

@@ -8,9 +8,8 @@ in
   };
 
   config.nix = {
-    optimise.automatic = true;
     package = pkgs.lix;
-
+    
     settings = {
       experimental-features = "nix-command flakes";
       trusted-users = [ cfg.user.name ];
@@ -21,12 +20,17 @@ in
 
     gc = {
       automatic = true;
-      interval = {
+      options = "--delete-older-than 30d";
+    } ;
+  }
+// (if cfg.orchestrator == "home-manager" then { package = pkgs.lix; gc.frequency = "weekly"; } else
+      {
+
+    optimise.automatic = true;
+
+      gc.interval = {
         Weekday = 0;
         Hour = 0;
         Minute = 0;
-      };
-      options = "--delete-older-than 30d";
-    };
-  };
+      };});  
 }

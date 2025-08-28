@@ -1,9 +1,10 @@
-{ lib, config, ... }:
+{ lib, config, options, ... }:
 let
   cfg = config.a3;
+  use-brew = options?homebrew && cfg.system.role == "workstation";
 in
 {
-  homebrew = lib.mkIf (cfg.system.os == "darwin" && cfg.system.role == "workstation") {
+config = {} // lib.optionalAttrs(use-brew) { homebrew = {
     enable = true;
 
     onActivation = {
@@ -17,5 +18,5 @@ in
       "firefox@esr"
       "signal"
     ];
-  };
+  }; };
 }

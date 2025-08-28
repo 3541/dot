@@ -6,7 +6,7 @@ if command -v nix > /dev/null 2>&1; then
     exit 0
 fi
 
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.lix.systems/lix | sh -s -- install linux \
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.lix.systems/lix | sh -s -- install \
   --no-confirm
 
 NU_VENDOR_PATH=/usr/local/share/nushell/vendor/autoload

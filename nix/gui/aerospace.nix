@@ -1,15 +1,19 @@
 {
-  lib,
   config,
+  lib,
+  options,
   pkgs,
   pkgsUnstable,
   ...
 }:
 let
   cfg = config.a3;
+  enable = options.services?aerospace;
 in
 {
-  services.aerospace = lib.mkIf (cfg.system.os == "darwin") {
+  services = {} // lib.optionalAttrs(enable)
+   {
+  aerospace = {
     enable = true;
     package = pkgsUnstable.aerospace;
 
@@ -98,5 +102,6 @@ in
         };
       };
     };
+  };
   };
 }

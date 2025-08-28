@@ -1,5 +1,8 @@
-{ cfg, ... }:
+{ config, ... }:
+let cfg = config.a3; in
 {
+  programs.home-manager.enable = true;
+  
   home = {
     username = cfg.user.name;
     homeDirectory = cfg.user.home;

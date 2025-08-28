@@ -83,6 +83,7 @@
           a3 = {
             system.os = "darwin";
             nixpkgs-flake = "nixpkgs/nixpkgs-25.05-darwin";
+            orchestrator = "nix-darwin";
 
             home.shell.nuExtra = [
               ''
@@ -115,15 +116,14 @@
             useUserPackages = true;
 
             extraSpecialArgs = {
-              cfg = config.a3;
-              package-inputs = package-inputs;
+              inherit config;
+              inherit package-inputs;
             };
 
             users.${cfg.user.name} = {
               home.stateVersion = "25.05";
               imports = [ ../../nix/home ];
             };
-
           };
         };
 

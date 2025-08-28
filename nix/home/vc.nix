@@ -1,9 +1,10 @@
 {
-  cfg,
+  config,
   lib,
   pkgs,
   ...
 }:
+let cfg = config.a3; in
 {
   programs = {
     git = {

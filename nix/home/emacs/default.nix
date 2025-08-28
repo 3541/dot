@@ -1,10 +1,11 @@
 {
   pkgs,
-  cfg,
+  config,
   lib,
   package-inputs,
   ...
 }:
+let cfg = config.a3; in
 let
   pkg = if (cfg.system.os == "darwin") then pkgs.emacsMacport else pkgs.emacs;
 in

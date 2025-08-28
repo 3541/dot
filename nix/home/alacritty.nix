@@ -1,4 +1,5 @@
-{ cfg, lib, ... }:
+{ config, lib, ... }:
+let cfg = config.a3; in
 {
   programs.alacritty = lib.mkIf (cfg.gui.enable) {
     enable = true;
