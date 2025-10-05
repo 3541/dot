@@ -35,7 +35,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     morlana = {
-      url = "github:ryanccn/morlana";
+      url = "github:ryanccn/morlana/59f10604719dbe23756a1a273a6329bed15d0b27";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-sensible-defaults = {
@@ -65,13 +65,21 @@
 
       configuration =
         { pkgs, config, ... }:
+        let
+          cfg = config.a3;
+        in
         {
           nixpkgs.hostPlatform = system;
+
+          users.users.${cfg.user.name} = {
+            name = cfg.user.name;
+            home = cfg.user.home;
+          };
 
           system = {
             configurationRevision = self.rev or self.dirtyRev or null;
             stateVersion = 6;
-            primaryUser = config.a3.user.name;
+            primaryUser = cfg.user.name;
           };
 
           environment.systemPackages = [
@@ -82,8 +90,8 @@
 
           a3 = {
             system.os = "darwin";
-            nixpkgs-flake = "nixpkgs/nixpkgs-25.05-darwin";
             orchestrator = "nix-darwin";
+            nixpkgs-flake = "nixpkgs/nixpkgs-25.05-darwin";
 
             home.shell.nuExtra = [
               ''
@@ -99,25 +107,25 @@
         };
 
       homeConfiguration =
-        { config, package-inputs, ... }:
+        {
+          lib,
+          config,
+          package-inputs,
+          ...
+        }:
         let
           cfg = config.a3;
         in
         {
           imports = [ home-manager.darwinModules.home-manager ];
 
-          users.users.${cfg.user.name} = {
-            name = cfg.user.name;
-            home = cfg.user.home;
-          };
-
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
 
             extraSpecialArgs = {
-              inherit config;
               inherit package-inputs;
+              inherit cfg;
             };
 
             users.${cfg.user.name} = {
@@ -143,8 +151,8 @@
           modules = [
             lix.nixosModules.lixFromNixpkgs
             configuration
-            (import ../../machines/${name}.nix)
-            (import ../../nix)
+            ../../machines/${name}.nix
+            ../../nix
             homeConfiguration
           ];
         };

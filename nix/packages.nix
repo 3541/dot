@@ -1,22 +1,32 @@
-{ lib, config, options, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}:
 let
   cfg = config.a3;
-  use-brew = options?homebrew && cfg.system.role == "workstation";
 in
 {
-config = {} // lib.optionalAttrs(use-brew) { homebrew = {
-    enable = true;
+  config = {
+    environment.systemPackages = with pkgs; [ ripgrep ];
+  }
+  // lib.optionalAttrs (options ? homebrew) {
+    homebrew = {
+      enable = cfg.system.role == "workstation";
 
-    onActivation = {
-      autoUpdate = true;
-      cleanup = "zap";
-      upgrade = true;
+      onActivation = {
+        autoUpdate = true;
+        cleanup = "zap";
+        upgrade = true;
+      };
+
+      casks = [
+        "alacritty"
+        "firefox@esr"
+        "signal"
+      ];
     };
-
-    casks = [
-      "alacritty"
-      "firefox@esr"
-      "signal"
-    ];
-  }; };
+  };
 }
