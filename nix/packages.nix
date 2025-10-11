@@ -24,6 +24,7 @@ in
 
       casks = [
         "alacritty"
+        "anki"
         "firefox@esr"
         "signal"
       ];
