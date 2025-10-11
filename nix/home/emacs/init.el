@@ -114,7 +114,7 @@
   (helix-multiple-cursors-setup)
   (helix-mode)
   (helix-jj-setup 0.2)
-  (helix-define-key 'normal "%" #'evilmi-jump-items-native))
+  (helix-define-key 'normal "m m" #'evilmi-jump-items-native))
 
 (use-package evil-matchit
   :defer t)

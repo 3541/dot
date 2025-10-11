@@ -58,7 +58,12 @@
     }:
     let
       system = "aarch64-darwin";
-      pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+      lixOverlay = lix.overlays.lixFromNixpkgs;
+
+      makeNixpkgs = nixpkgs: nixpkgs.legacyPackages.${system}.extend lixOverlay;
+
+      pkgs = makeNixpkgs nixpkgs;
+      pkgsUnstable = makeNixpkgs nixpkgs-unstable;
 
       bash-env = bash-env-json.packages.${system}.default;
       bash-env-nu = bash-env-nushell.packages.${system}.default;
@@ -109,8 +114,8 @@
       homeConfiguration =
         {
           lib,
-          config,
           package-inputs,
+          pkgs,
           ...
         }:
         let
@@ -118,6 +123,8 @@
         in
         {
           imports = [ home-manager.darwinModules.home-manager ];
+
+          inherit pkgs;
 
           home-manager = {
             useGlobalPkgs = true;
@@ -139,7 +146,7 @@
         name = name;
         value = nix-darwin.lib.darwinSystem {
           specialArgs = {
-            pkgsUnstable = pkgsUnstable;
+            inherit pkgsUnstable;
 
             package-inputs = {
               helix = inputs.helix.packages.${system}.helix;
@@ -149,7 +156,6 @@
           };
 
           modules = [
-            lix.nixosModules.lixFromNixpkgs
             configuration
             ../../machines/${name}.nix
             ../../nix

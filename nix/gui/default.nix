@@ -1,6 +1,9 @@
 { lib, ... }:
 {
-  imports = [ ./aerospace.nix ];
+  imports = [
+    ./aerospace.nix
+    ./sway.nix
+  ];
 
   options.a3.gui = {
     enable = lib.mkEnableOption "gui" // {

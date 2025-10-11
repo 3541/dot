@@ -49,41 +49,48 @@
     let
       # TODO: other architectures...?
       system = "x86_64-linux";
-      pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+      lixOverlay = lix.overlays.lixFromNixpkgs;
+
+      makeNixpkgs = nixpkgs: nixpkgs.legacyPackages.${system}.extend lixOverlay;
+
+      pkgs = makeNixpkgs nixpkgs;
+      pkgsUnstable = makeNixpkgs nixpkgs-unstable;
 
       bash-env = bash-env-json.packages.${system}.default;
       bash-env-nu = bash-env-nushell.packages.${system}.default;
 
-      configuration =
-        {
-          home.stateVersion = "25.05";
+      configuration = {config, ...}: {
+        home.stateVersion = "25.05";
 
-          a3 = {
-            system.os = "linux";
-            orchestrator = "home-manager";
-            nixpkgs-flake = "nixos-22.05";
+        a3 = {
+          system.os = "linux";
+          orchestrator = "home-manager";
+          nixpkgs-flake = "nixos-25.05";
 
-            home.shell.nuExtra = [
-              ''
-                export-env {
-                  if "__NIX_SET_ENVIRONMENT_DONE" not-in $env {
-                    use "${bash-env-nu}/bash-env.nu"
-                    bash-env /etc/profile.d/nix.sh | update PATH { $in | split row (char esep) | append $env.PATH | uniq } | load-env
-                    $env.__NIX_SET_ENVIRONMENT_DONE = 1
-                  }
+          home.shell.nuExtra = [
+            ''
+              export-env {
+                if "__NIX_SET_ENVIRONMENT_DONE" not-in $env {
+                  use "${bash-env-nu}/bash-env.nu"
+                  bash-env /etc/profile.d/nix.sh | update PATH { $in | split row (char esep) | append $env.PATH | uniq } | load-env
+                  $env.__NIX_SET_ENVIRONMENT_DONE = 1
                 }
-              ''
-            ];
-          };
+              }
+            ''
+          ];
         };
+
+        _module.args.cfg = config.a3;
+        imports = [ ../../nix/home ];
+      };
 
       instantiate-config = name: {
         name = name;
         value = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          inherit pkgs;
 
           extraSpecialArgs = {
-            pkgsUnstable = pkgsUnstable;
+            inherit pkgsUnstable;
 
             package-inputs = {
               helix = inputs.helix.packages.${system}.helix;
@@ -93,12 +100,10 @@
           };
 
           modules = [
-            lix.nixosModules.lixFromNixpkgs
             configuration
             ../../machines/${name}.nix
             ../../nix
             ../../nix/home/options.nix
-            ../../nix/home
           ];
         };
       };

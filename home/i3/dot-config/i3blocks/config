@@ -41,6 +41,11 @@ label=ROOT
 interval=30
 instance=/
 
+[disk]
+label=MASS 
+interval=30
+instance=/mnt/other
+
 # Network interface monitoring
 #
 # If the instance is not specified, use the interface used for default route.
