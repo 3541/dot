@@ -115,7 +115,7 @@
         {
           lib,
           package-inputs,
-          pkgs,
+          config,
           ...
         }:
         let
@@ -123,8 +123,6 @@
         in
         {
           imports = [ home-manager.darwinModules.home-manager ];
-
-          inherit pkgs;
 
           home-manager = {
             useGlobalPkgs = true;
@@ -156,6 +154,7 @@
           };
 
           modules = [
+            lix.nixosModules.lixFromNixpkgs
             configuration
             ../../machines/${name}.nix
             ../../nix
