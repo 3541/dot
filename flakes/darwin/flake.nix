@@ -2,21 +2,21 @@
   description = "Top-level flake entrypoint for use with nix-darwin.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     lix = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.91.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -96,7 +96,7 @@
           a3 = {
             system.os = "darwin";
             orchestrator = "nix-darwin";
-            nixpkgs-flake = "nixpkgs/nixpkgs-25.05-darwin";
+            nixpkgs-flake = "nixpkgs/nixpkgs-25.11-darwin";
 
             home.shell.nuExtra = [
               ''
@@ -134,7 +134,7 @@
             };
 
             users.${cfg.user.name} = {
-              home.stateVersion = "25.05";
+              home.stateVersion = "25.11";
               imports = [ ../../nix/home ];
             };
           };

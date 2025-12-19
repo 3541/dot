@@ -6,7 +6,7 @@
   ...
 }:
 let
-  pkg = if (cfg.system.os == "darwin") then pkgs.emacsMacport else pkgs.emacs;
+  pkg = if (cfg.system.os == "darwin") then pkgs.emacs-macport else pkgs.emacs;
 in
 {
   programs.emacs = {

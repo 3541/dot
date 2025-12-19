@@ -2,7 +2,7 @@
 
 set -e
 
-RELEASE=25.05
+RELEASE=25.11
 
 install_nix_darwin() {
     if ! command -v brew > /dev/null 2>&1; then
