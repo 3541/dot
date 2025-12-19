@@ -63,7 +63,7 @@ in
             ];
           };
 
-          input.Logitech_Logitech_Flight_Radio_Panel.events = "disabled";
+          input."1699:3333:Logitech_Logitech_Flight_Radio_Panel".events = "disabled";
 
           output = cfg.gui.sway.outputs // {
             "*".bg = "~/pictures/wallpaper/current.* fill";
