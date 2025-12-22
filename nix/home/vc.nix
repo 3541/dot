@@ -16,7 +16,7 @@
           email = cfg.user.email;
         };
 
-        aliases = {
+        alias = {
           d = "diff";
           ds = "diff --staged";
           a = "add";

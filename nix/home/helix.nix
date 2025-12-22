@@ -72,6 +72,12 @@
         file-types = [ "nix" ];
         formatter.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
       }
+      {
+        name = "starlark";
+        scope = "source.bazel";
+        file-types = [ "bazel" "bzl" ];
+        formatter.command = "${pkgs.buildifier}/bin/buildifier";
+      }
     ];
   };
 

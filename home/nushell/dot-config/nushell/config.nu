@@ -371,7 +371,11 @@ alias claude = bash -c $"($env.HOME)/.claude/local/claude"
 # Work around unhinged path-expansion behavior.
 # https://github.com/nushell/nushell/issues/13381
 def --wrapped bazel [...rest] {
-  ^bazel ...$rest
+  if (which ^bazelisk | length) > 0 {
+    ^bazelisk ...$rest
+  } else {
+    ^bazel ...$rest
+  }
 }
 
 source ~/.config/zoxide/zoxide.nu
