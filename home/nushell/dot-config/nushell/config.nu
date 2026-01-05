@@ -366,7 +366,6 @@ alias s = stg
 alias jp = jq .
 alias mc = mvnd install -DskipTests
 alias mci = mvnd clean install -DskipTests
-alias claude = bash -c $"($env.HOME)/.claude/local/claude"
 
 # Work around unhinged path-expansion behavior.
 # https://github.com/nushell/nushell/issues/13381

@@ -70,5 +70,8 @@
     };
   };
 
-  home.file.".config/git/allowed_signers".source = ../../home/git/dot-config/git/allowed_signers;
+  home = {
+    packages = [ pkgs.stgit ];
+    file.".config/git/allowed_signers".source = ../../home/git/dot-config/git/allowed_signers;
+  };
 }
