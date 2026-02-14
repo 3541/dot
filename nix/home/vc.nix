@@ -1,6 +1,5 @@
 {
   cfg,
-  lib,
   pkgs,
   ...
 }:
@@ -28,6 +27,10 @@
           l = "log";
           r = "rebase";
           f = "fetch";
+        };
+
+        stgit.alias = {
+          s = "series -d";
         };
 
         init.defaultBranch = "trunk";
