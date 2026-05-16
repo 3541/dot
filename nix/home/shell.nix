@@ -1,36 +1,40 @@
-{ cfg, lib, ... }:
+{ cfg, lib, pkgs, ... }:
 {
-  config.programs = {
-    nushell = {
-      enable = true;
-      configFile.source = ../../home/nushell/dot-config/nushell/config.nu;
-      envFile.source = ../../home/nushell/dot-config/nushell/env.nu;
-      extraConfig = builtins.concatStringsSep "\n" cfg.home.shell.nuExtra;
-    };
+  config = {
+    home.packages = [ pkgs.fish ];
 
-    zoxide = {
-      enable = true;
-      enableNushellIntegration = true;
-    };
+    programs = {
+      nushell = {
+        enable = true;
+        configFile.source = ../../home/nushell/dot-config/nushell/config.nu;
+        envFile.source = ../../home/nushell/dot-config/nushell/env.nu;
+        extraConfig = builtins.concatStringsSep "\n" cfg.home.shell.nuExtra;
+      };
 
-    direnv = lib.mkIf (cfg.system.role == "workstation") {
-      enable = true;
-      nix-direnv.enable = true;
-      enableNushellIntegration = true;
-    };
+      zoxide = {
+        enable = true;
+        enableNushellIntegration = true;
+      };
 
-    tmux = {
-      enable = true;
-      clock24 = true;
-      historyLimit = 50000;
-      keyMode = "vi";
-      escapeTime = 0;
-      mouse = true;
-      terminal = "tmux-direct";
+      direnv = lib.mkIf (cfg.system.role == "workstation") {
+        enable = true;
+        nix-direnv.enable = true;
+        enableNushellIntegration = true;
+      };
 
-      extraConfig = ''
-        set -as terminal-features ",alacritty*:RGB"
-      '';
+      tmux = {
+        enable = true;
+        clock24 = true;
+        historyLimit = 50000;
+        keyMode = "vi";
+        escapeTime = 0;
+        mouse = true;
+        terminal = "tmux-direct";
+
+        extraConfig = ''
+          set -as terminal-features ",alacritty*:RGB"
+        '';
+      };
     };
   };
 }
