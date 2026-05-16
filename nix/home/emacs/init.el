@@ -108,6 +108,8 @@
 (use-package multiple-cursors)
 
 (use-package helix
+  :vc (:url "https://github.com/3541/helix-mode.git"
+       :rev :newest)
   :demand t
   :after multiple-cursors
   :config
