@@ -33,7 +33,6 @@ in
           "anki"
           "firefox@esr"
           "signal"
-          "claude-code"
         ];
       };
     };
