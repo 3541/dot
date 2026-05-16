@@ -34,10 +34,6 @@
       url = "github:3541/helix/patched";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    morlana = {
-      url = "github:ryanccn/morlana/59f10604719dbe23756a1a273a6329bed15d0b27";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     emacs-sensible-defaults = {
       url = "github:hrs/sensible-defaults.el";
       flake = false;
@@ -48,7 +44,6 @@
     inputs@{
       self,
       nix-darwin,
-      nixpkgs,
       nixpkgs-unstable,
       lix,
       home-manager,
@@ -62,14 +57,13 @@
 
       makeNixpkgs = nixpkgs: nixpkgs.legacyPackages.${system}.extend lixOverlay;
 
-      pkgs = makeNixpkgs nixpkgs;
       pkgsUnstable = makeNixpkgs nixpkgs-unstable;
 
       bash-env = bash-env-json.packages.${system}.default;
       bash-env-nu = bash-env-nushell.packages.${system}.default;
 
       configuration =
-        { pkgs, config, ... }:
+        { config, ... }:
         let
           cfg = config.a3;
         in
@@ -90,7 +84,6 @@
           environment.systemPackages = [
             pkgsUnstable.nushell
             bash-env
-            inputs.morlana.packages.${system}.morlana
           ];
 
           a3 = {
@@ -113,7 +106,6 @@
 
       homeConfiguration =
         {
-          lib,
           package-inputs,
           config,
           ...

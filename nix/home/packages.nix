@@ -6,6 +6,7 @@
       [
         nix-output-monitor
         nvd
+        nh
       ]
       ++ lib.optionals (cfg.system.role == "workstation") [
         nerd-fonts.jetbrains-mono

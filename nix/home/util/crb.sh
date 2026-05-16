@@ -19,7 +19,7 @@ if [ "$(uname)" = "Darwin" ]; then
     if [ -n "$update" ]; then
         nix flake update
     fi
-    morlana switch --flake .
+    nh darwin switch .
 elif [ ! -f /etc/NIXOS ]; then
     cd ~/dot/flakes/linux-home-manager
 
