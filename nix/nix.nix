@@ -24,6 +24,7 @@ in
         extra-substituters = [ "https://cache.lix.systems" ];
         extra-nix-path = "nixpkgs=flake:${cfg.nixpkgs-flake}";
         extra-platforms = lib.optional (cfg.system.os == "darwin") "x86_64-darwin";
+        sandbox = true;
 
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
