@@ -7,7 +7,7 @@ def create_left_prompt [] {
         $"(ansi green_bold)($env.PWD | str replace $"($env.HOME)" '~')"
     }
 
-    $path_segment
+    $"(hostname | sed 's/\.local//') ($path_segment)"
 }
 
 def create_right_prompt [] {
