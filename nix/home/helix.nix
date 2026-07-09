@@ -70,13 +70,27 @@
         name = "nix";
         scope = "source.nix";
         file-types = [ "nix" ];
-        formatter.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+        formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
       }
       {
         name = "starlark";
         scope = "source.bazel";
-        file-types = [ "bazel" "bzl" ];
+        file-types = [
+          "bazel"
+          "bzl"
+        ];
         formatter.command = "${pkgs.buildifier}/bin/buildifier";
+      }
+      {
+        name = "python";
+        scope = "source.py";
+        file-types = [ "py" ];
+        language-servers = [ "pyright" ];
+
+        formatter = {
+          command = "${pkgs.black}/bin/black";
+          args = [ "-" ];
+        };
       }
     ];
   };
