@@ -334,15 +334,6 @@ $env.config = {
       event: { send: menu name: commands_with_description }
     }
   ]
-  hooks: {
-    pre_prompt: [{ ||
-      if (which direnv | is-empty) {
-        return
-      }
-
-      direnv export json | from json | default {} | load-env
-    }]
-  }
   cursor_shape: {
     vi_insert: line
     vi_normal: underscore

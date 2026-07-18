@@ -9,11 +9,11 @@
         nh
       ]
       ++ lib.optionals (cfg.system.role == "workstation") [
-        nerd-fonts.jetbrains-mono
-        cmus
-        vagrant
         cachix
+        cmus
+        nerd-fonts.jetbrains-mono
         nixd
+        vagrant
       ]
       ++ lib.optionals (cfg.system.os == "darwin") [ cacert ]
     );
