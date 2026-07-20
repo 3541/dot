@@ -29,9 +29,12 @@ in
           extraFlags = [ "--force-cleanup" ];
         };
 
+        brews = [ "container" ];
+
         casks = [
           "alacritty"
           "anki"
+          "claude-code@latest"
           "firefox@esr"
           "signal"
         ];
