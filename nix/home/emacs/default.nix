@@ -37,7 +37,7 @@ in
   home.file = {
     ".emacs.d/init.el".source = pkgs.replaceVars ./init.el {
       font = "${cfg.gui.font.text.family}-${toString cfg.gui.font.text.size}";
-      nixfmt = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+      nixfmt = "${pkgs.nixfmt}/bin/nixfmt";
       ispell = "${pkgs.ispell}/bin/ispell";
     };
 
