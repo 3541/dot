@@ -2,16 +2,16 @@
   description = "Top-level flake entrypoint for use with home-manager.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     lix = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/c47f62187601ea2991b79a9bacdbfdf76cd29fbe.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -37,12 +37,10 @@
 
   outputs =
     inputs@{
-      self,
       nixpkgs,
       nixpkgs-unstable,
       lix,
       home-manager,
-      bash-env-json,
       bash-env-nushell,
       ...
     }:
@@ -56,7 +54,6 @@
       pkgs = makeNixpkgs nixpkgs;
       pkgsUnstable = makeNixpkgs nixpkgs-unstable;
 
-      bash-env = bash-env-json.packages.${system}.default;
       bash-env-nu = bash-env-nushell.packages.${system}.default;
 
       configuration = {config, ...}: {
@@ -65,7 +62,7 @@
         a3 = {
           system.os = "linux";
           orchestrator = "home-manager";
-          nixpkgs-flake = "nixos-25.11";
+          nixpkgs-flake = "nixos-26.05";
 
           home.shell.nuExtra = [
             ''
