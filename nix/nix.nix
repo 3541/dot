@@ -38,7 +38,7 @@ in
       };
     }
     // (
-      if cfg.orchestrator == "home-manager" then
+      if cfg.orchestrator != "nix-darwin" then
         {
           package = pkgs.lix;
           gc = {

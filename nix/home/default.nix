@@ -1,10 +1,10 @@
-{ cfg, ... }:
+{ cfg, lib, ... }:
 {
   programs.home-manager.enable = true;
 
   home = {
     username = cfg.user.name;
-    homeDirectory = cfg.user.home;
+    homeDirectory = lib.mkForce cfg.user.home;
   };
 
   imports = [

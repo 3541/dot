@@ -26,5 +26,6 @@
     ./nix.nix
     ./packages.nix
     ./user.nix
+    ./net.nix
   ];
 }
