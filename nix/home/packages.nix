@@ -14,6 +14,8 @@
         nerd-fonts.jetbrains-mono
         nixd
         vagrant
+        niv
+        gh
       ]
       ++ lib.optionals (cfg.system.os == "darwin") [ cacert ]
     );
