@@ -1,6 +1,8 @@
 { pkgs, ... }: {
   a3 = {
     hostname = "sagittarius";
+    gui.enable = false;
+    autoupdate = true;
 
     boot = {
       loader = "grub";

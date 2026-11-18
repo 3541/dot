@@ -17,13 +17,14 @@ in
     // lib.optionalAttrs enable {
       systemd = lib.mkIf cfg.autoupdate {
         services.autoupdate = {
+          path = with pkgs; [ lix systemd git nixos-rebuild ];
           script = ''
             set -euo pipefail
 
-            cd "${cfg.user.home}/dot/flakes/nixos"
+            cd "/home/${cfg.user.name}/dot/flakes/nixos"
             nix flake update
-            ${pkgs.nh} os switch .
-            ${pkgs.systemd}/bin/systemctl reboot
+            nixos-rebuild switch --flake .
+            systemctl reboot
           '';
 
           serviceConfig = {
