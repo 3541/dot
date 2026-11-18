@@ -1,12 +1,9 @@
 {
-  config,
+  cfg,
   package-inputs,
   pkgs,
   ...
 }:
-let
-  cfg = config.a3;
-in
 {
   programs.helix = {
     enable = cfg.system.role == "workstation";
