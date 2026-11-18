@@ -1,11 +1,15 @@
 {
+  config,
   package-inputs,
   pkgs,
   ...
 }:
+let
+  cfg = config.a3;
+in
 {
   programs.helix = {
-    enable = true;
+    enable = cfg.system.role == "workstation";
     package = package-inputs.helix;
     defaultEditor = true;
 
