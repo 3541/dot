@@ -218,9 +218,9 @@ $env.config = {
             description_text: yellow
         }
         source: { |buffer, position|
-            $nu.scope.commands
-            | where command =~ $buffer
-            | each { |it| {value: $it.command description: $it.usage} }
+            scope commands
+            | where name =~ $buffer
+            | each { |it| {value: $it.name description: $it.description} }
         }
       }
       {
@@ -237,7 +237,7 @@ $env.config = {
             description_text: yellow
         }
         source: { |buffer, position|
-            $nu.scope.vars
+            scope variables
             | where name =~ $buffer
             | sort-by name
             | each { |it| {value: $it.name description: $it.type} }
@@ -261,9 +261,9 @@ $env.config = {
             description_text: yellow
         }
         source: { |buffer, position|
-            $nu.scope.commands
-            | where command =~ $buffer
-            | each { |it| {value: $it.command description: $it.usage} }
+            scope commands
+            | where name =~ $buffer
+            | each { |it| {value: $it.name description: $it.description} }
         }
       }
   ]
@@ -272,7 +272,7 @@ $env.config = {
       name: completion_menu
       modifier: none
       keycode: tab
-      mode: emacs # Options: emacs vi_normal vi_insert
+      mode: [emacs, vi_normal, vi_insert] # Options: emacs vi_normal vi_insert
       event: {
         until: [
           { send: menu name: completion_menu }
@@ -291,7 +291,7 @@ $env.config = {
       name: history_menu
       modifier: control
       keycode: char_x
-      mode: emacs
+      mode: [emacs, vi_normal, vi_insert]
       event: {
         until: [
           { send: menu name: history_menu }
@@ -303,7 +303,7 @@ $env.config = {
       name: history_previous
       modifier: control
       keycode: char_z
-      mode: emacs
+      mode: [emacs, vi_normal, vi_insert]
       event: {
         until: [
           { send: menupageprevious }
@@ -367,5 +367,3 @@ def --wrapped bazel [...rest] {
     ^bazel ...$rest
   }
 }
-
-source ~/.config/zoxide/zoxide.nu
