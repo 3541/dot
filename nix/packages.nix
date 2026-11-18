@@ -7,7 +7,10 @@
 }:
 let
   cfg = config.a3;
-  packages = with pkgs; [ ripgrep ];
+  packages = with pkgs; [
+    ripgrep
+    vim
+  ];
 in
 {
   config =
