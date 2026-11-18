@@ -2,9 +2,9 @@
 {
   options.a3 = {
     orchestrator = lib.mkOption {
-      type = lib.types.enum ["nixos" "nix-darwin" "home-manager"];
+      type = lib.types.enum [ "nixos" "nix-darwin" "home-manager" ];
     };
-    
+
     system = {
       role = lib.mkOption {
         type = lib.types.enum [
@@ -27,5 +27,8 @@
     ./packages.nix
     ./user.nix
     ./net.nix
+    ./boot.nix
+    ./ssh.nix
+    ./autoupdate.nix
   ];
 }

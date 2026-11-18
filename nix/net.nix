@@ -16,6 +16,12 @@ in
   config =
     { }
     // lib.optionalAttrs enable {
-      networking.hostName = cfg.hostname;
+      networking = {
+        hostName = cfg.hostname;
+        networkmanager.enable = true;
+        firewall.enable = true;
+      };
+
+      services.tailscale.enable = true;
     };
 }
