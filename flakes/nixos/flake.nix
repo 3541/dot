@@ -45,40 +45,40 @@
       ...
     }:
     let
-      # TODO: other architectures...?
-      system = "x86_64-linux";
       lixOverlay = lix.overlays.lixFromNixpkgs;
 
-      makeNixpkgs = nixpkgs: nixpkgs.legacyPackages.${system}.extend lixOverlay;
+      configuration =
+        { hostname, system }:
+        let
+          bash-env-nu = bash-env-nushell.packages.${system}.default;
+        in
+        {
+          system.stateVersion = "26.05";
 
-      pkgsUnstable = makeNixpkgs nixpkgs-unstable;
+          nixpkgs = {
+            hostPlatform = system;
+            overlays = [ lixOverlay ];
+          };
 
-      bash-env-nu = bash-env-nushell.packages.${system}.default;
+          a3 = {
+            inherit hostname;
+            system.os = "linux";
+            orchestrator = "nixos";
+            nixpkgs-flake = "nixos-26.05";
 
-      configuration = { hostname, ... }: {
-        system.stateVersion = "26.05";
-
-        nixpkgs.overlays = [ lixOverlay ];
-
-        a3 = {
-          inherit hostname;
-          system.os = "linux";
-          orchestrator = "nixos";
-          nixpkgs-flake = "nixos-26.05";
-
-          home.shell.nuExtra = [
-            ''
-              export-env {
-                if "__NIX_SET_ENVIRONMENT_DONE" not-in $env {
-                  use "${bash-env-nu}/bash-env.nu"
-                  bash-env /etc/profile.d/nix.sh | update PATH { $in | split row (char esep) | append $env.PATH | uniq } | load-env
-                  $env.__NIX_SET_ENVIRONMENT_DONE = 1
+            home.shell.nuExtra = [
+              ''
+                export-env {
+                  if "__NIX_SET_ENVIRONMENT_DONE" not-in $env {
+                    use "${bash-env-nu}/bash-env.nu"
+                    bash-env /etc/profile.d/nix.sh | update PATH { $in | split row (char esep) | append $env.PATH | uniq } | load-env
+                    $env.__NIX_SET_ENVIRONMENT_DONE = 1
+                  }
                 }
-              }
-            ''
-          ];
+              ''
+            ];
+          };
         };
-      };
 
       homeConfiguration =
         {
@@ -110,9 +110,11 @@
 
       instantiate-config = name: {
         name = name;
-        value = nixpkgs.lib.nixosSystem {
+        value = nixpkgs.lib.nixosSystem rec {
+          system = (import ../../machines/${name}-spec.nix).system;
+
           specialArgs = {
-            inherit pkgsUnstable;
+            pkgsUnstable = nixpkgs-unstable.legacyPackages.${system}.extend lixOverlay;
 
             package-inputs = {
               helix = inputs.helix.packages.${system}.helix;
@@ -122,7 +124,10 @@
           };
 
           modules = [
-            (configuration { hostname = name; })
+            (configuration {
+              inherit system;
+              hostname = name;
+            })
             ../../machines/${name}.nix
             ../../machines/${name}-hardware-configuration.nix
             ../../nix

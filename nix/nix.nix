@@ -23,7 +23,9 @@ in
         trusted-users = [ cfg.user.name ];
         extra-substituters = [ "https://cache.lix.systems" ];
         extra-nix-path = "nixpkgs=flake:${cfg.nixpkgs-flake}";
-        extra-platforms = lib.optional (cfg.system.os == "darwin") "x86_64-darwin";
+        extra-platforms =
+          lib.optional (cfg.system.os == "darwin") "x86_64-darwin"
+          ++ lib.optional (cfg.system.os == "linux" && pkgs.system == "x86_64-linux") "aarch64-linux";
         sandbox = true;
 
         trusted-public-keys = [
