@@ -11,5 +11,6 @@
   };
 
   time.timeZone = "Asia/Hong_Kong";
-  services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
+
+  services.openssh.enable = lib.mkForce false;
 }
