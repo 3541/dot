@@ -7,6 +7,8 @@
       auto-save-file-name-transforms '((".*" "~/.cache/emacs-backups/" t)))
 (xterm-mouse-mode)
 (setq warning-minimum-level 'error)
+(setq custom-file "~/dot/nix/home/emacs/custom.el")
+(load-file "~/dot/nix/home/emacs/custom.el")
 
 ; ---Packaging config---
 (require 'package)
@@ -111,22 +113,43 @@
   :vc (:url "https://github.com/3541/helix-mode.git"
        :rev :newest)
   :demand t
+  :vc (:url "https://github.com/3541/helix-mode"
+            :rev "f28293c00c5473f2be8dfa7c52e77ce16a54766c")
   :after multiple-cursors
   :config
   (helix-multiple-cursors-setup)
   (helix-mode)
   (helix-jj-setup 0.2)
-  (helix-define-key 'normal "m m" #'evilmi-jump-items-native))
+  (helix-define-key 'normal "$" #'evilmi-jump-items-native)
+  (helix-define-key 'normal "u" #'undo-tree-undo)
+  (helix-define-key 'normal "U" #'undo-tree-redo)
+  (helix-define-key 'normal "=" #'eglot-format-buffer))
 
 (use-package evil-matchit
   :defer t)
 
 ; ---Language support---
+(use-package eglot
+  :hook ((bazel-mode nix-mode c-ts-mode c++-ts-mode c-or-c++-ts-mode rust-ts-mode) . eglot-ensure)
+  :config
+  (add-to-list 'eglot-server-programs
+               `(bazel-mode . ("@starpls@"))))
+
 (use-package nix-mode
   :mode "\\.nix\\'"
   :config
   (setq nix-nixfmt-bin "@nixfmt@")
-  (define-key nix-mode-map (kbd "C-x f") 'nix-format-buffer))
+  (helix-define-key 'normal "=" #'nix-format-buffer))
+
+(use-package yaml-mode
+  :mode ("\\.yml\\'" "\\.yaml\\'"))
+
+(add-to-list 'auto-mode-alist '("\\.ccm\\'" . c++-ts-mode))
+
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :init
+  (setq rust-mode-treesitter-derive t))
 
 ; ---Miscellaneous other packages---
 (use-package undo-tree
@@ -145,3 +168,7 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package direnv
+ :config
+ (direnv-mode))
