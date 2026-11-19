@@ -1,3 +1,4 @@
 [
   "sagittarius"
+  "medina"
 ]
