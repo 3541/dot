@@ -36,7 +36,7 @@ in
 
       gc = {
         automatic = true;
-        options = "--delete-older-than 30d";
+        options = if cfg.autoupdate then "--delete-older-than 2d" else "--delete-older-than 30d";
       };
     }
     // (
