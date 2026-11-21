@@ -31,17 +31,19 @@ in
     };
   };
 
-
   config =
     { }
     // lib.optionalAttrs enable {
-      users.users.${cfg.user.name} = assert cfg.orchestrator == "nixos"; {
-        isNormalUser = true;
-        extraGroups = lib.optional (cfg.system.os == "linux") "wheel";
+      users.users.${cfg.user.name} =
+        assert cfg.orchestrator == "nixos";
+        {
+          isNormalUser = true;
+          extraGroups = lib.optional (cfg.system.os == "linux") "wheel";
 
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCRv8rbBQ/hjEtUXwKAPEFAjkAmnhIBoR+9bGlBSyBu alex@opportunity"
-        ];
-      };
+          openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINCRv8rbBQ/hjEtUXwKAPEFAjkAmnhIBoR+9bGlBSyBu alex@opportunity"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7qC2UssyXWyYdB9jomph1zoNEOjjHBsQj1ccG8AHjl alex@curiosity.local"
+          ];
+        };
     };
 }
